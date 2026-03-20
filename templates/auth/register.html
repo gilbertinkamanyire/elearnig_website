@@ -53,15 +53,25 @@
             <div class="form-row">
                 <div class="form-group">
                     <label class="form-label" for="password">Password *</label>
-                    <input type="password" id="password" name="password" class="form-input" 
-                           placeholder="Min 6 characters" required
-                           autocomplete="new-password">
+                    <div style="position: relative;">
+                        <input type="password" id="password" name="password" class="form-input" 
+                               placeholder="Min 6 characters" required
+                               autocomplete="new-password" style="padding-right: 40px;">
+                        <button type="button" onclick="var x=document.getElementById('password'); x.type=(x.type==='password'?'text':'password');" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 1.2rem;">
+                            <i class='bx bx-show'></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="confirm_password">Confirm Password *</label>
-                    <input type="password" id="confirm_password" name="confirm_password" class="form-input" 
-                           placeholder="Repeat password" required
-                           autocomplete="new-password">
+                    <div style="position: relative;">
+                        <input type="password" id="confirm_password" name="confirm_password" class="form-input" 
+                               placeholder="Repeat password" required
+                               autocomplete="new-password" style="padding-right: 40px;">
+                        <button type="button" onclick="var x=document.getElementById('confirm_password'); x.type=(x.type==='password'?'text':'password');" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 1.2rem;">
+                            <i class='bx bx-show'></i>
+                        </button>
+                    </div>
                 </div>
             </div>
             
