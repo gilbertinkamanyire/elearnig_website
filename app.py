@@ -54,6 +54,11 @@ def toggle_bandwidth():
         
     return redirect(request.referrer or url_for('index'))
 
+# Ensure database is initialized
+if not os.path.exists(Config.DATABASE):
+    init_db()
+    seed_db()
+
 os.makedirs(Config.UPLOAD_FOLDER, exist_ok=True)
 
 setup_helpers(app)
@@ -76,6 +81,5 @@ register_serviceworker(app)
 register_unique(app)
 
 if __name__ == '__main__':
-    init_db()
-    seed_db()
     app.run(debug=True, host='0.0.0.0', port=5000)
+
