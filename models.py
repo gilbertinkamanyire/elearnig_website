@@ -3,12 +3,30 @@ import os
 from config import Config
 
 def get_db():
-    """Get database connection with row factory."""
-    db = sqlite3.connect(Config.DATABASE)
-    db.row_factory = sqlite3.Row
-    db.execute("PRAGMA journal_mode=WAL")  # Better concurrent access
-    db.execute("PRAGMA foreign_keys=ON")
-    return db
+    """Get database connection with row factory and error handling."""
+    try:
+        db = sqlite3.connect(Config.DATABASE, timeout=10)
+        db.row_factory = sqlite3.Row
+        # Enable some modern SQLite features
+        db.execute("PRAGMA journal_mode=WAL")  # Better concurrency
+        db.execute("PRAGMA foreign_keys=ON")
+        db.execute("PRAGMA synchronous=NORMAL") # Faster writes
+        return db
+    except sqlite3.Error as e:
+        print(f"Database connection error: {e}")
+        # On Vercel, try to re-initialize if it fails
+        if os.environ.get('VERCEL'):
+            try:
+                # Remove if exists and try again
+                if os.path.exists(Config.DATABASE):
+                    os.remove(Config.DATABASE)
+                init_db()
+                seed_db()
+                return sqlite3.connect(Config.DATABASE)
+            except:
+                pass
+        raise e
+
 
 def init_db():
     """Initialize database with schema."""
