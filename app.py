@@ -3,6 +3,7 @@ from flask import Flask, redirect, request, session, url_for
 from config import Config
 from models import init_db, seed_db
 from helpers import setup_helpers, register_filters
+from db_compat import USE_POSTGRES
 
 from routes.auth import register_auth
 from routes.dashboard import register_dashboard
@@ -33,8 +34,14 @@ def toggle_theme():
     
     if 'user_id' in session:
         db = get_db()
-        db.execute('INSERT OR REPLACE INTO user_preferences (user_id, theme) VALUES (?, ?)', 
-                   (session['user_id'], new_mode))
+        if USE_POSTGRES:
+            db.execute(
+                'INSERT INTO user_preferences (user_id, theme) VALUES (%s, %s) ON CONFLICT (user_id) DO UPDATE SET theme = EXCLUDED.theme',
+                (session['user_id'], new_mode)
+            )
+        else:
+            db.execute('INSERT OR REPLACE INTO user_preferences (user_id, theme) VALUES (?, ?)', 
+                       (session['user_id'], new_mode))
         db.commit()
         db.close()
         
@@ -47,17 +54,31 @@ def toggle_bandwidth():
     
     if 'user_id' in session:
         db = get_db()
-        db.execute('INSERT OR REPLACE INTO user_preferences (user_id, bandwidth_mode) VALUES (?, ?)', 
-                   (session['user_id'], mode))
+        if USE_POSTGRES:
+            db.execute(
+                'INSERT INTO user_preferences (user_id, bandwidth_mode) VALUES (%s, %s) ON CONFLICT (user_id) DO UPDATE SET bandwidth_mode = EXCLUDED.bandwidth_mode',
+                (session['user_id'], mode)
+            )
+        else:
+            db.execute('INSERT OR REPLACE INTO user_preferences (user_id, bandwidth_mode) VALUES (?, ?)', 
+                       (session['user_id'], mode))
         db.commit()
         db.close()
         
     return redirect(request.referrer or url_for('index'))
 
-# Ensure database is initialized
-if not os.path.exists(Config.DATABASE):
-    init_db()
-    seed_db()
+# Initialize database
+if USE_POSTGRES:
+    # Always try to init on Postgres (CREATE IF NOT EXISTS is safe)
+    try:
+        init_db()
+        seed_db()
+    except Exception as e:
+        print(f"DB init note: {e}")
+else:
+    if not os.path.exists(Config.DATABASE):
+        init_db()
+        seed_db()
 
 os.makedirs(Config.UPLOAD_FOLDER, exist_ok=True)
 
@@ -82,4 +103,3 @@ register_unique(app)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
-
