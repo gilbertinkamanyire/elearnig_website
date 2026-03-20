@@ -99,9 +99,19 @@ body {
     overflow-x: hidden;
     position: relative;
     background-image: 
-        radial-gradient(at 0% 0%, rgba(249,115,22,0.06) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(245,158,11,0.06) 0px, transparent 50%);
+        linear-gradient(rgba(255, 250, 245, 0.95), rgba(255, 250, 245, 0.95)),
+        url('https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&q=80&w=2070');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
 }
+
+body.mode-dark {
+    background-image: 
+        linear-gradient(rgba(18, 12, 11, 0.96), rgba(18, 12, 11, 0.96)),
+        url('https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&q=80&w=2070');
+}
+
 
 a {
     color: var(--accent);
