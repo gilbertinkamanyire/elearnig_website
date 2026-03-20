@@ -65,26 +65,28 @@ body.mode-dark {
 }
 
 /* Background Image Classes */
+/* Home Hero - Local African using basic laptop in a humble setting */
 .bg-hero-img {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.02)), url('https://images.unsplash.com/photo-1588702547923-7093a6c3ba33?auto=format&fit=crop&q=80&w=2070') !important;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)), url('https://images.unsplash.com/photo-1544378730-8b5104b18790?auto=format&fit=crop&q=80&w=2070') !important;
     background-size: cover;
-    background-position: center 30%;
+    background-position: center;
     background-attachment: fixed;
 }
 
 body.mode-dark .bg-hero-img {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://images.unsplash.com/photo-1588702547923-7093a6c3ba33?auto=format&fit=crop&q=80&w=2070') !important;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://images.unsplash.com/photo-1544378730-8b5104b18790?auto=format&fit=crop&q=80&w=2070') !important;
 }
 
-/* About page hero - African using smartphone */
+/* About page hero - Local African using smartphone */
 .about-hero.bg-hero-img {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.02)), url('https://images.unsplash.com/photo-1611532736597-de2d4265fba3?auto=format&fit=crop&q=80&w=2070') !important;
-    background-position: center 20%;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)), url('https://images.unsplash.com/photo-1563236749-3605e5461996?auto=format&fit=crop&q=80&w=2070') !important;
+    background-position: center;
 }
 
 body.mode-dark .about-hero.bg-hero-img {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://images.unsplash.com/photo-1611532736597-de2d4265fba3?auto=format&fit=crop&q=80&w=2070') !important;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://images.unsplash.com/photo-1563236749-3605e5461996?auto=format&fit=crop&q=80&w=2070') !important;
 }
+
 
 
 
@@ -115,9 +117,10 @@ body {
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
     position: relative;
+    /* Main body - subtle African village texture/scene */
     background-image: 
-        linear-gradient(rgba(255, 250, 245, 0.6), rgba(255, 250, 245, 0.6)),
-        url('https://images.unsplash.com/photo-1588702547923-7093a6c3ba33?auto=format&fit=crop&q=80&w=2070');
+        linear-gradient(rgba(255, 250, 245, 0.70), rgba(255, 250, 245, 0.70)),
+        url('https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?auto=format&fit=crop&q=80&w=2067');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -125,9 +128,10 @@ body {
 
 body.mode-dark {
     background-image: 
-        linear-gradient(rgba(18, 12, 11, 0.82), rgba(18, 12, 11, 0.82)),
-        url('https://images.unsplash.com/photo-1588702547923-7093a6c3ba33?auto=format&fit=crop&q=80&w=2070');
+        linear-gradient(rgba(18, 12, 11, 0.85), rgba(18, 12, 11, 0.85)),
+        url('https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?auto=format&fit=crop&q=80&w=2067');
 }
+
 
 
 
