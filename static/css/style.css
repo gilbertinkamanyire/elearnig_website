@@ -14,11 +14,12 @@
     --bg-card-hover: #fff3ea;
     --bg-input: #fff6ed;
     --bg-hero: radial-gradient(circle at 80% -20%, #ffe8d6 0%, #fffaf5 80%);
-    --text-primary: #2d1b19;
-    --text-secondary: #5e4744;
-    --text-muted: #9c8481;
-    --border: #f8e1d4;
-    --border-light: #fef1e6;
+    --text-primary: #111111; /* Pure, deep realistic black for maximum readability */
+    --text-secondary: #333333;
+    --text-muted: #666666;
+    --border: #e2e8f0;
+    --border-light: #f1f5f9;
+
     
     /* Vibrant Sunset Orange Accents */
     --accent: #f97316;
@@ -54,25 +55,27 @@ body.mode-dark {
     --bg-card-hover: #2d1b19;
     --bg-input: #251c1a;
     --bg-hero: radial-gradient(circle at 80% -20%, #2d1b19 0%, #120c0b 80%);
-    --text-primary: #fffaf5;
-    --text-secondary: #f8e1d4;
-    --text-muted: #9c8481;
-    --border: #2d1b19;
-    --border-light: #3a2521;
+    --text-primary: #fefefe; /* Pure, bright white for dark mode */
+    --text-secondary: #e2e8f0;
+    --text-muted: #94a3b8;
+    --border: #334155;
+    --border-light: #1e293b;
+
     --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
 }
 
 /* Background Image Classes */
 .bg-hero-img {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&q=80&w=2070') !important;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=2071') !important;
     background-size: cover;
-    background-position: center;
+    background-position: center 20%;
     background-attachment: fixed;
 }
 
 body.mode-dark .bg-hero-img {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&q=80&w=2070') !important;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=2071') !important;
 }
+
 
 
 
