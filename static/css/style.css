@@ -66,7 +66,7 @@ body.mode-dark {
 
 /* Background Image Classes */
 .bg-hero-img {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.12)), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=2071') !important;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.02)), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=2071') !important;
     background-size: cover;
     background-position: center 25%;
     background-attachment: fixed;
@@ -75,6 +75,7 @@ body.mode-dark {
 body.mode-dark .bg-hero-img {
     background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=2071') !important;
 }
+
 
 
 
@@ -104,7 +105,7 @@ body {
     overflow-x: hidden;
     position: relative;
     background-image: 
-        linear-gradient(rgba(255, 250, 245, 0.78), rgba(255, 250, 245, 0.78)),
+        linear-gradient(rgba(255, 250, 245, 0.65), rgba(255, 250, 245, 0.65)),
         url('https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&q=80&w=2070');
     background-size: cover;
     background-attachment: fixed;
@@ -113,9 +114,10 @@ body {
 
 body.mode-dark {
     background-image: 
-        linear-gradient(rgba(18, 12, 11, 0.88), rgba(18, 12, 11, 0.88)),
+        linear-gradient(rgba(18, 12, 11, 0.85), rgba(18, 12, 11, 0.85)),
         url('https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&q=80&w=2070');
 }
+
 
 
 
@@ -790,9 +792,27 @@ tr:hover td { background: var(--accent-surface); color: var(--accent); }
     display: inline-flex; align-items: center; background: rgba(255, 255, 255, 0.9); border: 2px solid var(--accent); color: var(--accent);
     padding: 0.5rem 1.25rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 900; margin-bottom: 2rem; letter-spacing: 0.05em; text-transform: uppercase; box-shadow: 0 4px 12px rgba(249, 115, 22, 0.15);
 }
-.hero h1 { font-size: clamp(2.2rem, 6vw, 4rem); font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -0.03em; color: white !important; text-shadow: 0 5px 40px rgba(0,0,0,0.95), 0 2px 15px rgba(0,0,0,0.85); }
-.hero h1 .gradient-text { background: linear-gradient(135deg, white, #ffedd5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 900; }
-.hero-desc { font-size: 1.15rem; color: rgba(255, 255, 255, 1); max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.7; font-weight: 800; text-shadow: 0 4px 20px rgba(0,0,0,0.9); }
+/* Base hero font settings - DARK text for Light mode as requested */
+.hero h1 { 
+    font-size: clamp(2.2rem, 6vw, 4rem); 
+    font-weight: 900; 
+    line-height: 1.1; 
+    margin-bottom: 1.5rem; 
+    letter-spacing: -0.03em; 
+    color: var(--text-primary) !important; 
+    text-shadow: 0 0 40px rgba(255,255,255,1), 0 0 15px rgba(255,255,255,0.8); /* Light glow for dark text on photo */
+}
+.hero h1 .gradient-text { background: linear-gradient(135deg, var(--accent), var(--secondary-accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 900; }
+.hero-desc { font-size: 1.15rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.7; font-weight: 800; text-shadow: 0 0 25px rgba(255,255,255,1); }
+
+/* Keep white text FOR DARK MODE only */
+body.mode-dark .hero h1 { 
+    color: #ffffff !important; 
+    text-shadow: 0 5px 40px rgba(0,0,0,0.95), 0 2px 15px rgba(0,0,0,0.85); 
+}
+body.mode-dark .hero h1 .gradient-text { background: linear-gradient(135deg, white, #ffedd5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+body.mode-dark .hero-desc { color: #ffffff; text-shadow: 0 4px 20px rgba(0,0,0,0.9); }
+
 
 
 
