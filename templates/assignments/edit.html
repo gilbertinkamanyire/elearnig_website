@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Edit Assignment - {{ assignment.title }}{% endblock %}
+
+{% block content %}
+<div class="breadcrumb">
+    <a href="{{ url_for('courses_list') }}">Courses</a>
+    <span class="breadcrumb-sep">›</span>
+    <a href="{{ url_for('course_detail', course_id=course.id) }}">{{ course.title }}</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>Edit Assignment</span>
+</div>
+
+<div class="page-header">
+    <h1>✏️ Edit Assignment</h1>
+    <p>Update submission space for students</p>
+</div>
+
+<div class="card" style="max-width: 700px;">
+    <form method="POST">
+        <div class="form-group">
+            <label class="form-label" for="title">Assignment Title *</label>
+            <input type="text" id="title" name="title" class="form-input" value="{{ assignment.title }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="description">Instructions / Description</label>
+            <textarea id="description" name="description" class="form-textarea" rows="5">{{ assignment.description }}</textarea>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label" for="due_date">Due Date</label>
+                <input type="datetime-local" id="due_date" name="due_date" class="form-input" value="{{ assignment.due_date }}">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="max_marks">Max Marks</label>
+                <input type="number" id="max_marks" name="max_marks" class="form-input" value="{{ assignment.max_marks }}">
+            </div>
+        </div>
+        
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary">Update Assignment</button>
+            <a href="{{ url_for('view_assignment', course_id=course.id, assignment_id=assignment.id) }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

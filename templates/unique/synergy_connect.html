@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% block title %}Synergy Connect{% endblock %}
+
+{% block content %}
+<div class="synergy-header">
+    <h1><i class='bx bx-group'></i> Synergy Connect</h1>
+    <p>Connecting learners who can help each other thrive.</p>
+</div>
+
+<div class="synergy-grid">
+    <div class="synergy-main">
+        <h2>Your Potential Matches 🤝</h2>
+        <div class="peers-list">
+            {% if peers %}
+                {% for peer in peers %}
+                    <div class="peer-card">
+                        <div class="peer-avatar">
+                            {% if peer.profile_pic_url %}
+                                <img src="{{ peer.profile_pic_url }}" alt="{{ peer.full_name }}">
+                            {% else %}
+                                <div class="initials">{{ peer.full_name[:1] }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="peer-info">
+                            <h3>{{ peer.full_name }}</h3>
+                            <p class="match-course">Course: <strong>{{ peer.course_title }}</strong></p>
+                            <div class="progress-bar-mini">
+                                <div class="progress-fill" style="width: {{ peer.progress }}%"></div>
+                            </div>
+                            <span class="match-badge">
+                                {% if peer.progress > my_progress.get(peer.course_id, 0) %}
+                                    <i class='bx bxs-up-arrow-circle'></i> Potential Mentor
+                                {% else %}
+                                    <i class='bx bxs-down-arrow-circle'></i> Potential Learner
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="peer-action">
+                             <a href="{{ url_for('synergy_sync', peer_id=peer.id) }}" class="btn btn-primary btn-sm rounded-pill">Start Sync</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <i class='bx bx-user-plus' style="font-size: 3rem; opacity: 0.3;"></i>
+                    <p>No matches found in your area yet. Try enrolling in more popular courses!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="synergy-sidebar">
+        <div class="sidebar-card info-card">
+            <h3><i class='bx bxs-info-circle'></i> How it Works</h3>
+            <p>Our AI analyzes your course progress and identifies students who have completed modules you're currently working on, or who could benefit from your expertise.</p>
+            <p>A "15-minute sync" is a quick peer tutoring session to get unstuck.</p>
+        </div>
+        
+        <div class="sidebar-card stat-card">
+            <h3><i class='bx bxs-zap'></i> Synergy Stats</h3>
+            <div class="stat-row">
+                <span>Success Matches</span>
+                <strong>42</strong>
+            </div>
+            <div class="stat-row">
+                <span>Avg. Sync Time</span>
+                <strong>12m</strong>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .synergy-header {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding: 3rem;
+        background: linear-gradient(135deg, #00bfa511 0%, #6200ea11 100%);
+        border-radius: 30px;
+    }
+    
+    .synergy-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 3rem;
+    }
+    
+    .peers-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .peer-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+        border: 1px solid #f5f5f5;
+        transition: all 0.3s ease;
+    }
+    
+    .peer-card:hover {
+        border-color: #6200ea;
+        box-shadow: 0 10px 25px rgba(98,0,234,0.1);
+    }
+    
+    .initials {
+        width: 50px;
+        height: 50px;
+        background: #6200ea;
+        color: white;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+    
+    .peer-info { flex: 1; }
+    .peer-info h3 { margin: 0; font-size: 1.1rem; }
+    .match-course { margin: 0.2rem 0; font-size: 0.9rem; color: #666; }
+    
+    .progress-bar-mini {
+        height: 6px;
+        background: #eee;
+        border-radius: 10px;
+        margin: 0.5rem 0;
+        width: 100px;
+    }
+    
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #6200ea, #00bfa5);
+        border-radius: 10px;
+    }
+    
+    .match-badge {
+        font-size: 0.75rem;
+        background: #f0f0f0;
+        padding: 0.2rem 0.6rem;
+        border-radius: 5px;
+        color: #6200ea;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+    
+    .sidebar-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 20px;
+        margin-bottom: 1.5rem;
+        border: 1px solid #f0f0f0;
+    }
+    
+    .stat-row {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid #f5f5f5;
+    }
+    
+    @media (max-width: 768px) {
+        .synergy-grid { grid-template-columns: 1fr; }
+    }
+</style>
+{% endblock %}

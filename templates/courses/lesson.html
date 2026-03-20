@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}{{ lesson.title }}{% endblock %}
+
+{% block content %}
+<div class="breadcrumb">
+    <a href="{{ url_for('courses_list') }}">Courses</a>
+    <span class="breadcrumb-sep">›</span>
+    <a href="{{ url_for('course_detail', course_id=course.id) }}">{{ course.title }}</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>{{ lesson.title }}</span>
+</div>
+
+<div class="layout-grid layout-grid-sidebar">
+    <!-- Sidebar -->
+    <div>
+        <div class="lesson-sidebar">
+            <h3 style="font-size: 0.9rem; margin-bottom: 0.75rem;">📖 Course Lessons</h3>
+            {% for l in all_lessons %}
+            <a href="{{ url_for('view_lesson', course_id=course.id, lesson_id=l.id) }}" style="text-decoration: none;">
+                <div class="lesson-sidebar-item {% if l.id == lesson.id %}active{% endif %}">
+                    <div class="check">
+                        {% if l.id == lesson.id %}►{% else %}{{ loop.index }}{% endif %}
+                    </div>
+                    <span>{{ l.title }}</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+
+        <div style="margin-top: 1rem;">
+            <a href="{{ url_for('course_detail', course_id=course.id) }}" class="btn btn-sm btn-secondary btn-block">← Back to Course</a>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div>
+        <div class="flex-between mb-2">
+            <h1 style="font-size: 1.4rem;">{{ lesson.title }}</h1>
+            {% if session.role in ('lecturer', 'admin') %}
+            <div class="btn-group">
+                <a href="{{ url_for('edit_lesson', course_id=course.id, lesson_id=lesson.id) }}" class="btn btn-sm btn-outline">✏️ Edit</a>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Lesson Content -->
+        <div class="lesson-content">
+            {{ lesson.content|safe }}
+            
+            {% if lesson.attachment_url %}
+            <div style="margin-top: 2rem; padding: 1rem; background: var(--bg-input); border: 1px dashed var(--border); border-radius: var(--radius);">
+                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">📎 Attached Resource</h3>
+                {% if lesson.attachment_type in ['mp4', 'webm'] %}
+                    <video controls style="width: 100%; max-height: 400px; border-radius: var(--radius); margin-top: 0.5rem;">
+                        <source src="{{ lesson.attachment_url }}" type="video/{{ lesson.attachment_type }}">
+                        Your browser does not support the video tag.
+                    </video>
+                {% else %}
+                    <a href="{{ url_for('download_resource', course_id=course.id, lesson_id=lesson.id) }}" class="btn btn-outline">
+                        💾 Download Attachment ({{ lesson.attachment_type|upper }})
+                    </a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Completion & Navigation -->
+        <div style="margin-top: 1.5rem;">
+            {% if not is_completed and session.role == 'student' %}
+            <form method="POST" action="{{ url_for('complete_lesson', course_id=course.id, lesson_id=lesson.id) }}" style="text-align: center; margin-bottom: 1rem;">
+                <button type="submit" class="btn btn-primary btn-lg">✅ Mark as Complete</button>
+            </form>
+            {% elif is_completed %}
+            <div style="text-align: center; margin-bottom: 1rem;">
+                <span class="badge badge-success" style="font-size: 0.85rem; padding: 0.5rem 1.5rem;">✓ Lesson Completed</span>
+            </div>
+            {% endif %}
+            
+            <div class="lesson-nav">
+                {% if prev_lesson %}
+                <a href="{{ url_for('view_lesson', course_id=course.id, lesson_id=prev_lesson.id) }}" class="btn btn-secondary">
+                    ← {{ prev_lesson.title }}
+                </a>
+                {% else %}
+                <div></div>
+                {% endif %}
+                
+                {% if next_lesson %}
+                <a href="{{ url_for('view_lesson', course_id=course.id, lesson_id=next_lesson.id) }}" class="btn btn-primary">
+                    {{ next_lesson.title }} →
+                </a>
+                {% else %}
+                <a href="{{ url_for('course_detail', course_id=course.id) }}" class="btn btn-primary">
+                    Back to Course →
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

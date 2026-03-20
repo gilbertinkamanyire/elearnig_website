@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Grade: {{ submission.full_name }}{% endblock %}
+
+{% block content %}
+<div class="breadcrumb">
+    <a href="{{ url_for('courses_list') }}">Courses</a>
+    <span class="breadcrumb-sep">›</span>
+    <a href="{{ url_for('course_detail', course_id=submission.course_id) }}">Course</a>
+    <span class="breadcrumb-sep">›</span>
+    <a href="{{ url_for('view_assignment', course_id=submission.course_id, assignment_id=submission.assignment_id) }}">{{ submission.assignment_title }}</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>Grade Submission</span>
+</div>
+
+<div class="page-header">
+    <h1>Grade Submission</h1>
+    <p>Student: <strong>{{ submission.full_name }}</strong> ({{ submission.email }})</p>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <h3>Submission Details</h3>
+            <p><strong>Assignment:</strong> {{ submission.assignment_title }}</p>
+            <p><strong>Submitted:</strong> {{ submission.submitted_at|timeago }}</p>
+            <div class="mt-2">
+                <a href="{{ submission.file_url }}" target="_blank" class="btn btn-primary">📥 Download / View File</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <h3>Grade & Feedback</h3>
+            <form method="POST">
+                <div class="form-group">
+                    <label class="form-label">Marks (Out of {{ submission.max_marks }})</label>
+                    <input type="number" name="grade" class="form-input" value="{{ submission.grade if submission.grade != 'Not Graded' else '' }}" required min="0" max="{{ submission.max_marks }}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Feedback to Student</label>
+                    <textarea name="feedback" class="form-textarea" rows="6">{{ submission.feedback }}</textarea>
+                </div>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary btn-lg">✅ Save Grade</button>
+                    <a href="{{ url_for('view_assignment', course_id=submission.course_id, assignment_id=submission.assignment_id) }}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

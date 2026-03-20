@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %}Create Course{% endblock %}
+
+{% block content %}
+<div class="breadcrumb">
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>Create Course</span>
+</div>
+
+<div class="page-header">
+    <h1>📖 Create New Course</h1>
+    <p>Add a new course to the platform</p>
+</div>
+
+<div class="card" style="max-width: 700px;">
+    <form method="POST" action="{{ url_for('create_course') }}">
+        <div class="form-group">
+            <label class="form-label" for="title">Course Title *</label>
+            <input type="text" id="title" name="title" class="form-input" 
+                   placeholder="e.g., Introduction to Python Programming" required>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="description">Description</label>
+            <textarea id="description" name="description" class="form-textarea" rows="4"
+                      placeholder="Describe what students will learn in this course..."></textarea>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label" for="department_id">Department *</label>
+                <select id="department_id" name="department_id" class="form-select" required>
+                    <option value="">-- Select Department --</option>
+                    {% for dept in departments %}
+                    <option value="{{ dept.id }}">{{ dept.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="lecturer_id">Assign Lecturer *</label>
+                <select id="lecturer_id" name="lecturer_id" class="form-select" required>
+                    <option value="">-- Select Lecturer --</option>
+                    {% for lect in lecturers %}
+                    <option value="{{ lect.id }}">{{ lect.full_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-checkbox">
+                <input type="checkbox" name="is_published" value="1">
+                Publish immediately (students can see and enroll)
+            </label>
+        </div>
+        
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary">Create Course</button>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

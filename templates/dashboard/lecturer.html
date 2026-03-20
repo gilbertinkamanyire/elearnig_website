@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block title %}Lecturer Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>👋 Hello, {{ session.full_name }}!</h1>
+    <p>Manage your courses and students</p>
+</div>
+
+<!-- Stats -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">📖</div>
+        <div class="stat-value">{{ courses|length }}</div>
+        <div class="stat-label">My Courses</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-value">{{ courses|sum(attribute='student_count') }}</div>
+        <div class="stat-label">Total Students</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">📝</div>
+        <div class="stat-value">{{ courses|sum(attribute='lesson_count') }}</div>
+        <div class="stat-label">Total Lessons</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">💬</div>
+        <div class="stat-value">{{ courses|sum(attribute='discussion_count') }}</div>
+        <div class="stat-label">Discussions</div>
+    </div>
+</div>
+
+<!-- My Courses -->
+<section class="mb-3">
+    <div class="section-header">
+        <h2 class="section-title">📖 My Courses</h2>
+        <a href="{{ url_for('create_course') }}" class="btn btn-sm btn-primary">+ New Course</a>
+    </div>
+    
+    {% if courses %}
+    <div class="course-grid">
+        {% for c in courses %}
+        <div class="course-card">
+            <div class="course-card-image">
+                <span class="course-card-category">
+                    {% if c.is_published %}
+                        <span class="badge badge-success">Published</span>
+                    {% else %}
+                        <span class="badge badge-danger">Draft</span>
+                    {% endif %}
+                </span>
+                <span class="course-card-icon">
+                    {% if c.category == 'Computing' %}💻
+                    {% elif c.category == 'ICT' %}🌐
+                    {% elif c.category == 'Networking' %}🔌
+                    {% else %}📚{% endif %}
+                </span>
+            </div>
+            <div class="course-card-body">
+                <div class="course-card-title">{{ c.title }}</div>
+                <div class="course-card-desc">{{ c.description[:100] }}{% if c.description and c.description|length > 100 %}...{% endif %}</div>
+                <div class="course-card-meta">
+                    <span>👥 {{ c.student_count }} students</span>
+                    <span>📖 {{ c.lesson_count }} lessons</span>
+                </div>
+                <div class="btn-group mt-1">
+                    <a href="{{ url_for('course_detail', course_id=c.id) }}" class="btn btn-sm btn-secondary">View</a>
+                    <a href="{{ url_for('edit_course', course_id=c.id) }}" class="btn btn-sm btn-outline">Edit</a>
+                    <a href="{{ url_for('add_lesson', course_id=c.id) }}" class="btn btn-sm btn-outline">+ Lesson</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-state-icon">📖</div>
+        <div class="empty-state-title">No Courses Yet</div>
+        <div class="empty-state-desc">Create your first course and start teaching.</div>
+        <a href="{{ url_for('create_course') }}" class="btn btn-primary">Create Course</a>
+    </div>
+    {% endif %}
+</section>
+
+<!-- Recent Discussions -->
+{% if recent_discussions %}
+<section>
+    <div class="section-header">
+        <h2 class="section-title">💬 Recent Discussions</h2>
+    </div>
+    {% for d in recent_discussions %}
+    <div class="discussion-item">
+        <a href="{{ url_for('view_discussion', course_id=d.course_id, discussion_id=d.id) }}" style="text-decoration: none;">
+            <div class="discussion-title">{{ d.title }}</div>
+        </a>
+        <div class="discussion-meta">
+            {{ d.author_name }} · {{ d.course_title }} · {{ d.reply_count }} replies · {{ d.created_at|timeago }}
+        </div>
+    </div>
+    {% endfor %}
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>⚙️ Admin Dashboard</h1>
+    <p>System overview and management</p>
+</div>
+
+<!-- Stats Grid -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon"><i class='bx bxs-group'></i></div>
+        <div class="stat-value">{{ stats.total_users }}</div>
+        <div class="stat-label">Total Users</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class='bx bxs-graduation'></i></div>
+        <div class="stat-value">{{ stats.total_students }}</div>
+        <div class="stat-label">Students</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class='bx bxs-briefcase'></i></div>
+        <div class="stat-value">{{ stats.total_lecturers }}</div>
+        <div class="stat-label">Lecturers</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class='bx bxs-book-open'></i></div>
+        <div class="stat-value">{{ stats.total_courses }}</div>
+        <div class="stat-label">Courses</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class='bx bxs-check-circle'></i></div>
+        <div class="stat-value">{{ stats.published_courses }}</div>
+        <div class="stat-label">Published</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class='bx bxs-user-plus'></i></div>
+        <div class="stat-value">{{ stats.total_enrollments }}</div>
+        <div class="stat-label">Enrollments</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class='bx bxs-chat'></i></div>
+        <div class="stat-value">{{ stats.total_discussions }}</div>
+        <div class="stat-label">Discussions</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class='bx bxs-cloud-upload'></i></div>
+        <div class="stat-value">{{ stats.total_submissions }}</div>
+        <div class="stat-label">Submissions</div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="section-header">
+    <h2 class="section-title">🔧 Quick Actions</h2>
+</div>
+<div class="btn-group mb-3">
+    <a href="{{ url_for('admin_users') }}" class="btn btn-secondary">👥 Manage Users</a>
+    <a href="{{ url_for('admin_analytics') }}" class="btn btn-secondary">📊 Analytics</a>
+    <a href="{{ url_for('manage_announcements') }}" class="btn btn-secondary">📢 Announcements</a>
+    <a href="{{ url_for('create_course') }}" class="btn btn-secondary">📖 Create Course</a>
+</div>
+
+<!-- Recent Users -->
+<section>
+    <div class="section-header">
+        <h2 class="section-title">👥 Recent Users</h2>
+        <a href="{{ url_for('admin_users') }}" class="btn btn-sm btn-outline">View All →</a>
+    </div>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Joined</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in recent_users %}
+                <tr>
+                    <td><strong>{{ user.full_name }}</strong></td>
+                    <td>{{ user.username }}</td>
+                    <td><span class="badge badge-{{ user.role }}">{{ user.role }}</span></td>
+                    <td>
+                        {% if user.is_active %}
+                            <span class="badge badge-success">Active</span>
+                        {% else %}
+                            <span class="badge badge-danger">Inactive</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ user.created_at|timeago }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

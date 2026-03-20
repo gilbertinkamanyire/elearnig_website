@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="LearnUG - Lightweight online learning platform optimized for low-bandwidth networks in Uganda">
+    <meta name="theme-color" content="#fffaf5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>{% block title %}LearnUG{% endblock %} | Online Learning Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="manifest" href="{{ url_for('manifest') }}">
+    <!-- Modern Icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body class="mode-{{ session.get('bandwidth_mode', 'standard') }} mode-{{ session.get('theme_mode', 'light') }}">
+    <!-- Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="container">
+            <a href="{{ url_for('index') }}" class="navbar-brand">
+                <i class='bx bxs-graduation'></i> LearnUG
+            </a>
+            
+            <ul class="navbar-nav desktop-only-nav">
+                <li><a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Home</a></li>
+                <li><a href="{{ url_for('how_it_works') }}" class="{% if request.endpoint == 'how_it_works' %}active{% endif %}">How it Works</a></li>
+            </ul>
+            
+            <!-- CSS-only Mobile Menu Toggle -->
+            <input type="checkbox" id="menu-toggle-input" class="menu-toggle-input" hidden>
+            <label for="menu-toggle-input" class="menu-toggle" aria-label="Toggle menu"><i class='bx bx-menu'></i></label>
+            
+            <ul class="navbar-nav">
+                {% if current_user %}
+                    <li><a href="{{ url_for('dashboard') }}" class="{% if request.endpoint == 'dashboard' %}active{% endif %}"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
+                    
+                    <!-- Learning Dropdown (CSS Only) -->
+                    <li class="dropdown">
+                        <a href="#" class="{% if 'course' in (request.endpoint|default('', true)) or request.endpoint in ('cognitive_mirror', 'synergy_connect') %}active{% endif %}">
+                            <i class='bx bxs-graduation'></i> Learning <i class='bx bx-chevron-down'></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('courses_list') }}"><i class='bx bxs-book-open'></i> Courses</a></li>
+                            <li><a href="{{ url_for('cognitive_mirror') }}"><i class='bx bx-reflect-vertical'></i> Mirror</a></li>
+                            <li><a href="{{ url_for('synergy_connect') }}"><i class='bx bx-group'></i> Synergy</a></li>
+                            {% if current_user.role == 'student' %}
+                                <li><a href="{{ url_for('student_grades') }}"><i class='bx bxs-bar-chart-alt-2'></i> Grades</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+
+                    <li><a href="{{ url_for('notifications') }}" class="{% if request.endpoint == 'notifications' %}active{% endif %}"><i class='bx bxs-bell'></i> Alerts</a></li>
+                    
+                    {% if current_user.role in ('lecturer', 'admin') %}
+                        <!-- Admin Dropdown (CSS Only) -->
+                        <li class="dropdown">
+                            <a href="#" class="btn btn-sm btn-primary text-white">
+                                <i class='bx bxs-cog'></i> Manage <i class='bx bx-chevron-down'></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url_for('manage_announcements') }}">📢 Announce</a></li>
+                                {% if current_user.role == 'admin' %}
+                                    <li><a href="{{ url_for('manage_departments') }}">🏢 Departments</a></li>
+                                    <li><a href="{{ url_for('admin_users') }}">⚙️ User Control</a></li>
+                                {% endif %}
+                                <hr>
+                                <li><a href="{{ url_for('profile') }}">👤 Profile</a></li>
+                                <li><a href="{{ url_for('settings') }}">⚙️ Settings</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li><a href="{{ url_for('profile') }}" class="{% if request.endpoint == 'profile' %}active{% endif %}">👤 Profile</a></li>
+                    {% endif %}
+
+                    <li><a href="{{ url_for('about') }}" class="{% if request.endpoint == 'about' %}active{% endif %}"><i class='bx bxs-info-circle'></i> About</a></li>
+                    <li><a href="{{ url_for('help_page') }}" class="{% if request.endpoint == 'help_page' %}active{% endif %}"><i class='bx bxs-help-circle'></i> Help</a></li>
+                    <li class="nav-auth-mobile">
+                        <div class="nav-user">
+                            {% if current_user.profile_pic_url %}
+                                <img src="{{ current_user.profile_pic_url }}" alt="avatar" class="nav-avatar">
+                            {% endif %}
+                            <div class="nav-user-info">
+                                <span class="nav-user-name">{{ current_user.full_name }}</span>
+                                <span class="nav-user-role">{{ current_user.role|title }}</span>
+                            </div>
+                            <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline" title="Logout">Logout</a>
+                        </div>
+                    </li>
+                {% else %}
+                    <li><a href="{{ url_for('about') }}" class="{% if request.endpoint == 'about' %}active{% endif %}">About</a></li>
+                    <li><a href="{{ url_for('login') }}" class="{% if request.endpoint == 'login' %}active{% endif %}">Login</a></li>
+                    <li><a href="{{ url_for('register') }}" class="btn btn-sm btn-primary">Get Started</a></li>
+                {% endif %}
+                <!-- Bandwidth & Theme Toggles -->
+                <li class="bandwidth-guard" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <form action="{{ url_for('toggle_bandwidth') }}" method="POST">
+                        <select name="mode" onchange="this.form.submit()" class="bandwidth-select" title="Bandwidth Guard">
+                            <option value="standard" {% if session.get('bandwidth_mode') == 'standard' %}selected{% endif %}>⚡ 5G / Fiber (Full)</option>
+                            <option value="low" {% if session.get('bandwidth_mode') == 'low' %}selected{% endif %}>📶 3G (Low Data)</option>
+                            <option value="ultra" {% if session.get('bandwidth_mode') == 'ultra' %}selected{% endif %}>📟 2G (Ultra-Low)</option>
+                        </select>
+                    </form>
+                    
+                    <form action="{{ url_for('toggle_theme') }}" method="POST">
+                        <button type="submit" class="bandwidth-select" style="padding: 0.4rem 0.6rem !important; display: flex; align-items: center; justify-content: center;">
+                            {% if session.get('theme_mode') == 'dark' %}
+                                <i class='bx bxs-sun' style="font-size: 1.1rem;"></i>
+                            {% else %}
+                                <i class='bx bxs-moon' style="font-size: 1.1rem;"></i>
+                            {% endif %}
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Flash Messages (JS-Free Dismiss via details/summary hack if needed, or just let them stay) -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-container">
+                {% for category, message in messages %}
+                    <div class="flash flash-{{ category }}" role="alert">
+                        <span>{{ message }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <!-- Main Content -->
+    <main class="page-wrapper">
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-text">
+                    &copy; 2026 LearnUG Online Learning Platform<br>
+                    <small>High-Efficiency Education for Low-Bandwidth Networks</small>
+                </div>
+                <div class="footer-links">
+                    <a href="{{ url_for('about') }}">About LearnUG</a>
+                    <a href="{{ url_for('how_it_works') }}">How it Works</a>
+                    <a href="{{ url_for('help_page') }}" class="btn btn-sm btn-primary text-white" style="margin-top: -5px;">Contact Support / Help</a>
+                    <a href="{{ url_for('terms') }}">Terms</a>
+                    <a href="{{ url_for('privacy') }}">Privacy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

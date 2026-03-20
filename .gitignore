@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+instance/
+.pytest_cache/
+.DS_Store
+database.db
+migrations/
+.env
+static/uploads/*
+!static/uploads/.gitkeep

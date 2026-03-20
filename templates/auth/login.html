@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📚</div>
+            <h1>Welcome Back</h1>
+            <p>Sign in to your LearnUG account</p>
+        </div>
+        
+        <form method="POST" action="{{ url_for('login') }}">
+            <div class="form-group">
+                <label class="form-label" for="username">Username or Email</label>
+                <input type="text" id="username" name="username" class="form-input" 
+                       placeholder="Enter username or email" required autofocus
+                       autocomplete="username">
+            </div>
+            
+            <div class="form-group">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <label class="form-label" for="password" style="margin-bottom: 0;">Password</label>
+                    <a href="{{ url_for('forgot_password') }}" style="font-size: 0.85rem;">Forgot password?</a>
+                </div>
+                <input type="password" id="password" name="password" class="form-input" 
+                       placeholder="Enter password" required
+                       autocomplete="current-password">
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block btn-lg">Sign In</button>
+        </form>
+        
+        <div class="auth-divider">or</div>
+        
+        <p class="text-center" style="font-size: 0.85rem;">
+            Don't have an account? 
+            <a href="{{ url_for('register') }}"><strong>Create one free</strong></a>
+        </p>
+        
+        <div style="margin-top: 1.5rem; padding: 1rem; background: var(--bg-input); border-radius: var(--radius); font-size: 0.85rem; color: var(--text-secondary); border: 1px dashed var(--border);">
+            <strong style="color: var(--accent); font-size: 0.9rem;">🔑 Demo Accounts</strong><br><br>
+            Student: <code>wabulejo</code> / <code>student123</code><br>
+            Lecturer: <code>dr_ninyesiga</code> / <code>lecturer123</code><br>
+            Admin: <code>admin</code> / <code>admin123</code>
+        </div>
+    </div>
+</div>
+{% endblock %}

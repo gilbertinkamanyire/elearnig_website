@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block title %}Cognitive Mirror{% endblock %}
+
+{% block content %}
+<div class="mirror-header">
+    <h1><i class='bx bx-reflect-vertical'></i> The Cognitive Mirror</h1>
+    <p>A reflection of your unique learning journey and patterns.</p>
+</div>
+
+<div class="mirror-grid">
+    <!-- Focus Window Card -->
+    <div class="mirror-card focus-card">
+        <div class="card-icon"><i class='bx bxs-watch'></i></div>
+        <h3>Your Peak Focus Window</h3>
+        <div class="focus-badge">{{ focus_window }}</div>
+        <p>You are most active during this time. Schedule your hardest lessons for this period for maximum retention.</p>
+    </div>
+
+    <!-- Struggles Card -->
+    <div class="mirror-card struggle-card">
+        <div class="card-icon"><i class='bx bxs-bolt-circle'></i></div>
+        <h3>Critical Reflection Points</h3>
+        {% if struggles %}
+            <ul>
+                {% for s in struggles %}
+                    <li>
+                        <strong>{{ s.title }}</strong>: Viewed {{ s.views }} times. 
+                        <span>Consider reaching out to a peer in Synergy Connect for this topic.</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>You're sailing smoothly! No major bottlenecks detected in your current courses.</p>
+        {% endif %}
+    </div>
+
+    <!-- Strengths Card -->
+    <div class="mirror-card strength-card">
+        <div class="card-icon"><i class='bx bxs-medal'></i></div>
+        <h3>Knowledge Strongholds</h3>
+        {% if strengths %}
+            <div class="strength-tags">
+                {% for s in strengths %}
+                    <span class="tag">{{ s.title }}</span>
+                {% endfor %}
+            </div>
+            <p>You have mastered these topics quickly. You might be a great "Synergy Mentor" for these!</p>
+        {% else %}
+            <p>Complete more lessons to see your areas of expertise.</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="mirror-history">
+    <h2>AI Learning Insights</h2>
+    {% if stored_insights %}
+        {% for insight in stored_insights %}
+            <div class="insight-item">
+                <span class="insight-type">{{ insight.insight_type|title }}</span>
+                <p>{{ insight.content }}</p>
+                <small>{{ insight.created_at }}</small>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <i class='bx bx-analyse' style="font-size: 3rem; opacity: 0.3;"></i>
+            <p>Our AI is still gathering data on your learning behavior. Check back after completing a few more quizzes!</p>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .mirror-header {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding: 2rem;
+        background: linear-gradient(135deg, #6200ea11 0%, #00bfa511 100%);
+        border-radius: 20px;
+    }
+    
+    .mirror-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+    
+    .mirror-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 24px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        border: 1px solid #f0f0f0;
+        transition: transform 0.3s ease;
+    }
+    
+    .mirror-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .card-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: #6200ea;
+    }
+    
+    .focus-badge {
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        background: #6200ea;
+        color: white;
+        border-radius: 50px;
+        font-weight: bold;
+        margin: 1rem 0;
+    }
+    
+    .strength-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 1rem 0;
+    }
+    
+    .tag {
+        background: #00bfa511;
+        color: #00bfa5;
+        padding: 0.3rem 0.8rem;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+    
+    .insight-item {
+        background: #fafafa;
+        padding: 1.5rem;
+        border-radius: 16px;
+        margin-bottom: 1rem;
+        border-left: 4px solid #6200ea;
+    }
+    
+    .insight-type {
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        color: #6200ea;
+        letter-spacing: 1px;
+    }
+</style>
+{% endblock %}

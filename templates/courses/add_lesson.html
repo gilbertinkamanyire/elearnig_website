@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Add Lesson{% endblock %}
+
+{% block content %}
+<div class="breadcrumb">
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <span class="breadcrumb-sep">›</span>
+    <a href="{{ url_for('course_detail', course_id=course.id) }}">{{ course.title }}</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>Add Lesson</span>
+</div>
+
+<div class="page-header">
+    <h1>📝 Add New Lesson</h1>
+    <p>Add a lesson to "{{ course.title }}"</p>
+</div>
+
+<div class="card" style="max-width: 800px;">
+    <form method="POST" action="{{ url_for('add_lesson', course_id=course.id) }}" enctype="multipart/form-data">
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label" for="title">Lesson Title *</label>
+                <input type="text" id="title" name="title" class="form-input" 
+                       placeholder="e.g., Introduction to Variables" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="order_num">Order Number</label>
+                <input type="number" id="order_num" name="order_num" class="form-input" 
+                       value="{{ max_order }}" min="0">
+                <div class="form-hint">Controls the display order of lessons</div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="content">Lesson Content * (HTML supported)</label>
+            <textarea id="content" name="content" class="form-textarea" rows="15"
+                      placeholder="Write your lesson content here. HTML tags are supported for formatting.
+
+Example:
+<h3>Topic Title</h3>
+<p>Your content here...</p>
+
+<h4>Subtopic</h4>
+<ul>
+<li>Point 1</li>
+<li>Point 2</li>
+</ul>
+
+<pre>
+Code example here
+</pre>" required></textarea>
+            <div class="form-hint">Use HTML tags for formatting: &lt;h3&gt;, &lt;h4&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;ol&gt;, &lt;pre&gt;, &lt;strong&gt;, &lt;code&gt;</div>
+        </div>
+        
+        <div class="form-group" style="margin-top: 1rem; padding: 1rem; border: 1px dashed var(--border); border-radius: var(--radius); background: var(--bg-input);">
+            <label class="form-label" for="attachment">Upload Resource (Optional)</label>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">You can upload a PDF notes file, a zipped archive, or a video file (MP4, WebM).</p>
+            <input type="file" id="attachment" name="attachment" class="form-input" accept=".pdf,.zip,.mp4,.webm,.doc,.docx" style="padding-top: 0.5rem;">
+            <div class="form-hint" style="margin-top: 0.5rem;">Maximum file size: 100MB.</div>
+        </div>
+        
+        <div class="form-group" style="margin-top: 1rem; padding: 1rem; border: 1px dashed var(--border); border-radius: var(--radius); background: var(--bg-card);">
+            <label class="form-label" for="is_hidden">Visibility</label>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <input type="checkbox" id="is_hidden" name="is_hidden" value="1">
+                <label for="is_hidden" style="font-weight: 700; cursor: pointer;">Hide from student view</label>
+            </div>
+            <div class="form-hint" style="margin-top: 0.5rem;">If checked, students will not see this lesson in the course list.</div>
+        </div>
+        
+
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary">Add Lesson</button>
+            <a href="{{ url_for('course_detail', course_id=course.id) }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

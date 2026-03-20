@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Help & Support{% endblock %}
+
+{% block content %}
+<div class="page-header text-center">
+    <h1>🆘 Help & Support</h1>
+    <p>How would you like to contact us for assistance?</p>
+</div>
+
+<div class="card" style="max-width: 600px; margin: 2rem auto; padding: 2rem;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+        <!-- Email Option -->
+        <a href="mailto:support@learnug.edu" class="help-option card-hover" style="text-decoration: none; color: inherit; text-align: center; padding: 2rem; border: 1px solid var(--border); border-radius: var(--radius);">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">📧</div>
+            <h3 style="margin-bottom: 0.5rem;">Email Support</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Reach out via email at support@learnug.edu</p>
+        </a>
+
+        <!-- WhatsApp Option -->
+        <a href="https://wa.me/256779946958" target="_blank" class="help-option card-hover" style="text-decoration: none; color: inherit; text-align: center; padding: 2rem; border: 1px solid var(--border); border-radius: var(--radius);">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">💬</div>
+            <h3 style="margin-bottom: 0.5rem;">WhatsApp</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Chat with us on WhatsApp for faster response.</p>
+        </a>
+    </div>
+    
+    <div style="margin-top: 2rem; text-align: center;">
+        <p style="font-size: 0.9rem; color: var(--text-dim);">Our support team is available Monday to Friday, 8:00 AM - 5:00 PM.</p>
+    </div>
+</div>
+
+<style>
+    .help-option {
+        transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+    .help-option:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent);
+        box-shadow: var(--shadow-md);
+    }
+</style>
+{% endblock %}
