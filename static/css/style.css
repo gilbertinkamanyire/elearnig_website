@@ -65,69 +65,69 @@ body.mode-dark {
 }
 
 /* Background Image Classes */
-/* Home Hero - E-learning tech devices */
+/* Home Hero - African students with laptops */
 .bg-hero-img {
-    background-image: linear-gradient(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.55)), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=2070') !important;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.55)), url('https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&q=80&w=2070') !important;
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
 }
 
 body.mode-dark .bg-hero-img {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=2070') !important;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&q=80&w=2070') !important;
 }
 
 /* Page-specific background images */
-/* Auth Pages (Login/Register) - 90% overlay so form text is crystal clear */
+/* Auth Pages (Login/Register) - African student with tablet */
 body.page-auth {
     background-image: 
         linear-gradient(rgba(255, 250, 245, 0.92), rgba(255, 250, 245, 0.92)),
-        url('https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?auto=format&fit=crop&q=80&w=2070');
+        url('https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&q=80&w=2070');
 }
 
 body.page-auth.mode-dark {
     background-image: 
         linear-gradient(rgba(18, 12, 11, 0.94), rgba(18, 12, 11, 0.94)),
-        url('https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?auto=format&fit=crop&q=80&w=2070');
+        url('https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&q=80&w=2070');
 }
 
-/* Dashboard Page - 92% overlay so stat numbers and labels are always readable */
+/* Dashboard Page - African tech workspace */
 body.page-dashboard {
     background-image: 
         linear-gradient(rgba(255, 250, 245, 0.93), rgba(255, 250, 245, 0.93)),
-        url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2070');
+        url('https://images.unsplash.com/photo-1581092580497-e0d23cbfecb6?auto=format&fit=crop&q=80&w=2070');
 }
 
 body.page-dashboard.mode-dark {
     background-image: 
         linear-gradient(rgba(18, 12, 11, 0.95), rgba(18, 12, 11, 0.95)),
-        url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2070');
+        url('https://images.unsplash.com/photo-1581092580497-e0d23cbfecb6?auto=format&fit=crop&q=80&w=2070');
 }
 
-/* Courses Page - 90% overlay for clear course card text */
+/* Courses Page - African students group study */
 body.page-courses {
     background-image: 
         linear-gradient(rgba(255, 250, 245, 0.92), rgba(255, 250, 245, 0.92)),
-        url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=2070');
+        url('https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=2070');
 }
 
 body.page-courses.mode-dark {
     background-image: 
         linear-gradient(rgba(18, 12, 11, 0.94), rgba(18, 12, 11, 0.94)),
-        url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=2070');
+        url('https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=2070');
 }
 
-/* Profile/Settings Pages - heaviest overlay for form readability */
+/* Profile/Settings Pages - African student solo study */
 body.page-profile {
     background-image: 
         linear-gradient(rgba(255, 250, 245, 0.95), rgba(255, 250, 245, 0.95)),
-        url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=2070');
+        url('https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&q=80&w=2070');
 }
 
 body.page-profile.mode-dark {
     background-image: 
         linear-gradient(rgba(18, 12, 11, 0.96), rgba(18, 12, 11, 0.96)),
-        url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=2070');
+        url('https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&q=80&w=2070');
 }
 
 
@@ -160,10 +160,10 @@ body {
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
     position: relative;
-    /* Main body - Tech education scene - 90% overlay for text clarity */
+    /* Main body - African education scene */
     background-image: 
         linear-gradient(rgba(255, 250, 245, 0.92), rgba(255, 250, 245, 0.92)),
-        url('https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&q=80&w=2070');
+        url('https://images.unsplash.com/photo-1504275107785-981de7673fa1?auto=format&fit=crop&q=80&w=2070');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -172,7 +172,7 @@ body {
 body.mode-dark {
     background-image: 
         linear-gradient(rgba(18, 12, 11, 0.94), rgba(18, 12, 11, 0.94)),
-        url('https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&q=80&w=2070');
+        url('https://images.unsplash.com/photo-1504275107785-981de7673fa1?auto=format&fit=crop&q=80&w=2070');
 }
 
 
