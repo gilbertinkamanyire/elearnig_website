@@ -5,10 +5,25 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'learnug-2026-platform-secret-key')
     
-    # On Render, we use the persistent /data directory
+    # On Render, try persistent /data directory first, fall back to /tmp
     if os.environ.get('RENDER'):
-        DATABASE = '/data/database.db'
-        UPLOAD_FOLDER = '/data/uploads'
+        _data_dir = '/data'
+        # Check if /data exists and is writable (persistent disk attached)
+        try:
+            os.makedirs(_data_dir, exist_ok=True)
+            # Test if we can actually write to it
+            _test_file = os.path.join(_data_dir, '.write_test')
+            with open(_test_file, 'w') as f:
+                f.write('ok')
+            os.remove(_test_file)
+            DATABASE = os.path.join(_data_dir, 'database.db')
+            UPLOAD_FOLDER = os.path.join(_data_dir, 'uploads')
+        except (OSError, PermissionError):
+            # No persistent disk — use /tmp (data resets on redeploy)
+            DATABASE = '/tmp/database.db'
+            UPLOAD_FOLDER = '/tmp/uploads'
+        # Ensure upload folder exists
+        os.makedirs(UPLOAD_FOLDER, exist_ok=True)
     # On Vercel, the filesystem is read-only except for /tmp
     elif os.environ.get('VERCEL'):
         DATABASE = '/tmp/database.db'
