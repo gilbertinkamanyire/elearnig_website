@@ -67,66 +67,66 @@ body.mode-dark {
 /* Background Image Classes */
 /* Home Hero - E-learning tech devices */
 .bg-hero-img {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=2070') !important;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.55)), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=2070') !important;
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
 }
 
 body.mode-dark .bg-hero-img {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=2070') !important;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=2070') !important;
 }
 
 /* Page-specific background images */
-/* Auth Pages (Login/Register) */
+/* Auth Pages (Login/Register) - 90% overlay so form text is crystal clear */
 body.page-auth {
     background-image: 
-        linear-gradient(rgba(255, 250, 245, 0.6), rgba(255, 250, 245, 0.6)),
+        linear-gradient(rgba(255, 250, 245, 0.92), rgba(255, 250, 245, 0.92)),
         url('https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?auto=format&fit=crop&q=80&w=2070');
 }
 
 body.page-auth.mode-dark {
     background-image: 
-        linear-gradient(rgba(18, 12, 11, 0.8), rgba(18, 12, 11, 0.8)),
+        linear-gradient(rgba(18, 12, 11, 0.94), rgba(18, 12, 11, 0.94)),
         url('https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?auto=format&fit=crop&q=80&w=2070');
 }
 
-/* Dashboard Page */
+/* Dashboard Page - 92% overlay so stat numbers and labels are always readable */
 body.page-dashboard {
     background-image: 
-        linear-gradient(rgba(255, 250, 245, 0.8), rgba(255, 250, 245, 0.8)),
+        linear-gradient(rgba(255, 250, 245, 0.93), rgba(255, 250, 245, 0.93)),
         url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2070');
 }
 
 body.page-dashboard.mode-dark {
     background-image: 
-        linear-gradient(rgba(18, 12, 11, 0.85), rgba(18, 12, 11, 0.85)),
+        linear-gradient(rgba(18, 12, 11, 0.95), rgba(18, 12, 11, 0.95)),
         url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2070');
 }
 
-/* Courses Page */
+/* Courses Page - 90% overlay for clear course card text */
 body.page-courses {
     background-image: 
-        linear-gradient(rgba(255, 250, 245, 0.75), rgba(255, 250, 245, 0.75)),
+        linear-gradient(rgba(255, 250, 245, 0.92), rgba(255, 250, 245, 0.92)),
         url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=2070');
 }
 
 body.page-courses.mode-dark {
     background-image: 
-        linear-gradient(rgba(18, 12, 11, 0.85), rgba(18, 12, 11, 0.85)),
+        linear-gradient(rgba(18, 12, 11, 0.94), rgba(18, 12, 11, 0.94)),
         url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=2070');
 }
 
-/* Profile/Settings Pages */
+/* Profile/Settings Pages - heaviest overlay for form readability */
 body.page-profile {
     background-image: 
-        linear-gradient(rgba(255, 250, 245, 0.85), rgba(255, 250, 245, 0.85)),
+        linear-gradient(rgba(255, 250, 245, 0.95), rgba(255, 250, 245, 0.95)),
         url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=2070');
 }
 
 body.page-profile.mode-dark {
     background-image: 
-        linear-gradient(rgba(18, 12, 11, 0.9), rgba(18, 12, 11, 0.9)),
+        linear-gradient(rgba(18, 12, 11, 0.96), rgba(18, 12, 11, 0.96)),
         url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=2070');
 }
 
@@ -160,9 +160,9 @@ body {
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
     position: relative;
-    /* Main body - Tech education scene */
+    /* Main body - Tech education scene - 90% overlay for text clarity */
     background-image: 
-        linear-gradient(rgba(255, 250, 245, 0.70), rgba(255, 250, 245, 0.70)),
+        linear-gradient(rgba(255, 250, 245, 0.92), rgba(255, 250, 245, 0.92)),
         url('https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&q=80&w=2070');
     background-size: cover;
     background-attachment: fixed;
@@ -171,7 +171,7 @@ body {
 
 body.mode-dark {
     background-image: 
-        linear-gradient(rgba(18, 12, 11, 0.85), rgba(18, 12, 11, 0.85)),
+        linear-gradient(rgba(18, 12, 11, 0.94), rgba(18, 12, 11, 0.94)),
         url('https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&q=80&w=2070');
 }
 
@@ -230,27 +230,80 @@ p {
 
 /* ── Home Page Improvements (Final Balance) ── */
 .hero.glass {
-    background: rgba(255, 255, 255, 0.12) !important;
-    backdrop-filter: blur(4px) saturate(140%);
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.65) !important;
+    backdrop-filter: blur(8px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 body.mode-dark .hero.glass {
-    background: rgba(15, 23, 42, 0.15) !important;
-    backdrop-filter: blur(4px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(15, 23, 42, 0.65) !important;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* ── Global Content Readability Guarantee ── */
+/* Ensure ALL content sections have solid opaque backgrounds so text is never obscured */
+.page-wrapper .card,
+.page-wrapper .stat-card,
+.page-wrapper .course-card,
+.page-wrapper .table-wrapper,
+.page-wrapper .lesson-content,
+.page-wrapper .auth-card,
+.page-wrapper .about-card,
+.page-wrapper .roadmap-container,
+.page-wrapper .testimonial-card,
+.page-wrapper .mission-vision {
+    background-image: none !important;
+}
+
+/* Ensure section titles are always readable on any background */
+.section-title,
+.section-header h2,
+.section-header h3,
+.page-wrapper h1,
+.page-wrapper h2,
+.page-wrapper h3 {
+    text-shadow: 0 0 20px var(--bg-primary), 0 0 40px var(--bg-primary);
+}
+
+body.mode-dark .section-title,
+body.mode-dark .section-header h2,
+body.mode-dark .section-header h3,
+body.mode-dark .page-wrapper h1,
+body.mode-dark .page-wrapper h2,
+body.mode-dark .page-wrapper h3 {
+    text-shadow: 0 0 20px rgba(18, 12, 11, 1), 0 0 40px rgba(18, 12, 11, 1);
+}
+
+/* Ensure all paragraph text is readable */
+.page-wrapper p,
+.page-wrapper span,
+.page-wrapper label,
+.page-wrapper li {
+    text-shadow: 0 0 8px var(--bg-primary);
+}
+
+body.mode-dark .page-wrapper p,
+body.mode-dark .page-wrapper span,
+body.mode-dark .page-wrapper label,
+body.mode-dark .page-wrapper li {
+    text-shadow: 0 0 8px rgba(18, 12, 11, 1);
 }
 
 /* ── Navigation ── */
 .navbar {
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
     z-index: 100;
     box-shadow: 0 4px 20px rgba(249, 115, 22, 0.05);
+}
+
+body.mode-dark .navbar {
+    background: rgba(18, 12, 11, 0.98);
 }
 
 .navbar .container {
@@ -646,6 +699,7 @@ body.mode-ultra .navbar-brand {
 /* ── Cards ── */
 .card {
     background: var(--bg-card);
+    background-image: none !important;
     border: 1px solid var(--border);
     border-radius: var(--radius-xl);
     padding: 2rem;
@@ -677,6 +731,7 @@ body.mode-ultra .navbar-brand {
 
 .course-card {
     background: var(--bg-card);
+    background-image: none !important;
     border: 1px solid var(--border);
     border-radius: var(--radius-xl);
     overflow: hidden;
@@ -776,7 +831,12 @@ body.mode-ultra .navbar-brand {
 .flash {
     padding: 1rem 1.25rem; border-radius: var(--radius); font-size: 0.95rem; font-weight: 700;
     display: flex; align-items: center; gap: 0.75rem; animation: slideIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: var(--shadow-md); background: white; border: 1px solid var(--border); color: var(--text-primary);
+    box-shadow: var(--shadow-md); background: rgba(255, 255, 255, 0.98); background-image: none !important; border: 1px solid var(--border); color: var(--text-primary);
+    backdrop-filter: blur(10px);
+}
+
+body.mode-dark .flash {
+    background: rgba(31, 24, 22, 0.98);
 }
 .flash-close { margin-left: auto; background: none; border: none; color: inherit; opacity: 0.5; cursor: pointer; font-size: 1.2rem; padding: 0.25rem; }
 .flash-close:hover { opacity: 1; }
@@ -800,7 +860,7 @@ body.mode-ultra .navbar-brand {
 /* ── Stats Grid ── */
 .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem; margin-bottom: 2rem; }
 .stat-card {
-    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 1.75rem;
+    background: var(--bg-card); background-image: none !important; border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 1.75rem;
     text-align: center; transition: all var(--transition); box-shadow: var(--shadow-card); position: relative; overflow: hidden;
 }
 .stat-card::after {
@@ -822,10 +882,10 @@ body.mode-ultra .navbar-brand {
 .section-title { font-size: 1.5rem; font-weight: 900; display: flex; align-items: center; gap: 0.75rem; }
 
 /* ── Tables ── */
-.table-wrapper { overflow-x: auto; border-radius: var(--radius-xl); border: 1px solid var(--border); background: var(--bg-card); box-shadow: var(--shadow-card); }
-table { width: 100%; border-collapse: collapse; }
-th { background: var(--bg-input); font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); padding: 1rem 1.25rem; text-align: left; }
-td { padding: 1rem 1.25rem; font-size: 0.95rem; border-bottom: 1px solid var(--border); color: var(--text-secondary); font-weight: 500; }
+.table-wrapper { overflow-x: auto; border-radius: var(--radius-xl); border: 1px solid var(--border); background: var(--bg-card); background-image: none !important; box-shadow: var(--shadow-card); }
+table { width: 100%; border-collapse: collapse; background-image: none !important; }
+th { background: var(--bg-input); background-image: none !important; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); padding: 1rem 1.25rem; text-align: left; }
+td { padding: 1rem 1.25rem; font-size: 0.95rem; border-bottom: 1px solid var(--border); color: var(--text-secondary); font-weight: 500; background-image: none !important; }
 tr:last-child td { border-bottom: none; }
 tr:hover td { background: var(--accent-surface); color: var(--accent); }
 
@@ -848,29 +908,51 @@ tr:hover td { background: var(--accent-surface); color: var(--accent); }
     background: var(--bg-card); border: 1px solid var(--border); box-shadow: var(--shadow-lg);
 }
 .hero-badge {
-    display: inline-flex; align-items: center; background: rgba(255, 255, 255, 0.9); border: 2px solid var(--accent); color: var(--accent);
+    display: inline-flex; align-items: center; background: rgba(255, 255, 255, 0.95); border: 2px solid var(--accent); color: var(--accent);
     padding: 0.5rem 1.25rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 900; margin-bottom: 2rem; letter-spacing: 0.05em; text-transform: uppercase; box-shadow: 0 4px 12px rgba(249, 115, 22, 0.15);
 }
-/* Base hero font settings - DARK text for Light mode as requested */
+/* Base hero font settings - maximum clarity on image backgrounds */
 .hero h1 { 
     font-size: clamp(2.2rem, 6vw, 4rem); 
     font-weight: 900; 
     line-height: 1.1; 
     margin-bottom: 1.5rem; 
     letter-spacing: -0.03em; 
-    color: var(--text-primary) !important; 
-    text-shadow: 0 0 40px rgba(255,255,255,1), 0 0 15px rgba(255,255,255,0.8); /* Light glow for dark text on photo */
+    color: #111111 !important; 
+    text-shadow: 
+        0 0 30px rgba(255,255,255,1),
+        0 0 60px rgba(255,255,255,1),
+        0 1px 3px rgba(255,255,255,0.9);
 }
-.hero h1 .gradient-text { background: linear-gradient(135deg, var(--accent), var(--secondary-accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 900; }
-.hero-desc { font-size: 1.15rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.7; font-weight: 800; text-shadow: 0 0 25px rgba(255,255,255,1); }
+.hero h1 .gradient-text { 
+    background: linear-gradient(135deg, var(--accent), var(--secondary-accent)); 
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 900; 
+    filter: drop-shadow(0 0 20px rgba(255,255,255,1));
+}
+.hero-desc { 
+    font-size: 1.15rem; color: #222222; max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.7; font-weight: 800; 
+    text-shadow: 0 0 20px rgba(255,255,255,1), 0 0 40px rgba(255,255,255,1);
+}
 
-/* Keep white text FOR DARK MODE only */
+/* Dark mode hero - pure white text with strong dark glow */
 body.mode-dark .hero h1 { 
     color: #ffffff !important; 
-    text-shadow: 0 5px 40px rgba(0,0,0,0.95), 0 2px 15px rgba(0,0,0,0.85); 
+    text-shadow: 
+        0 2px 10px rgba(0,0,0,1),
+        0 4px 30px rgba(0,0,0,0.95),
+        0 0 60px rgba(0,0,0,0.8);
 }
-body.mode-dark .hero h1 .gradient-text { background: linear-gradient(135deg, white, #ffedd5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-body.mode-dark .hero-desc { color: #ffffff; text-shadow: 0 4px 20px rgba(0,0,0,0.9); }
+body.mode-dark .hero h1 .gradient-text { 
+    background: linear-gradient(135deg, #ffedd5, #ffffff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; 
+    filter: drop-shadow(0 2px 10px rgba(0,0,0,0.9));
+}
+body.mode-dark .hero-desc { 
+    color: #f0f0f0; 
+    text-shadow: 0 2px 10px rgba(0,0,0,1), 0 4px 30px rgba(0,0,0,0.9);
+}
+body.mode-dark .hero-badge {
+    background: rgba(18, 12, 11, 0.9); color: var(--accent-light); border-color: var(--accent-light);
+}
 
 
 
@@ -879,8 +961,18 @@ body.mode-dark .hero-desc { color: #ffffff; text-shadow: 0 4px 20px rgba(0,0,0,0
 /* ── Auth Container ── */
 .auth-container { min-height: calc(100vh - 72px); display: flex; align-items: center; justify-content: center; padding: 2rem 1.25rem; background: var(--bg-hero); }
 .auth-card {
-    background: white; border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 3rem 2.5rem;
-    width: 100%; max-width: 480px; box-shadow: var(--shadow-lg);
+    background: rgba(255, 255, 255, 0.98); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 3rem 2.5rem;
+    width: 100%; max-width: 480px; box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+    backdrop-filter: blur(20px);
+}
+
+body.mode-dark .auth-card {
+    background: rgba(31, 24, 22, 0.98);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+}
+
+.auth-card h2, .auth-card h3, .auth-card label, .auth-card p, .auth-card a {
+    color: var(--text-primary);
 }
 
 /* ── Tabs ── */
@@ -913,7 +1005,7 @@ body.mode-dark .hero-desc { color: #ffffff; text-shadow: 0 4px 20px rgba(0,0,0,0
 .mt-2 { margin-top: 1rem; } .mb-2 { margin-bottom: 1rem; }
 
 /* Footer */
-.footer { background: var(--bg-card); border-top: 1px solid var(--border); padding: 3rem 1.25rem; margin-top: 5rem; }
+.footer { background: var(--bg-card); background-image: none !important; border-top: 1px solid var(--border); padding: 3rem 1.25rem; margin-top: 5rem; }
 .footer-text { color: var(--text-muted); font-size: 0.95rem; font-weight: 500; }
 .footer-content { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; align-items: center; }
 .footer-links { display: flex; gap: 1.5rem; }
