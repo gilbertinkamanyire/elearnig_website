@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}Student Dashboard{% endblock %}
+{% block body_class %}page-dashboard{% endblock %}
 
 {% block content %}
 <div class="page-header">
@@ -34,14 +35,16 @@
     <div class="course-grid">
         {% for e in enrollments %}
         <a href="{{ url_for('course_detail', course_id=e.course_id) }}" class="course-card" style="text-decoration: none; color: inherit;">
-            <div class="course-card-image">
+            <div class="course-card-image" {% if e.image_url %}style="background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.2)), url('{{ e.image_url }}'); background-size: cover; background-position: center;"{% endif %}>
                 <span class="course-card-category">{{ e.category }}</span>
+                {% if not e.image_url %}
                 <span class="course-card-icon">
                     {% if e.category == 'Computing' %}💻
                     {% elif e.category == 'ICT' %}🌐
                     {% elif e.category == 'Networking' %}🔌
                     {% else %}📚{% endif %}
                 </span>
+                {% endif %}
             </div>
             <div class="course-card-body">
                 <div class="course-card-title">{{ e.title }}</div>

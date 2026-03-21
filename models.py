@@ -482,16 +482,16 @@ def seed_db():
     
     # Create courses
     courses = [
-        ('Introduction to Computer Science', 'Learn fundamentals.', 2, 1, 1),
-        ('Web Development Fundamentals', 'Master HTML, CSS.', 2, 1, 1),
-        ('Database Management Systems', 'Understand SQL.', 3, 1, 1),
-        ('Python Programming', 'Introduction to Python.', 2, 1, 1),
-        ('ICT for Development', 'Leverage ICT for challenges.', 3, 1, 1),
-        ('Networking Essentials', 'Network protocols.', 3, 1, 1),
+        ('Introduction to Computer Science', 'Learn fundamentals.', 2, 1, 1, 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=60&w=500'),
+        ('Web Development Fundamentals', 'Master HTML, CSS.', 2, 1, 1, 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=60&w=500'),
+        ('Database Management Systems', 'Understand SQL.', 3, 1, 1, 'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&q=60&w=500'),
+        ('Python Programming', 'Introduction to Python.', 2, 1, 1, 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&q=60&w=500'),
+        ('ICT for Development', 'Leverage ICT for challenges.', 3, 1, 1, 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=60&w=500'),
+        ('Networking Essentials', 'Network protocols.', 3, 1, 1, 'https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=60&w=500'),
     ]
     
     for c in courses:
-        db.execute('INSERT INTO courses (title, description, lecturer_id, department_id, is_published) VALUES (?, ?, ?, ?, ?)', c)
+        db.execute('INSERT INTO courses (title, description, lecturer_id, department_id, is_published, image_url) VALUES (?, ?, ?, ?, ?, ?)', c)
     
     # Create lessons for Course 1
     cs_lessons = [

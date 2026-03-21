@@ -123,7 +123,7 @@ def register_assignments(app):
         unique_filename = f"asm_{session['user_id']}_{assignment_id}_{datetime.now().strftime('%Y%m%d%H%M%S')}_{filename}"
         upload_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
         file.save(upload_path)
-        file_url = f"/static/uploads/{unique_filename}"
+        file_url = f"/uploads/{unique_filename}"
 
         # Check for existing submission
         existing = g.db.execute(

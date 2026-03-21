@@ -167,7 +167,7 @@ def register_admin(app):
 
         # Try to delete profile pics after commit
         for u in users:
-            if u['profile_pic_url'] and u['profile_pic_url'].startswith('/static/uploads/avatar_'):
+            if u['profile_pic_url'] and u['profile_pic_url'].startswith('/uploads/avatar_'):
                 pic_path = os.path.join(app.root_path, u['profile_pic_url'].lstrip('/'))
                 if os.path.exists(pic_path):
                     try: os.remove(pic_path)

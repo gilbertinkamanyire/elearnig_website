@@ -67,6 +67,11 @@ def toggle_bandwidth():
         
     return redirect(request.referrer or url_for('index'))
 
+@app.route('/uploads/<path:filename>')
+def serve_uploads(filename):
+    from flask import send_from_directory
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
 # Initialize database
 if USE_POSTGRES:
     # Always try to init on Postgres (CREATE IF NOT EXISTS is safe)

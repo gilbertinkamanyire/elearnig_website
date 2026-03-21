@@ -13,7 +13,7 @@
     <!-- Modern Icons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
-<body class="mode-{{ session.get('bandwidth_mode', 'standard') }} mode-{{ session.get('theme_mode', 'light') }}">
+<body class="{% block body_class %}{% endblock %} mode-{{ session.get('bandwidth_mode', 'standard') }} mode-{{ session.get('theme_mode', 'light') }}">
     <!-- Navigation -->
     <nav class="navbar" role="navigation" aria-label="Main navigation">
         <div class="container">

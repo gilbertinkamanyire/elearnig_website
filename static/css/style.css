@@ -77,14 +77,57 @@ body.mode-dark .bg-hero-img {
     background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://images.unsplash.com/photo-1544378730-8b5104b18790?auto=format&fit=crop&q=80&w=2070') !important;
 }
 
-/* About page hero - Local African using smartphone */
-.about-hero.bg-hero-img {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)), url('https://images.unsplash.com/photo-1563236749-3605e5461996?auto=format&fit=crop&q=80&w=2070') !important;
-    background-position: center;
+/* Page-specific background images */
+/* Auth Pages (Login/Register) */
+body.page-auth {
+    background-image: 
+        linear-gradient(rgba(255, 250, 245, 0.6), rgba(255, 250, 245, 0.6)),
+        url('https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&q=80&w=2073');
 }
 
-body.mode-dark .about-hero.bg-hero-img {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://images.unsplash.com/photo-1563236749-3605e5461996?auto=format&fit=crop&q=80&w=2070') !important;
+body.page-auth.mode-dark {
+    background-image: 
+        linear-gradient(rgba(18, 12, 11, 0.8), rgba(18, 12, 11, 0.8)),
+        url('https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&q=80&w=2073');
+}
+
+/* Dashboard Page */
+body.page-dashboard {
+    background-image: 
+        linear-gradient(rgba(255, 250, 245, 0.8), rgba(255, 250, 245, 0.8)),
+        url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=2070');
+}
+
+body.page-dashboard.mode-dark {
+    background-image: 
+        linear-gradient(rgba(18, 12, 11, 0.85), rgba(18, 12, 11, 0.85)),
+        url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=2070');
+}
+
+/* Courses Page */
+body.page-courses {
+    background-image: 
+        linear-gradient(rgba(255, 250, 245, 0.75), rgba(255, 250, 245, 0.75)),
+        url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=2070');
+}
+
+body.page-courses.mode-dark {
+    background-image: 
+        linear-gradient(rgba(18, 12, 11, 0.85), rgba(18, 12, 11, 0.85)),
+        url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=2070');
+}
+
+/* Profile/Settings Pages */
+body.page-profile {
+    background-image: 
+        linear-gradient(rgba(255, 250, 245, 0.85), rgba(255, 250, 245, 0.85)),
+        url('https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&q=80&w=2029');
+}
+
+body.page-profile.mode-dark {
+    background-image: 
+        linear-gradient(rgba(18, 12, 11, 0.9), rgba(18, 12, 11, 0.9)),
+        url('https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&q=80&w=2029');
 }
 
 

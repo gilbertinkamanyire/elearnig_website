@@ -17,10 +17,7 @@ def register_serviceworker(app):
             "display": "standalone",
             "background_color": "#fffaf5",
             "theme_color": "#f97316",
-            "icons": [
-                {"src": "/static/images/icon-192.png", "sizes": "192x192", "type": "image/png"},
-                {"src": "/static/images/icon-512.png", "sizes": "512x512", "type": "image/png"}
-            ]
+            "icons": []
         })
 
 

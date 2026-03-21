@@ -38,7 +38,7 @@ def register_profile(app):
                     unique_filename = f"avatar_{session['user_id']}_{datetime.now().strftime('%Y%m%d%H%M%S')}_{filename}"
                     upload_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
                     profile_pic.save(upload_path)
-                    profile_pic_url = f"/static/uploads/{unique_filename}"
+                    profile_pic_url = f"/uploads/{unique_filename}"
 
                 g.db.execute(
                     'UPDATE users SET full_name=?, email=?, phone=?, bio=?, profile_pic_url=? WHERE id=?',
@@ -144,7 +144,7 @@ def register_profile(app):
                 g.db.execute('DELETE FROM courses WHERE id = ?', (c['id'],))
 
         # Delete profile picture if exists
-        if user['profile_pic_url'] and user['profile_pic_url'].startswith('/static/uploads/avatar_'):
+        if user['profile_pic_url'] and user['profile_pic_url'].startswith('/uploads/avatar_'):
             pic_path = os.path.join(app.root_path, user['profile_pic_url'].lstrip('/'))
             if os.path.exists(pic_path):
                 try: os.remove(pic_path)

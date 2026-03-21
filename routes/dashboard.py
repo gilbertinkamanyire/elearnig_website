@@ -16,7 +16,7 @@ def register_dashboard(app):
         if role == 'student':
             # Get enrolled courses with progress
             enrollments = g.db.execute('''
-                SELECT e.*, c.title, c.description, c.category, u.full_name as lecturer_name,
+                SELECT e.*, c.title, c.description, c.category, c.image_url, u.full_name as lecturer_name,
                        (SELECT COUNT(*) FROM lessons WHERE course_id = c.id) as total_lessons
                 FROM enrollments e
                 JOIN courses c ON e.course_id = c.id

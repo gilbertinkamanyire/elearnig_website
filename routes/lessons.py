@@ -130,7 +130,7 @@ def register_lessons(app):
                 unique_filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{filename}"
                 upload_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
                 attachment.save(upload_path)
-                attachment_url = f"/static/uploads/{unique_filename}"
+                attachment_url = f"/uploads/{unique_filename}"
                 attachment_type = ext
 
             is_hidden = 1 if request.form.get('is_hidden') else 0
@@ -190,7 +190,7 @@ def register_lessons(app):
                     unique_filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{filename}"
                     upload_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
                     attachment.save(upload_path)
-                    attachment_url = f"/static/uploads/{unique_filename}"
+                    attachment_url = f"/uploads/{unique_filename}"
                     attachment_type = ext
 
                     g.db.execute(
