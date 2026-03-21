@@ -5,8 +5,12 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'learnug-2026-platform-secret-key')
     
+    # On Render, we use the persistent /data directory
+    if os.environ.get('RENDER'):
+        DATABASE = '/data/database.db'
+        UPLOAD_FOLDER = '/data/uploads'
     # On Vercel, the filesystem is read-only except for /tmp
-    if os.environ.get('VERCEL'):
+    elif os.environ.get('VERCEL'):
         DATABASE = '/tmp/database.db'
         UPLOAD_FOLDER = '/tmp/uploads'
     else:
