@@ -65,16 +65,16 @@ body.mode-dark {
 }
 
 /* Background Image Classes */
-/* Home Hero - Local African using basic laptop in a humble setting */
+/* Home Hero - E-learning tech devices */
 .bg-hero-img {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)), url('https://images.unsplash.com/photo-1544378730-8b5104b18790?auto=format&fit=crop&q=80&w=2070') !important;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=2070') !important;
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
 }
 
 body.mode-dark .bg-hero-img {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://images.unsplash.com/photo-1544378730-8b5104b18790?auto=format&fit=crop&q=80&w=2070') !important;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=2070') !important;
 }
 
 /* Page-specific background images */
@@ -82,52 +82,52 @@ body.mode-dark .bg-hero-img {
 body.page-auth {
     background-image: 
         linear-gradient(rgba(255, 250, 245, 0.6), rgba(255, 250, 245, 0.6)),
-        url('https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&q=80&w=2073');
+        url('https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?auto=format&fit=crop&q=80&w=2070');
 }
 
 body.page-auth.mode-dark {
     background-image: 
         linear-gradient(rgba(18, 12, 11, 0.8), rgba(18, 12, 11, 0.8)),
-        url('https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&q=80&w=2073');
+        url('https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?auto=format&fit=crop&q=80&w=2070');
 }
 
 /* Dashboard Page */
 body.page-dashboard {
     background-image: 
         linear-gradient(rgba(255, 250, 245, 0.8), rgba(255, 250, 245, 0.8)),
-        url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=2070');
+        url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2070');
 }
 
 body.page-dashboard.mode-dark {
     background-image: 
         linear-gradient(rgba(18, 12, 11, 0.85), rgba(18, 12, 11, 0.85)),
-        url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=2070');
+        url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2070');
 }
 
 /* Courses Page */
 body.page-courses {
     background-image: 
         linear-gradient(rgba(255, 250, 245, 0.75), rgba(255, 250, 245, 0.75)),
-        url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=2070');
+        url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=2070');
 }
 
 body.page-courses.mode-dark {
     background-image: 
         linear-gradient(rgba(18, 12, 11, 0.85), rgba(18, 12, 11, 0.85)),
-        url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=2070');
+        url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=2070');
 }
 
 /* Profile/Settings Pages */
 body.page-profile {
     background-image: 
         linear-gradient(rgba(255, 250, 245, 0.85), rgba(255, 250, 245, 0.85)),
-        url('https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&q=80&w=2029');
+        url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=2070');
 }
 
 body.page-profile.mode-dark {
     background-image: 
         linear-gradient(rgba(18, 12, 11, 0.9), rgba(18, 12, 11, 0.9)),
-        url('https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&q=80&w=2029');
+        url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=2070');
 }
 
 
@@ -160,10 +160,10 @@ body {
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
     position: relative;
-    /* Main body - subtle African village texture/scene */
+    /* Main body - Tech education scene */
     background-image: 
         linear-gradient(rgba(255, 250, 245, 0.70), rgba(255, 250, 245, 0.70)),
-        url('https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?auto=format&fit=crop&q=80&w=2067');
+        url('https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&q=80&w=2070');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -172,7 +172,7 @@ body {
 body.mode-dark {
     background-image: 
         linear-gradient(rgba(18, 12, 11, 0.85), rgba(18, 12, 11, 0.85)),
-        url('https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?auto=format&fit=crop&q=80&w=2067');
+        url('https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&q=80&w=2070');
 }
 
 

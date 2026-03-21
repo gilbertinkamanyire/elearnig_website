@@ -483,12 +483,12 @@ def seed_db():
     
     # Create courses
     courses = [
-        ('Introduction to Computer Science', 'Learn fundamentals.', 2, 1, 1, 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=60&w=500'),
-        ('Web Development Fundamentals', 'Master HTML, CSS.', 2, 1, 1, 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=60&w=500'),
-        ('Database Management Systems', 'Understand SQL.', 3, 1, 1, 'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&q=60&w=500'),
-        ('Python Programming', 'Introduction to Python.', 2, 1, 1, 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&q=60&w=500'),
-        ('ICT for Development', 'Leverage ICT for challenges.', 3, 1, 1, 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=60&w=500'),
-        ('Networking Essentials', 'Network protocols.', 3, 1, 1, 'https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=60&w=500'),
+        ('Introduction to Computer Science', 'Learn fundamentals.', 2, 1, 1, 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=500'),
+        ('Web Development Fundamentals', 'Master HTML, CSS.', 2, 1, 1, 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=500'),
+        ('Database Management Systems', 'Understand SQL.', 3, 1, 1, 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=500'),
+        ('Python Programming', 'Introduction to Python.', 2, 1, 1, 'https://images.unsplash.com/photo-1526379095098-d400fd0bf935?auto=format&fit=crop&q=80&w=500'),
+        ('ICT for Development', 'Leverage ICT for challenges.', 3, 1, 1, 'https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=500'),
+        ('Networking Essentials', 'Network protocols.', 3, 1, 1, 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=500'),
     ]
     
     for c in courses:
