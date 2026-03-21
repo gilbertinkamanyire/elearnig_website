@@ -460,6 +460,7 @@ def seed_db():
     # Create users
     users = [
         ('admin', 'admin@learnug.edu', generate_password_hash('admin123'), 'admin', 'System Administrator', '+256700000001'),
+        ('admin_user', 'system_admin@learnug.edu', generate_password_hash('AdminPassword123'), 'admin', 'LearnUG System Admin', '+256700000000'),
         ('dr_ninyesiga', 'aninyesiga@learnug.edu', generate_password_hash('lecturer123'), 'lecturer', 'Allan Ninyesiga', '+256789981418'),
         ('dr_mukasa', 'mukasa@learnug.edu', generate_password_hash('lecturer123'), 'lecturer', 'Dr. James Mukasa', '+256700000002'),
         ('wabulejo', 'wabulejo@learnug.edu', generate_password_hash('student123'), 'student', 'Wabulejo Viamaris', '+256700000003'),

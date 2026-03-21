@@ -72,6 +72,34 @@ def serve_uploads(filename):
     from flask import send_from_directory
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
+@app.route('/setup-admin')
+def setup_admin():
+    from models import get_db
+    from werkzeug.security import generate_password_hash
+    db = get_db()
+    
+    username = 'superadmin'
+    email = 'superadmin@learnug.edu'
+    password = 'SuperPassword123'
+    role = 'admin'
+    
+    existing = db.execute('SELECT id FROM users WHERE username = ?', (username,)).fetchone()
+    if not existing:
+        if USE_POSTGRES:
+            # Postgres formatting for params (db_compat normally translates?) db_compat handles translation
+            pass
+        db.execute('''
+            INSERT INTO users (username, email, password_hash, role, full_name, is_active, is_verified)
+            VALUES (?, ?, ?, ?, 'System Administrator', 1, 1)
+        ''', (username, email, generate_password_hash(password), role))
+    else:
+        db.execute('UPDATE users SET password_hash = ? WHERE username = ?', 
+                   (generate_password_hash(password), username))
+    
+    db.commit()
+    db.close()
+    return f"Admin account completely configured and password restored! Username: {username} | Password: {password} - You can now log in!"
+
 # Initialize database
 if USE_POSTGRES:
     # Always try to init on Postgres (CREATE IF NOT EXISTS is safe)
