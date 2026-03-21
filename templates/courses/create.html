@@ -14,11 +14,17 @@
 </div>
 
 <div class="card" style="max-width: 700px;">
-    <form method="POST" action="{{ url_for('create_course') }}">
+    <form method="POST" action="{{ url_for('create_course') }}" enctype="multipart/form-data">
         <div class="form-group">
             <label class="form-label" for="title">Course Title *</label>
             <input type="text" id="title" name="title" class="form-input" 
                    placeholder="e.g., Introduction to Python Programming" required>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="image">Course Image Cover <span style="font-size: 0.8rem; font-weight: normal; color: var(--text-muted);">(Optional)</span></label>
+            <input type="file" id="image" name="image" class="form-input" accept="image/*">
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">A beautiful cover makes your course stand out.</p>
         </div>
         
         <div class="form-group">

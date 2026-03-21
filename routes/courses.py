@@ -196,12 +196,22 @@ def register_courses(app):
             lecturer_id = request.form.get('lecturer_id', type=int)
             is_published = 1 if request.form.get('is_published') else 0
 
+            image_url = ''
+            image = request.files.get('image')
+            if image and image.filename:
+                from werkzeug.utils import secure_filename
+                filename = secure_filename(image.filename)
+                unique_filename = f"course_{datetime.now().strftime('%Y%m%d%H%M%S')}_{filename}"
+                upload_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
+                image.save(upload_path)
+                image_url = f"/uploads/{unique_filename}"
+
             if not title or not department_id or not lecturer_id:
                 flash('Course title, department, and lecturer are required.', 'danger')
             else:
                 g.db.execute(
-                    'INSERT INTO courses (title, description, lecturer_id, department_id, is_published) VALUES (?, ?, ?, ?, ?)',
-                    (title, description, lecturer_id, department_id, is_published)
+                    'INSERT INTO courses (title, description, lecturer_id, department_id, image_url, is_published) VALUES (?, ?, ?, ?, ?, ?)',
+                    (title, description, lecturer_id, department_id, image_url, is_published)
                 )
                 g.db.commit()
                 if is_published:
@@ -237,10 +247,20 @@ def register_courses(app):
             lecturer_id = request.form.get('lecturer_id', type=int)
             is_published = 1 if request.form.get('is_published') else 0
 
+            image_url = course['image_url']
+            image = request.files.get('image')
+            if image and image.filename:
+                from werkzeug.utils import secure_filename
+                filename = secure_filename(image.filename)
+                unique_filename = f"course_{datetime.now().strftime('%Y%m%d%H%M%S')}_{filename}"
+                upload_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
+                image.save(upload_path)
+                image_url = f"/uploads/{unique_filename}"
+
             if title and department_id and lecturer_id:
                 g.db.execute(
-                    'UPDATE courses SET title=?, description=?, department_id=?, lecturer_id=?, is_published=? WHERE id=?',
-                    (title, description, department_id, lecturer_id, is_published, course_id)
+                    'UPDATE courses SET title = ?, description = ?, department_id = ?, lecturer_id = ?, is_published = ?, image_url = ? WHERE id = ?',
+                    (title, description, department_id, lecturer_id, is_published, image_url, course_id)
                 )
                 g.db.commit()
                 flash('Course unit updated successfully!', 'success')
@@ -249,5 +269,3 @@ def register_courses(app):
         departments = g.db.execute('SELECT * FROM departments ORDER BY name').fetchall()
         lecturers = g.db.execute("SELECT id, full_name FROM users WHERE role = 'lecturer' AND is_active = 1").fetchall()
         return render_template('courses/edit.html', course=course, departments=departments, lecturers=lecturers)
-
-
