@@ -97,14 +97,36 @@ def register_admin(app):
             return redirect(url_for('admin_users'))
             
         try:
-            # Cleanup related data (cascading)
+            user = g.db.execute('SELECT role FROM users WHERE id=?', (user_id,)).fetchone()
+            if not user:
+                return redirect(url_for('admin_users'))
+                
+            if user['role'] == 'lecturer' or user['role'] == 'admin':
+                courses = g.db.execute('SELECT id FROM courses WHERE lecturer_id = ?', (user_id,)).fetchall()
+                for c in courses:
+                    cid = c['id']
+                    g.db.execute('DELETE FROM lessons WHERE course_id=?', (cid,))
+                    g.db.execute('DELETE FROM submissions WHERE assessment_id IN (SELECT id FROM assessments WHERE course_id=?)', (cid,))
+                    g.db.execute('DELETE FROM assessments WHERE course_id=?', (cid,))
+                    g.db.execute('DELETE FROM enrollments WHERE course_id=?', (cid,))
+                    g.db.execute('DELETE FROM attendance WHERE course_id=?', (cid,))
+                    g.db.execute('DELETE FROM discussions WHERE course_id=?', (cid,))
+                g.db.execute('DELETE FROM courses WHERE lecturer_id = ?', (user_id,))
+                
+            g.db.execute('DELETE FROM discussions WHERE user_id = ?', (user_id,))
+            g.db.execute('DELETE FROM replies WHERE user_id = ?', (user_id,))
+            g.db.execute('DELETE FROM notifications WHERE user_id = ?', (user_id,))
+            g.db.execute('DELETE FROM announcements WHERE user_id = ?', (user_id,))
             g.db.execute('DELETE FROM enrollments WHERE student_id = ?', (user_id,))
             g.db.execute('DELETE FROM lesson_progress WHERE student_id = ?', (user_id,))
             g.db.execute('DELETE FROM submissions WHERE student_id = ?', (user_id,))
             g.db.execute('DELETE FROM attendance WHERE user_id = ?', (user_id,))
+            try: g.db.execute('DELETE FROM learning_insights WHERE user_id = ?', (user_id,))
+            except: pass
+            
             g.db.execute('DELETE FROM users WHERE id = ?', (user_id,))
             g.db.commit()
-            flash('User deleted permanently.', 'warning')
+            flash('User and all associated data deleted permanently.', 'warning')
         except Exception as e:
             flash(f'Error deleting user: {str(e)}', 'danger')
             

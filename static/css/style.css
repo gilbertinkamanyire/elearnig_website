@@ -290,6 +290,43 @@ body.mode-dark .page-wrapper li {
     text-shadow: 0 0 8px rgba(18, 12, 11, 1);
 }
 
+/* ── Secondary Top Bar ── */
+.top-bar {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: 0.35rem 0;
+    font-size: 0.85rem;
+    position: relative;
+    z-index: 101;
+}
+
+.top-bar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.top-bar-links, .top-bar-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.top-bar-links a {
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.top-bar-links a:hover {
+    color: var(--accent);
+}
+
+body.mode-dark .top-bar {
+    background: var(--bg-secondary);
+}
+
 /* ── Navigation ── */
 .navbar {
     background: rgba(255, 255, 255, 0.98);
