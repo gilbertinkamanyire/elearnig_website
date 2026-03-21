@@ -484,7 +484,7 @@ def seed_db():
     # Create courses
     courses = [
         ('Introduction to Computer Science', 'Learn fundamentals.', 2, 1, 1, 'https://images.unsplash.com/photo-1531123897727-8f129e1bfd8c?auto=format&fit=crop&q=80&w=500'),
-        ('Web Development Fundamentals', 'Master HTML, CSS.', 2, 1, 1, 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=500'),
+        ('Web Development Fundamentals', 'Master HTML, CSS.', 2, 1, 1, 'https://images.unsplash.com/photo-1580894894513-541e068a3e2b?auto=format&fit=crop&q=80&w=500'),
         ('Database Management Systems', 'Understand SQL.', 3, 1, 1, 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&q=80&w=500'),
         ('Python Programming', 'Introduction to Python.', 2, 1, 1, 'https://images.unsplash.com/photo-1531123414708-20ddcb1e3ce1?auto=format&fit=crop&q=80&w=500'),
         ('ICT for Development', 'Leverage ICT for challenges.', 3, 1, 1, 'https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=500'),

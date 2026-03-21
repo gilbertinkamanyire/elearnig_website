@@ -108,13 +108,13 @@ body.page-dashboard.mode-dark {
 body.page-courses {
     background-image: 
         linear-gradient(rgba(255, 250, 245, 0.92), rgba(255, 250, 245, 0.92)),
-        url('https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=2070');
+        url('https://images.unsplash.com/photo-1531123897727-8f129e1bfd8c?auto=format&fit=crop&q=80&w=2070');
 }
 
 body.page-courses.mode-dark {
     background-image: 
         linear-gradient(rgba(18, 12, 11, 0.94), rgba(18, 12, 11, 0.94)),
-        url('https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=2070');
+        url('https://images.unsplash.com/photo-1531123897727-8f129e1bfd8c?auto=format&fit=crop&q=80&w=2070');
 }
 
 /* Profile/Settings Pages - African student solo study */
@@ -163,7 +163,7 @@ body {
     /* Main body - African education scene */
     background-image: 
         linear-gradient(rgba(255, 250, 245, 0.92), rgba(255, 250, 245, 0.92)),
-        url('https://images.unsplash.com/photo-1504275107785-981de7673fa1?auto=format&fit=crop&q=80&w=2070');
+        url('https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&q=80&w=2070');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -172,7 +172,7 @@ body {
 body.mode-dark {
     background-image: 
         linear-gradient(rgba(18, 12, 11, 0.94), rgba(18, 12, 11, 0.94)),
-        url('https://images.unsplash.com/photo-1504275107785-981de7673fa1?auto=format&fit=crop&q=80&w=2070');
+        url('https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&q=80&w=2070');
 }
 
 
@@ -1121,9 +1121,7 @@ body.mode-low img {
     filter: grayscale(100%) opacity(0.6);
 }
 
-body.mode-low .hero {
-    background-image: none !important;
-}
+/* User wants images visible across all pages and modes */
 
 body.mode-low .card, 
 body.mode-low .navbar {
@@ -1149,12 +1147,11 @@ body.mode-ultra * {
     animation: none !important;
     border-radius: 0 !important; /* Sharp corners for retro look */
     box-shadow: none !important;
-    background-image: none !important;
 }
 
-body.mode-ultra img, 
-body.mode-ultra .bg-hero-img {
-    display: none !important;
+/* User specifically requested all images to be visible on all pages */
+body.mode-ultra img {
+    filter: grayscale(100%);
 }
 
 body.mode-ultra .btn {
