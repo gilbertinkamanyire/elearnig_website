@@ -1,18 +1,22 @@
 import sqlite3
-
-db_path = 'database.db'
+import os
+from config import Config
 
 def update_courses():
+    db_path = Config.DATABASE
+    if not os.path.exists(db_path):
+        return
+        
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     
     updates = [
-        ('https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=500', 'Introduction to Computer Science'),
-        ('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=500', 'Web Development Fundamentals'),
-        ('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=500', 'Database Management Systems'),
-        ('https://images.unsplash.com/photo-1526379095098-d400fd0bf935?auto=format&fit=crop&q=80&w=500', 'Python Programming'),
+        ('https://images.unsplash.com/photo-1531123897727-8f129e1bfd8c?auto=format&fit=crop&q=80&w=500', 'Introduction to Computer Science'),
+        ('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=500', 'Web Development Fundamentals'),
+        ('https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&q=80&w=500', 'Database Management Systems'),
+        ('https://images.unsplash.com/photo-1531123414708-20ddcb1e3ce1?auto=format&fit=crop&q=80&w=500', 'Python Programming'),
         ('https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=500', 'ICT for Development'),
-        ('https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=500', 'Networking Essentials'),
+        ('https://images.unsplash.com/photo-1544928147-79a2dbc1f389?auto=format&fit=crop&q=80&w=500', 'Networking Essentials'),
     ]
     
     for url, title in updates:

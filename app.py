@@ -113,6 +113,15 @@ else:
         init_db()
         seed_db()
 
+# Automatically run data fixes for older accounts/courses
+try:
+    from fix_missing_avatars import fix_avatars
+    from update_course_images import update_courses
+    fix_avatars()
+    update_courses()
+except Exception as e:
+    print(f"Data fix skipped: {e}")
+
 os.makedirs(Config.UPLOAD_FOLDER, exist_ok=True)
 
 setup_helpers(app)
