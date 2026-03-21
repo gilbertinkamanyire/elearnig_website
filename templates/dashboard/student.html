@@ -3,9 +3,13 @@
 {% block body_class %}page-dashboard{% endblock %}
 
 {% block content %}
-<div class="page-header">
-    <h1>👋 Hello, {{ session.full_name }}!</h1>
-    <p>Welcome to your learning dashboard</p>
+<div class="page-header" style="position: relative; overflow: hidden; border-radius: var(--radius-xl); padding: 4rem 2rem; color: white; background: url('https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&q=80&w=1200') center/cover; margin-bottom: 2.5rem; border: 1px solid var(--border); box-shadow: var(--shadow-lg);">
+    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.4) 100%); z-index: 1;"></div>
+    <div style="position: relative; z-index: 2; max-width: 600px;">
+        <div class="badge badge-info mb-1" style="background: rgba(255,255,255,0.2); backdrop-filter: blur(4px); color: white; border: 1px solid rgba(255,255,255,0.3);">Student Dashboard</div>
+        <h1 style="color: white; font-size: 2.8rem; font-weight: 900; text-shadow: 0 4px 12px rgba(0,0,0,0.4); margin-bottom: 0.5rem; line-height: 1.1;">👋 Welcome back,<br><span style="color: var(--accent-light);">{{ session.full_name }}</span>!</h1>
+        <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; text-shadow: 0 2px 8px rgba(0,0,0,0.5); font-weight: 500;">Ready to continue your learning journey today?</p>
+    </div>
 </div>
 
 <!-- Announcements -->
