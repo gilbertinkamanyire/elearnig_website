@@ -9,7 +9,6 @@ def register_courses(app):
 
 
     @app.route('/courses')
-    @login_required
     def courses_list():
         page = request.args.get('page', 1, type=int)
         search = request.args.get('search', '').strip()
@@ -59,7 +58,6 @@ def register_courses(app):
 
 
     @app.route('/courses/<int:course_id>')
-    @login_required
     def course_detail(course_id):
         course = g.db.execute('''
             SELECT c.*, u.full_name as lecturer_name, u.email as lecturer_email, u.bio as lecturer_bio,
