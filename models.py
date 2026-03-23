@@ -460,12 +460,6 @@ def seed_db():
     # Create users
     users = [
         ('admin', 'admin@learnug.edu', generate_password_hash('admin123'), 'admin', 'System Administrator', '+256700000001'),
-        ('dr_ninyesiga', 'aninyesiga@learnug.edu', generate_password_hash('lecturer123'), 'lecturer', 'Allan Ninyesiga', '+256789981418'),
-        ('dr_mukasa', 'mukasa@learnug.edu', generate_password_hash('lecturer123'), 'lecturer', 'Dr. James Mukasa', '+256700000002'),
-        ('wabulejo', 'wabulejo@learnug.edu', generate_password_hash('student123'), 'student', 'Wabulejo Viamaris', '+256700000003'),
-        ('okiria', 'okiria@learnug.edu', generate_password_hash('student123'), 'student', 'Okiria Vincent', '+256700000004'),
-        ('nakayiza', 'nakayiza@learnug.edu', generate_password_hash('student123'), 'student', 'Sarah Nakayiza', '+256700000005'),
-        ('musoke', 'musoke@learnug.edu', generate_password_hash('student123'), 'student', 'David Musoke', '+256700000006'),
     ]
     
     for u in users:
@@ -480,125 +474,6 @@ def seed_db():
     for d in departments:
         db.execute('INSERT INTO departments (name, description) VALUES (?, ?)', d)
     
-    # Create courses
-    courses = [
-        ('Introduction to Computer Science', 'Learn fundamentals.', 2, 1, 1, '/static/images/backgrounds/bg1.jpeg'),
-        ('Web Development Fundamentals', 'Master HTML, CSS.', 2, 1, 1, '/static/images/backgrounds/bg2.jpeg'),
-        ('Database Management Systems', 'Understand SQL.', 3, 1, 1, '/static/images/backgrounds/bg3.jpeg'),
-        ('Python Programming', 'Introduction to Python.', 2, 1, 1, '/static/images/backgrounds/hero_main.jpeg'),
-        ('ICT for Development', 'Leverage ICT for challenges.', 3, 1, 1, '/static/images/backgrounds/bg1.jpeg'),
-        ('Networking Essentials', 'Network protocols.', 3, 1, 1, '/static/images/backgrounds/bg2.jpeg'),
-    ]
-    
-    for c in courses:
-        db.execute('INSERT INTO courses (title, description, lecturer_id, department_id, is_published, image_url) VALUES (?, ?, ?, ?, ?, ?)', c)
-    
-    # Create lessons for Course 1
-    cs_lessons = [
-        (1, 'What is Computer Science?', '<h3>Welcome to Computer Science!</h3><p>Computer Science is the study of computation, automation, and information.</p>', 1),
-        (1, 'Number Systems and Binary', '<h3>Understanding Number Systems</h3><p>Computers use the binary number system (base-2) to represent all data.</p>', 2),
-        (1, 'Introduction to Algorithms', '<h3>What is an Algorithm?</h3><p>An algorithm is a finite sequence of well-defined instructions.</p>', 3),
-    ]
-    
-    for l in cs_lessons:
-        db.execute('INSERT INTO lessons (course_id, title, content, order_num) VALUES (?, ?, ?, ?)', l)
-    
-    # Create lessons for Course 2
-    web_lessons = [
-        (2, 'Introduction to HTML', '<h3>HTML - The Foundation of the Web</h3><p>HTML is the standard markup language for creating web pages.</p>', 1),
-        (2, 'CSS Styling Basics', '<h3>CSS - Making Web Pages Beautiful</h3><p>CSS is used to style and layout web pages.</p>', 2),
-    ]
-    
-    for l in web_lessons:
-        db.execute('INSERT INTO lessons (course_id, title, content, order_num) VALUES (?, ?, ?, ?)', l)
-    
-    # Python lessons
-    python_lessons = [
-        (4, 'Getting Started with Python', '<h3>Why Python?</h3><p>Python is one of the most popular programming languages.</p>', 1),
-        (4, 'Control Structures', '<h3>Making Decisions in Python</h3><p>Control structures allow your program to make decisions.</p>', 2),
-    ]
-    
-    for l in python_lessons:
-        db.execute('INSERT INTO lessons (course_id, title, content, order_num) VALUES (?, ?, ?, ?)', l)
-    
-    # Create enrollments
-    enrollments = [
-        (4, 1), (4, 2), (4, 4),
-        (5, 1), (5, 3), (5, 4),
-        (6, 1), (6, 2), (6, 5),
-        (7, 2), (7, 4), (7, 6),
-    ]
-    
-    for e in enrollments:
-        db.execute('INSERT INTO enrollments (student_id, course_id) VALUES (?, ?)', e)
-    
-    # Create assessments
-    quiz1_questions = json.dumps([
-        {"question": "What number system do computers use?", "options": ["Decimal", "Binary", "Octal", "Hex"], "correct": 1},
-        {"question": "How many bits in a byte?", "options": ["4", "8", "16", "32"], "correct": 1},
-        {"question": "What is an algorithm?", "options": ["A language", "A computer", "A step-by-step procedure", "A database"], "correct": 2},
-        {"question": "NOT a characteristic of a good algorithm?", "options": ["Input", "Infinity", "Output", "Definiteness"], "correct": 1}
-    ])
-    
-    db.execute('INSERT INTO assessments (course_id, title, description, questions_json, time_limit) VALUES (?, ?, ?, ?, ?)',
-               (1, 'Quiz 1: CS Fundamentals', 'Test your understanding of basic CS concepts.', quiz1_questions, 15))
-    
-    quiz2_questions = json.dumps([
-        {"question": "What does HTML stand for?", "options": ["Hyper Text Markup Language", "High Tech Machine Language", "Home Tool Markup Language", "Hyperlinks Text Mark Language"], "correct": 0},
-        {"question": "Which tag is the largest heading?", "options": ["h6", "heading", "h1", "head"], "correct": 2},
-        {"question": "What does CSS stand for?", "options": ["Computer Style Sheets", "Cascading Style Sheets", "Creative Style System", "Colorful Style Sheets"], "correct": 1}
-    ])
-    
-    db.execute('INSERT INTO assessments (course_id, title, description, questions_json, time_limit) VALUES (?, ?, ?, ?, ?)',
-               (2, 'Quiz 1: HTML & CSS Basics', 'Test your knowledge of HTML and CSS.', quiz2_questions, 10))
-    
-    # Discussions
-    discussions = [
-        (1, 4, 'Best resources for learning algorithms?', 'Can you recommend good resources for understanding algorithms better?'),
-        (1, 5, 'Study group for upcoming quiz', 'Anyone interested in forming a study group for the CS fundamentals quiz?'),
-        (2, 6, 'Responsive design tips', 'What are some good practices for making websites look good on mobile?'),
-        (4, 4, 'Python project ideas', 'Looking for beginner-friendly Python project ideas.'),
-    ]
-    
-    for d in discussions:
-        db.execute('INSERT INTO discussions (course_id, user_id, title, content) VALUES (?, ?, ?, ?)', d)
-    
-    # Replies
-    replies_data = [
-        (1, 5, 'I recommend "Introduction to Algorithms" by Cormen.'),
-        (1, 2, 'Great question! Practice on platforms like HackerRank.'),
-        (2, 7, 'I am interested! Let us coordinate.'),
-        (4, 5, 'How about a simple expense tracker?'),
-        (4, 2, 'You could also build a grade calculator.'),
-    ]
-    
-    for r in replies_data:
-        db.execute('INSERT INTO replies (discussion_id, user_id, content) VALUES (?, ?, ?)', r)
-    
-    # Announcements
-    announcements = [
-        (1, 'Welcome to the New Semester!', 'Dear students and lecturers, welcome. All materials are now available.', 'all'),
-        (1, 'System Maintenance Notice', 'The platform will undergo maintenance this Saturday.', 'all'),
-        (1, 'New Course Available', 'We are pleased to announce a new course on ICT for Development.', 'student'),
-    ]
-    
-    for a in announcements:
-        db.execute('INSERT INTO announcements (user_id, title, content, target_role) VALUES (?, ?, ?, ?)', a)
-    
-    # Lesson progress
-    lesson_progress = [
-        (4, 1, 1),
-        (4, 2, 1),
-        (5, 1, 1),
-    ]
-    
-    for lp in lesson_progress:
-        db.execute('INSERT INTO lesson_progress (student_id, lesson_id, completed, completed_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP)', lp)
-    
-    # Update progress
-    db.execute("UPDATE enrollments SET progress = 66.7 WHERE student_id = 4 AND course_id = 1")
-    db.execute("UPDATE enrollments SET progress = 33.3 WHERE student_id = 5 AND course_id = 1")
-    
     # Learning insights
     insights = [
         (4, None, 'focus_window', 'Peak performance between 8 AM and 10 AM.'),
@@ -606,11 +481,14 @@ def seed_db():
         (4, None, 'strength', 'Python Basics progress was 40% faster than average.')
     ]
     for i in insights:
-        db.execute('INSERT INTO learning_insights (user_id, course_id, insight_type, content) VALUES (?, ?, ?, ?)', i)
+        try: db.execute('INSERT INTO learning_insights (user_id, course_id, insight_type, content) VALUES (?, ?, ?, ?)', i)
+        except: pass
 
     db.commit()
     db.close()
-    print("Database seeded successfully!")
+    print("Database seeded with admin only!")
+
+
 
 if __name__ == '__main__':
     init_db()

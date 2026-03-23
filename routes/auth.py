@@ -116,6 +116,15 @@ def register_auth(app):
                     (username, email, generate_password_hash(password), role, full_name, phone, is_verified, profile_pic)
                 )
                 g.db.commit()
+                
+                # Send welcome email
+                send_notification_email(
+                    subject="Welcome to LearnUG!",
+                    text_part=f"Hello {full_name}, welcome to LearnUG! Your account as a {role} has been created.",
+                    html_part=f"<h3>Welcome to LearnUG!</h3><p>Hello <b>{full_name}</b>, welcome to LearnUG!</p><p>Your account as a <b>{role}</b> has been created successfully.</p>",
+                    specific_emails=[{"Email": email, "Name": full_name}]
+                )
+                
                 flash('Registration successful! Please log in.', 'success')
                 return redirect(url_for('login'))
 
