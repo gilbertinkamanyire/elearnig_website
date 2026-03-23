@@ -67,14 +67,14 @@ body.mode-dark {
 /* Background Image Classes */
 /* Home Hero - African students with laptops */
 .bg-hero-img {
-    background-image: linear-gradient(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.55)), url('https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&q=80&w=2070') !important;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.55)), url('/static/images/backgrounds/hero_main.jpeg') !important;
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
 }
 
 body.mode-dark .bg-hero-img {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&q=80&w=2070') !important;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('/static/images/backgrounds/hero_main.jpeg') !important;
 }
 
 /* Page-specific background images */
@@ -82,52 +82,52 @@ body.mode-dark .bg-hero-img {
 body.page-auth {
     background-image: 
         linear-gradient(rgba(255, 250, 245, 0.92), rgba(255, 250, 245, 0.92)),
-        url('https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&q=80&w=2070');
+        url('/static/images/backgrounds/bg2.jpeg');
 }
 
 body.page-auth.mode-dark {
     background-image: 
         linear-gradient(rgba(18, 12, 11, 0.94), rgba(18, 12, 11, 0.94)),
-        url('https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&q=80&w=2070');
+        url('/static/images/backgrounds/bg2.jpeg');
 }
 
 /* Dashboard Page - African tech workspace */
 body.page-dashboard {
     background-image: 
         linear-gradient(rgba(255, 250, 245, 0.93), rgba(255, 250, 245, 0.93)),
-        url('https://images.unsplash.com/photo-1581092580497-e0d23cbfecb6?auto=format&fit=crop&q=80&w=2070');
+        url('/static/images/backgrounds/bg3.jpeg');
 }
 
 body.page-dashboard.mode-dark {
     background-image: 
         linear-gradient(rgba(18, 12, 11, 0.95), rgba(18, 12, 11, 0.95)),
-        url('https://images.unsplash.com/photo-1581092580497-e0d23cbfecb6?auto=format&fit=crop&q=80&w=2070');
+        url('/static/images/backgrounds/bg3.jpeg');
 }
 
 /* Courses Page - African students group study */
 body.page-courses {
     background-image: 
         linear-gradient(rgba(255, 250, 245, 0.92), rgba(255, 250, 245, 0.92)),
-        url('https://images.unsplash.com/photo-1531123897727-8f129e1bfd8c?auto=format&fit=crop&q=80&w=2070');
+        url('/static/images/backgrounds/bg1.jpeg');
 }
 
 body.page-courses.mode-dark {
     background-image: 
         linear-gradient(rgba(18, 12, 11, 0.94), rgba(18, 12, 11, 0.94)),
-        url('https://images.unsplash.com/photo-1531123897727-8f129e1bfd8c?auto=format&fit=crop&q=80&w=2070');
+        url('/static/images/backgrounds/bg1.jpeg');
 }
 
 /* Profile/Settings Pages - African student solo study */
 body.page-profile {
     background-image: 
         linear-gradient(rgba(255, 250, 245, 0.95), rgba(255, 250, 245, 0.95)),
-        url('https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&q=80&w=2070');
+        url('/static/images/backgrounds/bg2.jpeg');
 }
 
 body.page-profile.mode-dark {
     background-image: 
         linear-gradient(rgba(18, 12, 11, 0.96), rgba(18, 12, 11, 0.96)),
-        url('https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&q=80&w=2070');
+        url('/static/images/backgrounds/bg2.jpeg');
 }
 
 
@@ -163,7 +163,7 @@ body {
     /* Main body - African education scene */
     background-image: 
         linear-gradient(rgba(255, 250, 245, 0.92), rgba(255, 250, 245, 0.92)),
-        url('https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&q=80&w=2070');
+        url('/static/images/backgrounds/bg3.jpeg');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -172,7 +172,7 @@ body {
 body.mode-dark {
     background-image: 
         linear-gradient(rgba(18, 12, 11, 0.94), rgba(18, 12, 11, 0.94)),
-        url('https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&q=80&w=2070');
+        url('/static/images/backgrounds/bg3.jpeg');
 }
 
 
