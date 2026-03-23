@@ -67,66 +67,66 @@ body.mode-dark {
 /* Background Image Classes */
 /* Home Hero - African students with laptops */
 .bg-hero-img {
-    background-image: linear-gradient(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.55)), url('/static/images/backgrounds/hero_main.jpeg') !important;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), url('/static/images/backgrounds/hero_main.jpeg') !important;
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
 }
 
 body.mode-dark .bg-hero-img {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('/static/images/backgrounds/hero_main.jpeg') !important;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('/static/images/backgrounds/hero_main.jpeg') !important;
 }
 
 /* Page-specific background images */
 /* Auth Pages (Login/Register) - African student with tablet */
 body.page-auth {
     background-image: 
-        linear-gradient(rgba(255, 250, 245, 0.92), rgba(255, 250, 245, 0.92)),
+        linear-gradient(rgba(255, 250, 245, 0.8), rgba(255, 250, 245, 0.8)),
         url('/static/images/backgrounds/bg2.jpeg');
 }
 
 body.page-auth.mode-dark {
     background-image: 
-        linear-gradient(rgba(18, 12, 11, 0.94), rgba(18, 12, 11, 0.94)),
+        linear-gradient(rgba(18, 12, 11, 0.82), rgba(18, 12, 11, 0.82)),
         url('/static/images/backgrounds/bg2.jpeg');
 }
 
 /* Dashboard Page - African tech workspace */
 body.page-dashboard {
     background-image: 
-        linear-gradient(rgba(255, 250, 245, 0.93), rgba(255, 250, 245, 0.93)),
+        linear-gradient(rgba(255, 250, 245, 0.82), rgba(255, 250, 245, 0.82)),
         url('/static/images/backgrounds/bg3.jpeg');
 }
 
 body.page-dashboard.mode-dark {
     background-image: 
-        linear-gradient(rgba(18, 12, 11, 0.95), rgba(18, 12, 11, 0.95)),
+        linear-gradient(rgba(18, 12, 11, 0.84), rgba(18, 12, 11, 0.84)),
         url('/static/images/backgrounds/bg3.jpeg');
 }
 
 /* Courses Page - African students group study */
 body.page-courses {
     background-image: 
-        linear-gradient(rgba(255, 250, 245, 0.92), rgba(255, 250, 245, 0.92)),
+        linear-gradient(rgba(255, 250, 245, 0.8), rgba(255, 250, 245, 0.8)),
         url('/static/images/backgrounds/bg1.jpeg');
 }
 
 body.page-courses.mode-dark {
     background-image: 
-        linear-gradient(rgba(18, 12, 11, 0.94), rgba(18, 12, 11, 0.94)),
+        linear-gradient(rgba(18, 12, 11, 0.82), rgba(18, 12, 11, 0.82)),
         url('/static/images/backgrounds/bg1.jpeg');
 }
 
 /* Profile/Settings Pages - African student solo study */
 body.page-profile {
     background-image: 
-        linear-gradient(rgba(255, 250, 245, 0.95), rgba(255, 250, 245, 0.95)),
+        linear-gradient(rgba(255, 250, 245, 0.85), rgba(255, 250, 245, 0.85)),
         url('/static/images/backgrounds/bg2.jpeg');
 }
 
 body.page-profile.mode-dark {
     background-image: 
-        linear-gradient(rgba(18, 12, 11, 0.96), rgba(18, 12, 11, 0.96)),
+        linear-gradient(rgba(18, 12, 11, 0.86), rgba(18, 12, 11, 0.86)),
         url('/static/images/backgrounds/bg2.jpeg');
 }
 
@@ -162,7 +162,7 @@ body {
     position: relative;
     /* Main body - African education scene */
     background-image: 
-        linear-gradient(rgba(255, 250, 245, 0.92), rgba(255, 250, 245, 0.92)),
+        linear-gradient(rgba(255, 250, 245, 0.8), rgba(255, 250, 245, 0.8)),
         url('/static/images/backgrounds/bg3.jpeg');
     background-size: cover;
     background-attachment: fixed;
@@ -171,8 +171,24 @@ body {
 
 body.mode-dark {
     background-image: 
-        linear-gradient(rgba(18, 12, 11, 0.94), rgba(18, 12, 11, 0.94)),
+        linear-gradient(rgba(18, 12, 11, 0.82), rgba(18, 12, 11, 0.82)),
         url('/static/images/backgrounds/bg3.jpeg');
+}
+
+/* BANDWIDTH MODES OVERRIDES */
+body.mode-low, body.mode-ultra {
+    background-image: none !important;
+    background: var(--bg-primary) !important;
+}
+
+/* Ensure contrast in all modes */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+}
+
+.flash span {
+    font-weight: 600;
 }
 
 
@@ -283,11 +299,23 @@ body.mode-dark .page-wrapper h3 {
     text-shadow: 0 0 8px var(--bg-primary);
 }
 
+body.mode-light .page-wrapper p,
+body.mode-light .page-wrapper span,
+body.mode-light .page-wrapper label,
+body.mode-light .page-wrapper li {
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
 body.mode-dark .page-wrapper p,
 body.mode-dark .page-wrapper span,
 body.mode-dark .page-wrapper label,
 body.mode-dark .page-wrapper li {
-    text-shadow: 0 0 8px rgba(18, 12, 11, 1);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+strong, b {
+    font-weight: 800;
+    color: var(--text-primary);
 }
 
 /* ── Secondary Top Bar ── */
@@ -581,6 +609,43 @@ body.mode-ultra .navbar-brand {
     font-weight: 700;
     white-space: nowrap;
     transition: all var(--transition);
+}
+
+/* ── Breadcrumbs ── */
+.breadcrumb {
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: rgba(255, 255, 255, 0.4);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    width: fit-content;
+    backdrop-filter: blur(4px);
+}
+
+body.mode-dark .breadcrumb {
+    background: rgba(18, 12, 11, 0.4);
+}
+
+.breadcrumb a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.breadcrumb a:hover {
+    color: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+.breadcrumb-sep {
+    color: var(--text-muted);
+    opacity: 0.6;
+    font-family: serif;
 }
 
 .course-nav-item:hover, .course-nav-item.active {

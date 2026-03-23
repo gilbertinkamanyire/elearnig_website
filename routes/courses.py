@@ -187,7 +187,7 @@ def register_courses(app):
 
 
     @app.route('/courses/create', methods=['GET', 'POST'])
-    @role_required('admin')
+    @role_required('admin', 'lecturer')
     def create_course():
         if request.method == 'POST':
             title = request.form.get('title', '').strip()

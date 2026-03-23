@@ -49,7 +49,7 @@
                 <select id="lecturer_id" name="lecturer_id" class="form-select" required>
                     <option value="">-- Select Lecturer --</option>
                     {% for lect in lecturers %}
-                    <option value="{{ lect.id }}">{{ lect.full_name }}</option>
+                    <option value="{{ lect.id }}" {% if session.user_id == lect.id %}selected{% endif %}>{{ lect.full_name }}</option>
                     {% endfor %}
                 </select>
             </div>
