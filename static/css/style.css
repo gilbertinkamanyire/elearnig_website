@@ -67,14 +67,14 @@ body.mode-dark {
 /* Background Image Classes */
 /* Home Hero - African students with laptops */
 .bg-hero-img {
-    background-image: linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), url('/static/images/backgrounds/hero_main.jpeg') !important;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), url('/static/images/backgrounds/home_hero_bg.png') !important;
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
 }
 
 body.mode-dark .bg-hero-img {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('/static/images/backgrounds/hero_main.jpeg') !important;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('/static/images/backgrounds/home_hero_bg.png') !important;
 }
 
 /* Page-specific background images */
@@ -82,52 +82,52 @@ body.mode-dark .bg-hero-img {
 body.page-auth {
     background-image: 
         linear-gradient(rgba(255, 250, 245, 0.8), rgba(255, 250, 245, 0.8)),
-        url('/static/images/backgrounds/bg2.jpeg');
+        url('/static/images/backgrounds/auth_bg.png');
 }
 
 body.page-auth.mode-dark {
     background-image: 
         linear-gradient(rgba(18, 12, 11, 0.82), rgba(18, 12, 11, 0.82)),
-        url('/static/images/backgrounds/bg2.jpeg');
+        url('/static/images/backgrounds/auth_bg.png');
 }
 
 /* Dashboard Page - African tech workspace */
 body.page-dashboard {
     background-image: 
         linear-gradient(rgba(255, 250, 245, 0.82), rgba(255, 250, 245, 0.82)),
-        url('/static/images/backgrounds/bg3.jpeg');
+        url('/static/images/backgrounds/hero_student.png');
 }
 
 body.page-dashboard.mode-dark {
     background-image: 
         linear-gradient(rgba(18, 12, 11, 0.84), rgba(18, 12, 11, 0.84)),
-        url('/static/images/backgrounds/bg3.jpeg');
+        url('/static/images/backgrounds/hero_student.png');
 }
 
 /* Courses Page - African students group study */
 body.page-courses {
     background-image: 
         linear-gradient(rgba(255, 250, 245, 0.8), rgba(255, 250, 245, 0.8)),
-        url('/static/images/backgrounds/bg1.jpeg');
+        url('/static/images/backgrounds/courses_bg.png');
 }
 
 body.page-courses.mode-dark {
     background-image: 
         linear-gradient(rgba(18, 12, 11, 0.82), rgba(18, 12, 11, 0.82)),
-        url('/static/images/backgrounds/bg1.jpeg');
+        url('/static/images/backgrounds/courses_bg.png');
 }
 
 /* Profile/Settings Pages - African student solo study */
 body.page-profile {
     background-image: 
         linear-gradient(rgba(255, 250, 245, 0.85), rgba(255, 250, 245, 0.85)),
-        url('/static/images/backgrounds/bg2.jpeg');
+        url('/static/images/backgrounds/profile_bg.png');
 }
 
 body.page-profile.mode-dark {
     background-image: 
         linear-gradient(rgba(18, 12, 11, 0.86), rgba(18, 12, 11, 0.86)),
-        url('/static/images/backgrounds/bg2.jpeg');
+        url('/static/images/backgrounds/profile_bg.png');
 }
 
 

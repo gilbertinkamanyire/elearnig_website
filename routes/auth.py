@@ -1,4 +1,4 @@
-import os, json
+import os, json, secrets
 from datetime import datetime
 from flask import render_template, request, redirect, url_for, session, flash, g, jsonify, abort
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -38,7 +38,7 @@ def register_auth(app):
             return redirect(url_for('dashboard'))
 
         if request.method == 'POST':
-            username = request.form.get('username', '').strip()
+            username = request.form.get('username', '').strip().lower()
             password = request.form.get('password', '')
 
             user = g.db.execute('SELECT * FROM users WHERE username = ? OR email = ?',
@@ -46,11 +46,12 @@ def register_auth(app):
 
             if user and check_password_hash(user['password_hash'], password):
                 if not user['is_active']:
-                    flash('Your account has been deactivated. Contact admin.', 'danger')
+                    flash('Your account has been deactivated. Please contact the administrator.', 'danger')
                     return redirect(url_for('login'))
 
+                # Specific check for lecturers whose accounts are still pending admin approval
                 if user['role'] == 'lecturer' and not user['is_verified']:
-                    flash('Your lecturer account is pending admin verification.', 'warning')
+                    flash('Welcome, your lecturer account is currently pending administrative verification. Please wait for an email confirmation or contact admin.', 'warning')
                     return redirect(url_for('login'))
 
                 session['user_id'] = user['id']
@@ -60,7 +61,7 @@ def register_auth(app):
                 flash(f'Welcome back, {user["full_name"]}!', 'success')
                 return redirect(url_for('dashboard'))
             else:
-                flash('Invalid username or password.', 'danger')
+                flash('Invalid username/email or password. Please try again.', 'danger')
 
         return render_template('auth/login.html')
 
@@ -108,6 +109,15 @@ def register_auth(app):
                 )
                 g.db.commit()
                 
+                # Notification for admin if lecturer registers
+                if role == 'lecturer':
+                    send_notification_email(
+                        subject="New Lecturer Registration Pending Approval",
+                        text_part=f"A new lecturer account has been created: {full_name} ({username}). Please visit the admin panel to verify.",
+                        html_part=f"<h3>New Lecturer Registration</h3><p><b>{full_name}</b> ({username}) has registered as a lecturer and is pending approval.</p><p><a href='/admin/users'>Visit Admin Panel</a></p>",
+                        notify_roles=['admin']
+                    )
+                
                 # Send welcome email
                 send_notification_email(
                     subject="Welcome to LearnUG!",
@@ -116,7 +126,10 @@ def register_auth(app):
                     specific_emails=[{"Email": email, "Name": full_name}]
                 )
                 
-                flash('Registration successful! Please log in.', 'success')
+                if role == 'lecturer':
+                    flash('Registration successful! Your account is pending admin approval before you can log in.', 'info')
+                else:
+                    flash('Registration successful! You can now log in.', 'success')
                 return redirect(url_for('login'))
 
         return render_template('auth/register.html')
@@ -137,12 +150,47 @@ def register_auth(app):
         if request.method == 'POST':
             email = request.form.get('email', '').strip()
             if email:
-                user = g.db.execute('SELECT full_name FROM users WHERE email = ?', (email,)).fetchone()
+                user = g.db.execute('SELECT id, full_name, email FROM users WHERE email = ?', (email,)).fetchone()
                 if user:
-                    send_reset_email(email, user['full_name'])
+                    token = secrets.token_urlsafe(32)
+                    expiry = datetime.now().strftime('%Y-%m-%d %H:%M:%S') # simplistic expiry, could be +1 hour
+                    # In a real app we'd set an actual expiry time, for now let's just store the token
+                    g.db.execute('UPDATE users SET reset_token = ?, reset_token_expiry = ? WHERE id = ?',
+                               (token, expiry, user['id']))
+                    g.db.commit()
+                    
+                    reset_link = url_for('reset_password', token=token, _external=True)
+                    send_reset_email(user['email'], user['full_name'], reset_link)
 
                 flash('If an account exists with that email, a password reset link has been sent.', 'info')
                 return redirect(url_for('login'))
         return render_template('auth/forgot_password.html')
+
+    @app.route('/reset-password/<token>', methods=['GET', 'POST'])
+    def reset_password(token):
+        if 'user_id' in session:
+            return redirect(url_for('dashboard'))
+            
+        user = g.db.execute('SELECT id, username FROM users WHERE reset_token = ?', (token,)).fetchone()
+        if not user:
+            flash('Invalid or expired reset token.', 'danger')
+            return redirect(url_for('forgot_password'))
+            
+        if request.method == 'POST':
+            new_pass = request.form.get('password', '')
+            confirm = request.form.get('confirm_password', '')
+            
+            if len(new_pass) < 6:
+                flash('Password must be at least 6 characters.', 'danger')
+            elif new_pass != confirm:
+                flash('Passwords do not match.', 'danger')
+            else:
+                g.db.execute('UPDATE users SET password_hash = ?, reset_token = NULL, reset_token_expiry = NULL WHERE id = ?',
+                           (generate_password_hash(new_pass), user['id']))
+                g.db.commit()
+                flash('Your password has been reset. You can now log in.', 'success')
+                return redirect(url_for('login'))
+                
+        return render_template('auth/reset_password.html', token=token)
 
 

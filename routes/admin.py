@@ -1,4 +1,4 @@
-import os, json
+import os, json, secrets
 from datetime import datetime
 from flask import render_template, request, redirect, url_for, session, flash, g, jsonify, abort
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -68,8 +68,8 @@ def register_admin(app):
     @role_required('admin')
     def admin_add_user():
         fullname = request.form.get('full_name', '').strip()
-        username = request.form.get('username', '').strip()
-        email = request.form.get('email', '').strip()
+        username = request.form.get('username', '').strip().lower()
+        email = request.form.get('email', '').strip().lower()
         password = request.form.get('password', '').strip()
         role = request.form.get('role', 'student')
         
@@ -132,20 +132,41 @@ def register_admin(app):
             
         return redirect(url_for('admin_users'))
 
-    @app.route('/admin/users/<int:user_id>/edit-password', methods=['POST'])
+    @app.route('/admin/users/<int:user_id>/password', methods=['POST'])
     @role_required('admin')
     def admin_edit_password(user_id):
-        new_password = request.form.get('new_password', '').strip()
-        if not new_password or len(new_password) < 6:
+        new_pass = request.form.get('new_password', '')
+        confirm_pass = request.form.get('confirm_password', '')
+        
+        if not new_pass or len(new_pass) < 6:
             flash('Password must be at least 6 characters.', 'danger')
             return redirect(url_for('admin_users'))
             
-        g.db.execute(
-            'UPDATE users SET password_hash = ? WHERE id = ?',
-            (generate_password_hash(new_password), user_id)
-        )
+        if new_pass != confirm_pass:
+            flash('Passwords do not match.', 'danger')
+            return redirect(url_for('admin_users'))
+            
+        g.db.execute('UPDATE users SET password_hash = ? WHERE id = ?', (generate_password_hash(new_pass), user_id))
         g.db.commit()
         flash('User password updated.', 'success')
+        return redirect(url_for('admin_users'))
+
+    @app.route('/admin/users/<int:user_id>/send-reset', methods=['POST'])
+    @role_required('admin')
+    def admin_send_reset(user_id):
+        user = g.db.execute('SELECT id, full_name, email FROM users WHERE id = ?', (user_id,)).fetchone()
+        if user:
+            token = secrets.token_urlsafe(32)
+            expiry = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            g.db.execute('UPDATE users SET reset_token = ?, reset_token_expiry = ? WHERE id = ?',
+                       (token, expiry, user_id))
+            g.db.commit()
+            
+            reset_link = url_for('reset_password', token=token, _external=True)
+            send_reset_email(user['email'], user['full_name'], reset_link)
+            flash(f'Password reset link sent to {user["full_name"]}.', 'success')
+        else:
+            flash('User not found.', 'danger')
         return redirect(url_for('admin_users'))
 
     @app.route('/admin/users/clear/<role>', methods=['POST'])

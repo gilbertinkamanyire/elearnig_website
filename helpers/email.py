@@ -51,7 +51,7 @@ def send_notification_email(subject, text_part, html_part, notify_roles=None, sp
     except:
         return False
 
-def send_reset_email(to_email, to_name):
+def send_reset_email(to_email, to_name, reset_link):
     api_key = current_app.config.get('MAILJET_API_KEY')
     api_secret = current_app.config.get('MAILJET_API_SECRET')
     sender_email = current_app.config.get('MAILJET_SENDER_EMAIL', 'support@learnug.edu')
@@ -65,8 +65,8 @@ def send_reset_email(to_email, to_name):
           "From": {"Email": sender_email, "Name": "LearnUG Support"},
           "To": [{"Email": to_email, "Name": to_name}],
           "Subject": "Password Reset for LearnUG",
-          "TextPart": "Reset your password at LearnUG.",
-          "HTMLPart": "<h3>Password Reset Request</h3><p>Please contact support to reset your password.</p>"
+          "TextPart": f"Reset your password at: {reset_link}",
+          "HTMLPart": f"<h3>Password Reset Request</h3><p>We received a request to reset your password. Click the link below to set a new one:</p><p><a href='{reset_link}' style='display:inline-block;padding:10px 20px;background-color:#6366f1;color:white;text-decoration:none;border-radius:5px;'>Reset Password</a></p><p>If you did not request this, please ignore this email.</p>"
         }
       ]
     }
