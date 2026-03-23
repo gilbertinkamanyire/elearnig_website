@@ -194,6 +194,7 @@ def register_courses(app):
             description = request.form.get('description', '').strip()
             department_id = request.form.get('department_id', type=int)
             lecturer_id = request.form.get('lecturer_id', type=int)
+            category = request.form.get('category', 'General').strip()
             is_published = 1 if request.form.get('is_published') else 0
 
             image_url = ''
@@ -210,8 +211,8 @@ def register_courses(app):
                 flash('Course title, department, and lecturer are required.', 'danger')
             else:
                 g.db.execute(
-                    'INSERT INTO courses (title, description, lecturer_id, department_id, image_url, is_published) VALUES (?, ?, ?, ?, ?, ?)',
-                    (title, description, lecturer_id, department_id, image_url, is_published)
+                    'INSERT INTO courses (title, description, lecturer_id, department_id, image_url, is_published, category) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                    (title, description, lecturer_id, department_id, image_url, is_published, category)
                 )
                 g.db.commit()
                 if is_published:
@@ -245,6 +246,7 @@ def register_courses(app):
             description = request.form.get('description', '').strip()
             department_id = request.form.get('department_id', type=int)
             lecturer_id = request.form.get('lecturer_id', type=int)
+            category = request.form.get('category', 'General').strip()
             is_published = 1 if request.form.get('is_published') else 0
 
             image_url = course['image_url']
@@ -259,8 +261,8 @@ def register_courses(app):
 
             if title and department_id and lecturer_id:
                 g.db.execute(
-                    'UPDATE courses SET title = ?, description = ?, department_id = ?, lecturer_id = ?, is_published = ?, image_url = ? WHERE id = ?',
-                    (title, description, department_id, lecturer_id, is_published, image_url, course_id)
+                    'UPDATE courses SET title = ?, description = ?, department_id = ?, lecturer_id = ?, is_published = ?, image_url = ?, category = ? WHERE id = ?',
+                    (title, description, department_id, lecturer_id, is_published, image_url, category, course_id)
                 )
                 g.db.commit()
                 flash('Course unit updated successfully!', 'success')
@@ -316,3 +318,24 @@ def register_courses(app):
         g.db.commit()
         flash('Assignment visibility updated.', 'success')
         return redirect(url_for('course_detail', course_id=assign['course_id']))
+
+    @app.route('/courses/<int:course_id>/delete', methods=['POST'])
+    @role_required('admin', 'lecturer')
+    def delete_course(course_id):
+        course = g.db.execute('SELECT lecturer_id, image_url FROM courses WHERE id = ?', (course_id,)).fetchone()
+        if not course: abort(404)
+        
+        if session['role'] != 'admin' and course['lecturer_id'] != session['user_id']:
+            abort(403)
+            
+        # Delete course image if it exists
+        if course['image_url'] and course['image_url'].startswith('/uploads/course_'):
+            pic_path = os.path.join(app.root_path, 'static', course['image_url'].lstrip('/static/'))
+            if os.path.exists(pic_path):
+                try: os.remove(pic_path)
+                except: pass
+
+        g.db.execute('DELETE FROM courses WHERE id = ?', (course_id,))
+        g.db.commit()
+        flash('Course and all its materials have been permanently deleted.', 'warning')
+        return redirect(url_for('courses_list'))

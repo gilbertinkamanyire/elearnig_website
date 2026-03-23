@@ -69,8 +69,8 @@ def init_db():
             
             CREATE TABLE IF NOT EXISTS enrollments (
                 id SERIAL PRIMARY KEY,
-                student_id INTEGER NOT NULL REFERENCES users(id),
-                course_id INTEGER NOT NULL REFERENCES courses(id),
+                student_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                course_id INTEGER NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
                 enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 progress REAL DEFAULT 0.0,
                 participation_points INTEGER DEFAULT 0,
@@ -80,8 +80,8 @@ def init_db():
             
             CREATE TABLE IF NOT EXISTS lesson_progress (
                 id SERIAL PRIMARY KEY,
-                student_id INTEGER NOT NULL REFERENCES users(id),
-                lesson_id INTEGER NOT NULL REFERENCES lessons(id),
+                student_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                lesson_id INTEGER NOT NULL REFERENCES lessons(id) ON DELETE CASCADE,
                 completed INTEGER DEFAULT 0,
                 completed_at TIMESTAMP,
                 UNIQUE(student_id, lesson_id)
@@ -101,9 +101,9 @@ def init_db():
 
             CREATE TABLE IF NOT EXISTS attendance (
                 id SERIAL PRIMARY KEY,
-                user_id INTEGER NOT NULL REFERENCES users(id),
-                course_id INTEGER NOT NULL REFERENCES courses(id),
-                lesson_id INTEGER,
+                user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                course_id INTEGER NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
+                lesson_id INTEGER REFERENCES lessons(id) ON DELETE CASCADE,
                 activity_type TEXT NOT NULL,
                 timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
@@ -120,8 +120,8 @@ def init_db():
             
             CREATE TABLE IF NOT EXISTS submissions (
                 id SERIAL PRIMARY KEY,
-                assessment_id INTEGER NOT NULL REFERENCES assessments(id),
-                student_id INTEGER NOT NULL REFERENCES users(id),
+                assessment_id INTEGER NOT NULL REFERENCES assessments(id) ON DELETE CASCADE,
+                student_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
                 answers_json TEXT NOT NULL DEFAULT '{}',
                 score REAL DEFAULT 0,
                 max_score REAL DEFAULT 0,
@@ -283,8 +283,8 @@ def init_db():
                 progress REAL DEFAULT 0.0,
                 participation_points INTEGER DEFAULT 0,
                 last_lesson_id INTEGER DEFAULT NULL,
-                FOREIGN KEY (student_id) REFERENCES users(id),
-                FOREIGN KEY (course_id) REFERENCES courses(id),
+                FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
+                FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
                 UNIQUE(student_id, course_id)
             );
             
@@ -294,8 +294,8 @@ def init_db():
                 lesson_id INTEGER NOT NULL,
                 completed INTEGER DEFAULT 0,
                 completed_at TIMESTAMP,
-                FOREIGN KEY (student_id) REFERENCES users(id),
-                FOREIGN KEY (lesson_id) REFERENCES lessons(id),
+                FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
+                FOREIGN KEY (lesson_id) REFERENCES lessons(id) ON DELETE CASCADE,
                 UNIQUE(student_id, lesson_id)
             );
             
@@ -319,9 +319,9 @@ def init_db():
                 lesson_id INTEGER,
                 activity_type TEXT NOT NULL,
                 timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (user_id) REFERENCES users(id),
-                FOREIGN KEY (course_id) REFERENCES courses(id),
-                FOREIGN KEY (lesson_id) REFERENCES lessons(id)
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+                FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
+                FOREIGN KEY (lesson_id) REFERENCES lessons(id) ON DELETE CASCADE
             );
 
             CREATE TABLE IF NOT EXISTS notifications (
@@ -347,8 +347,8 @@ def init_db():
                 score REAL DEFAULT 0,
                 max_score REAL DEFAULT 0,
                 submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (assessment_id) REFERENCES assessments(id),
-                FOREIGN KEY (student_id) REFERENCES users(id)
+                FOREIGN KEY (assessment_id) REFERENCES assessments(id) ON DELETE CASCADE,
+                FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE
             );
             
             CREATE TABLE IF NOT EXISTS discussions (
