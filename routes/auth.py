@@ -100,16 +100,7 @@ def register_auth(app):
                     flash(e, 'danger')
             else:
                 is_verified = 1 if role == 'student' else 0
-                import random
-                avatars = [
-                    'https://images.unsplash.com/photo-1531384441138-2736e62e0919?auto=format&fit=crop&q=80&w=200',
-                    'https://images.unsplash.com/photo-1506803682981-6e718a9dd3ee?auto=format&fit=crop&q=80&w=200',
-                    'https://images.unsplash.com/photo-1523824922871-2292f3cbdb05?auto=format&fit=crop&q=80&w=200',
-                    'https://images.unsplash.com/photo-1544928147-79a2dbc1f389?auto=format&fit=crop&q=80&w=200',
-                    'https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&q=80&w=200',
-                    'https://images.unsplash.com/photo-1504275107785-981de7673fa1?auto=format&fit=crop&q=80&w=200'
-                ]
-                profile_pic = random.choice(avatars)
+                profile_pic = ''
                 
                 g.db.execute(
                     'INSERT INTO users (username, email, password_hash, role, full_name, phone, is_verified, profile_pic_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',

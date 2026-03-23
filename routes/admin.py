@@ -199,6 +199,17 @@ def register_admin(app):
         return redirect(url_for('admin_users'))
 
 
+    @app.route('/admin/courses/<int:course_id>/clear-enrollments', methods=['POST'])
+    @role_required('admin')
+    def admin_clear_course_enrollments(course_id):
+        g.db.execute('DELETE FROM enrollments WHERE course_id = ?', (course_id,))
+        g.db.execute('DELETE FROM lesson_progress WHERE lesson_id IN (SELECT id FROM lessons WHERE course_id = ?)', (course_id,))
+        g.db.execute('DELETE FROM submissions WHERE assessment_id IN (SELECT id FROM assessments WHERE course_id = ?)', (course_id,))
+        g.db.commit()
+        flash('All student enrollments and progress for this course have been cleared.', 'warning')
+        return redirect(request.referrer or url_for('admin_analytics'))
+
+
     @app.route('/admin/announcements', methods=['GET', 'POST'])
     @role_required('admin', 'lecturer')
     def manage_announcements():

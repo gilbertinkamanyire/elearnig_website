@@ -50,10 +50,12 @@
                 <button type="submit" class="btn btn-primary"><i class='bx bx-plus'></i> Add User</button>
             </div>
         </form>
-    <div class="card" style="padding: 1.5rem; border-color: #fee2e2; background: #fffafb;">
+    </div>
+
+    <div class="card" style="padding: 1.5rem; border-color: #fee2e2; background: #fffafb; grid-column: span 2;">
         <h3 style="margin-bottom: 1rem; color: #ef4444;"><i class='bx bx-trash'></i> Bulk Database Cleanup</h3>
         <p style="font-size: 0.85rem; color: #7f1d1d; margin-bottom: 1rem;">Caution: These actions will permanently remove ALL users of the selected role and their associated data.</p>
-        <div class="btn-group" style="width: 100%;">
+        <div class="flex" style="width: 100%; gap: 1rem;">
             <form action="{{ url_for('admin_clear_role', role='student') }}" method="POST" onsubmit="return confirm('DELETE ALL STUDENTS? This action is IRREVERSIBLE. Proceed?');" style="flex: 1;">
                 <button type="submit" class="btn btn-outline" style="width: 100%; border-color: #ef4444; color: #ef4444;">Clear All Students</button>
             </form>

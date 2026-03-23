@@ -63,6 +63,7 @@ def init_db():
                 attachment_url TEXT DEFAULT '',
                 attachment_type TEXT DEFAULT '',
                 order_num INTEGER DEFAULT 0,
+                is_hidden INTEGER DEFAULT 0,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
             
@@ -94,6 +95,7 @@ def init_db():
                 questions_json TEXT NOT NULL DEFAULT '[]',
                 time_limit INTEGER DEFAULT 0,
                 privacy_mode INTEGER DEFAULT 0,
+                is_hidden INTEGER DEFAULT 0,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
 
@@ -159,6 +161,7 @@ def init_db():
                 description TEXT,
                 due_date TIMESTAMP,
                 max_marks INTEGER DEFAULT 100,
+                is_hidden INTEGER DEFAULT 0,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
 
@@ -267,6 +270,7 @@ def init_db():
                 attachment_url TEXT DEFAULT '',
                 attachment_type TEXT DEFAULT '',
                 order_num INTEGER DEFAULT 0,
+                is_hidden INTEGER DEFAULT 0,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
             );
@@ -303,6 +307,7 @@ def init_db():
                 questions_json TEXT NOT NULL DEFAULT '[]',
                 time_limit INTEGER DEFAULT 0,
                 privacy_mode INTEGER DEFAULT 0,
+                is_hidden INTEGER DEFAULT 0,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
             );
@@ -383,6 +388,7 @@ def init_db():
                 description TEXT,
                 due_date TIMESTAMP,
                 max_marks INTEGER DEFAULT 100,
+                is_hidden INTEGER DEFAULT 0,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
             );

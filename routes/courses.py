@@ -124,13 +124,15 @@ def register_courses(app):
 
         # Get discussions
         # Get assignments
-        assignments = g.db.execute('''
+        assign_query = '''
             SELECT a.*, s.id as submission_id 
             FROM assignments a 
             LEFT JOIN assignment_submissions s ON a.id = s.assignment_id AND s.student_id = ?
             WHERE a.course_id = ?
-            ORDER BY a.created_at DESC
-        ''', (session['user_id'], course_id)).fetchall()
+        '''
+        if not is_instructor:
+            assign_query += ' AND a.is_hidden = 0'
+        assignments = g.db.execute(assign_query + ' ORDER BY a.created_at DESC', (session['user_id'], course_id)).fetchall()
 
         # Get discussions
         discussions = g.db.execute('''
@@ -267,3 +269,50 @@ def register_courses(app):
         departments = g.db.execute('SELECT * FROM departments ORDER BY name').fetchall()
         lecturers = g.db.execute("SELECT id, full_name FROM users WHERE role = 'lecturer' AND is_active = 1").fetchall()
         return render_template('courses/edit.html', course=course, departments=departments, lecturers=lecturers)
+    @app.route('/lessons/<int:lesson_id>/toggle-visibility', methods=['POST'])
+    @login_required
+    def toggle_lesson_visibility(lesson_id):
+        lesson = g.db.execute('SELECT course_id, is_hidden FROM lessons WHERE id = ?', (lesson_id,)).fetchone()
+        if not lesson: abort(404)
+        
+        course = g.db.execute('SELECT lecturer_id FROM courses WHERE id = ?', (lesson['course_id'],)).fetchone()
+        if session['role'] != 'admin' and course['lecturer_id'] != session['user_id']:
+            abort(403)
+            
+        new_status = 0 if lesson['is_hidden'] else 1
+        g.db.execute('UPDATE lessons SET is_hidden = ? WHERE id = ?', (new_status, lesson_id))
+        g.db.commit()
+        flash('Lesson visibility updated.', 'success')
+        return redirect(url_for('course_detail', course_id=lesson['course_id']))
+
+    @app.route('/assessments/<int:assessment_id>/toggle-visibility', methods=['POST'])
+    @login_required
+    def toggle_assessment_visibility(assessment_id):
+        assess = g.db.execute('SELECT course_id, is_hidden FROM assessments WHERE id = ?', (assessment_id,)).fetchone()
+        if not assess: abort(404)
+        
+        course = g.db.execute('SELECT lecturer_id FROM courses WHERE id = ?', (assess['course_id'],)).fetchone()
+        if session['role'] != 'admin' and course['lecturer_id'] != session['user_id']:
+            abort(403)
+            
+        new_status = 0 if assess['is_hidden'] else 1
+        g.db.execute('UPDATE assessments SET is_hidden = ? WHERE id = ?', (new_status, assessment_id))
+        g.db.commit()
+        flash('Assessment visibility updated.', 'success')
+        return redirect(url_for('course_detail', course_id=assess['course_id']))
+
+    @app.route('/assignments/<int:assignment_id>/toggle-visibility', methods=['POST'])
+    @login_required
+    def toggle_assignment_visibility(assignment_id):
+        assign = g.db.execute('SELECT course_id, is_hidden FROM assignments WHERE id = ?', (assignment_id,)).fetchone()
+        if not assign: abort(404)
+        
+        course = g.db.execute('SELECT lecturer_id FROM courses WHERE id = ?', (assign['course_id'],)).fetchone()
+        if session['role'] != 'admin' and course['lecturer_id'] != session['user_id']:
+            abort(403)
+            
+        new_status = 0 if assign['is_hidden'] else 1
+        g.db.execute('UPDATE assignments SET is_hidden = ? WHERE id = ?', (new_status, assignment_id))
+        g.db.commit()
+        flash('Assignment visibility updated.', 'success')
+        return redirect(url_for('course_detail', course_id=assign['course_id']))
