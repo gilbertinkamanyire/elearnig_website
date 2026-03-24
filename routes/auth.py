@@ -193,22 +193,3 @@ def register_auth(app):
                 
         return render_template('auth/reset_password.html', token=token)
 
-    @app.route('/api/debug-admin')
-    def debug_admin():
-        try:
-            from werkzeug.security import generate_password_hash
-            user = g.db.execute("SELECT id, username, email FROM users WHERE username = 'admin' OR username = 'admin@learnug.com'").fetchall()
-            if not user:
-                g.db.execute(
-                    "INSERT INTO users (username, email, password_hash, role, full_name, phone, is_active, is_verified) VALUES (?, ?, ?, ?, ?, ?, 1, 1)",
-                    ('admin', 'admin@learnug.com', generate_password_hash('admin123'), 'admin', 'System Administrator', '+256700000001')
-                )
-                g.db.commit()
-                return jsonify({'status': 'inserted new admin'})
-            
-            user_id = user[0]['id']
-            g.db.execute("UPDATE users SET password_hash = ?, email = 'admin@learnug.com' WHERE id = ?", (generate_password_hash('admin123'), user_id))
-            g.db.commit()
-            return jsonify({'status': 'updated existing admin', 'users': [dict(u) for u in user]})
-        except Exception as e:
-            return jsonify({'error': str(e)})

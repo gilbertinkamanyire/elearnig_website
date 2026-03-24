@@ -26,10 +26,6 @@ app.config.from_object(Config)
 
 from models import get_db
 
-@app.route('/api/test')
-def api_test():
-    return {"status": "ok", "app": "running"}
-
 @app.route('/toggle-theme', methods=['POST'])
 def toggle_theme():
     current_mode = session.get('theme_mode', 'light')
@@ -103,15 +99,38 @@ try:
     db_fix = get_db()
     
     admin_hash = generate_password_hash('admin123')
-    existing_admin = db_fix.execute("SELECT id FROM users WHERE username = 'admin'").fetchone()
-    
-    if existing_admin:
-        db_fix.execute("UPDATE users SET email = 'admin@learnug.com', password_hash = ? WHERE username = 'admin'", (admin_hash,))
-    else:
-        db_fix.execute(
-            "INSERT INTO users (username, email, password_hash, role, full_name, phone, is_active, is_verified) VALUES (?, ?, ?, ?, ?, ?, 1, 1)",
-            ('admin', 'admin@learnug.com', admin_hash, 'admin', 'System Administrator', '+256700000001')
-        )
+    admin_email = 'admin@learnug.com'
+    admin_username = 'admin'
+    admin_full_name = 'System Administrator'
+    admin_phone = '+256700000001'
+
+    if USE_POSTGRES:
+        # Check if admin exists
+        existing_admin = db_fix.execute("SELECT id FROM users WHERE username = %s", (admin_username,)).fetchone()
+        
+        if existing_admin:
+            db_fix.execute(
+                "UPDATE users SET email = %s, password_hash = %s WHERE username = %s",
+                (admin_email, admin_hash, admin_username)
+            )
+        else:
+            db_fix.execute(
+                "INSERT INTO users (username, email, password_hash, role, full_name, phone, is_active, is_verified) VALUES (%s, %s, %s, %s, %s, %s, TRUE, TRUE)",
+                (admin_username, admin_email, admin_hash, 'admin', admin_full_name, admin_phone)
+            )
+    else: # SQLite
+        existing_admin = db_fix.execute("SELECT id FROM users WHERE username = ?", (admin_username,)).fetchone()
+        
+        if existing_admin:
+            db_fix.execute(
+                "UPDATE users SET email = ?, password_hash = ? WHERE username = ?",
+                (admin_email, admin_hash, admin_username)
+            )
+        else:
+            db_fix.execute(
+                "INSERT INTO users (username, email, password_hash, role, full_name, phone, is_active, is_verified) VALUES (?, ?, ?, ?, ?, ?, 1, 1)",
+                (admin_username, admin_email, admin_hash, 'admin', admin_full_name, admin_phone)
+            )
     
     db_fix.commit()
     db_fix.close()
