@@ -16,6 +16,9 @@ def _convert_query(sql):
     # Replace ? with %s for parameter placeholders
     converted = sql.replace('?', '%s')
     
+    # SQLite: STRFTIME('%H', timestamp) -> PostgreSQL: to_char(timestamp, 'HH24')
+    converted = converted.replace("STRFTIME('%H', timestamp)", "to_char(timestamp, 'HH24')")
+    
     # SQLite: INSERT OR REPLACE -> PostgreSQL: INSERT ... ON CONFLICT ... DO UPDATE
     # For simplicity, handle the user_preferences table upserts
     converted = converted.replace('INSERT OR REPLACE INTO', 'INSERT INTO')
