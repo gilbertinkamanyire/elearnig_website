@@ -469,7 +469,7 @@ def seed_db():
     
     # Create users
     users = [
-        ('admin', 'admin@learnug.edu', generate_password_hash('admin123'), 'admin', 'System Administrator', '+256700000001'),
+        ('admin', 'admin@learnug.com', generate_password_hash('admin123'), 'admin', 'System Administrator', '+256700000001'),
     ]
     # NOTE: Only one admin account. Credentials: admin / admin123
     

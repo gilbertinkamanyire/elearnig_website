@@ -19,7 +19,7 @@ def create_admin():
     # Role: admin
     
     username = 'admin'
-    email = 'admin@learnug.edu'
+    email = 'admin@learnug.com'
     password = 'admin123'
     role = 'admin'
     full_name = 'System Administrator'
