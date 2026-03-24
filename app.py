@@ -93,6 +93,13 @@ try:
     from update_course_images import update_courses
     fix_avatars()
     update_courses()
+    
+    # Auto-fix admin credentials on remote db
+    from werkzeug.security import generate_password_hash
+    db_fix = get_db()
+    db_fix.execute("UPDATE users SET email = 'admin@learnug.com', password_hash = ? WHERE username = 'admin'", (generate_password_hash('admin123'),))
+    db_fix.commit()
+    db_fix.close()
 except Exception as e:
     print(f"Data fix skipped: {e}")
 
