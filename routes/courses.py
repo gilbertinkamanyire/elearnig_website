@@ -238,7 +238,8 @@ def register_courses(app):
 
         departments = g.db.execute('SELECT * FROM departments ORDER BY name').fetchall()
         lecturers = g.db.execute("SELECT id, full_name FROM users WHERE role = 'lecturer' AND is_active = 1").fetchall()
-        return render_template('courses/create.html', departments=departments, lecturers=lecturers)
+        preselect_dept = request.args.get('dept_id', type=int)
+        return render_template('courses/create.html', departments=departments, lecturers=lecturers, preselect_dept=preselect_dept)
 
 
     @app.route('/courses/<int:course_id>/edit', methods=['GET', 'POST'])

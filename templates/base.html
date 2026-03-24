@@ -67,7 +67,10 @@
                             <i class='bx bxs-graduation'></i> Learning <i class='bx bx-chevron-down'></i>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{ url_for('courses_list') }}"><i class='bx bxs-book-open'></i> Courses</a></li>
+                            <li><a href="{{ url_for('courses_list') }}"><i class='bx bxs-book-open'></i> All Courses</a></li>
+                            {% for dept in nav_departments %}
+                                <li><a href="{{ url_for('courses_list', dept=dept.id) }}" style="padding-left: 2rem; font-size: 0.85rem; opacity: 0.8;">↳ {{ dept.name }}</a></li>
+                            {% endfor %}
                             <li><a href="{{ url_for('cognitive_mirror') }}"><i class='bx bx-reflect-vertical'></i> Mirror</a></li>
                             <li><a href="{{ url_for('synergy_connect') }}"><i class='bx bx-group'></i> Synergy</a></li>
                             {% if current_user.role == 'student' %}

@@ -9,7 +9,7 @@
         <p>Discover courses to advance your learning</p>
     </div>
     {% if session.role in ('admin', 'lecturer') %}
-        <a href="{{ url_for('create_course') }}" class="btn btn-primary">+ Add New Course</a>
+        <a href="{{ url_for('create_course', dept_id=current_dept) }}" class="btn btn-primary">+ Add New Course</a>
     {% endif %}
 </div>
 

@@ -137,6 +137,17 @@ try:
 except Exception as e:
     print(f"Data fix skipped: {e}")
 
+@app.context_processor
+def inject_nav_data():
+    from models import get_db
+    try:
+        db = get_db()
+        depts = db.execute('SELECT id, name FROM departments ORDER BY name').fetchall()
+        db.close()
+        return dict(nav_departments=depts)
+    except:
+        return dict(nav_departments=[])
+
 os.makedirs(Config.UPLOAD_FOLDER, exist_ok=True)
 
 setup_helpers(app)
