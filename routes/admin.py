@@ -293,3 +293,42 @@ def register_admin(app):
         return render_template('admin/analytics.html', stats=stats, top_courses=top_courses, roles=roles)
 
 
+    @app.route('/admin/clear-student-dashboards', methods=['POST'])
+    @role_required('admin')
+    def admin_clear_student_dashboards():
+        """Clear all student dashboard data: enrollments, progress, submissions, attendance."""
+        try:
+            g.db.execute('DELETE FROM lesson_progress')
+            g.db.execute('DELETE FROM submissions')
+            g.db.execute('DELETE FROM enrollments')
+            g.db.execute('DELETE FROM attendance WHERE user_id IN (SELECT id FROM users WHERE role = "student")')
+            g.db.commit()
+            flash('All student dashboard data (enrollments, progress, submissions, attendance) has been cleared.', 'warning')
+        except Exception as e:
+            flash(f'Error clearing student data: {str(e)}', 'danger')
+        return redirect(url_for('dashboard'))
+
+
+    @app.route('/admin/clear-lecturer-dashboards', methods=['POST'])
+    @role_required('admin')
+    def admin_clear_lecturer_dashboards():
+        """Clear all lecturer dashboard data: courses, lessons, assessments, assignments, discussions."""
+        try:
+            # Delete in dependency order
+            g.db.execute('DELETE FROM assignment_submissions')
+            g.db.execute('DELETE FROM submissions')
+            g.db.execute('DELETE FROM lesson_progress')
+            g.db.execute('DELETE FROM enrollments')
+            g.db.execute('DELETE FROM replies')
+            g.db.execute('DELETE FROM discussions')
+            g.db.execute('DELETE FROM attendance')
+            g.db.execute('DELETE FROM assessments')
+            g.db.execute('DELETE FROM assignments')
+            g.db.execute('DELETE FROM lessons')
+            g.db.execute('DELETE FROM courses')
+            g.db.commit()
+            flash('All lecturer dashboard data (courses, lessons, assessments, assignments, discussions) has been cleared.', 'warning')
+        except Exception as e:
+            flash(f'Error clearing lecturer data: {str(e)}', 'danger')
+        return redirect(url_for('dashboard'))
+

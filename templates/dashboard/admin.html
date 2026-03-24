@@ -63,6 +63,28 @@
     <a href="{{ url_for('create_course') }}" class="btn btn-secondary">📖 Create Course</a>
 </div>
 
+<!-- Danger Zone -->
+<div class="section-header" style="margin-top: 1.5rem;">
+    <h2 class="section-title" style="color: var(--danger, #e53e3e);">⚠️ Danger Zone</h2>
+</div>
+<div style="background: rgba(229,62,62,0.06); border: 1px solid rgba(229,62,62,0.25); border-radius: var(--radius-lg); padding: 1rem 1.25rem; margin-bottom: 2rem;">
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">These actions are <strong>irreversible</strong>. Use with caution.</p>
+    <div class="btn-group" style="gap: 0.75rem; flex-wrap: wrap;">
+        <form method="POST" action="{{ url_for('admin_clear_student_dashboards') }}"
+              onsubmit="return confirm('⚠️ Are you sure? This will permanently delete ALL student enrollments, lesson progress, quiz submissions and attendance records. This cannot be undone.');">
+            <button type="submit" class="btn btn-danger" style="background: #e53e3e; border-color: #e53e3e; color: white;">
+                🗑 Clear All Student Dashboards
+            </button>
+        </form>
+        <form method="POST" action="{{ url_for('admin_clear_lecturer_dashboards') }}"
+              onsubmit="return confirm('⚠️ Are you sure? This will permanently delete ALL courses, lessons, assessments, assignments and discussions. This cannot be undone.');">
+            <button type="submit" class="btn btn-danger" style="background: #e53e3e; border-color: #e53e3e; color: white;">
+                🗑 Clear All Lecturer Dashboards
+            </button>
+        </form>
+    </div>
+</div>
+
 <!-- Recent Users -->
 <section>
     <div class="section-header">

@@ -143,13 +143,24 @@ def register_courses(app):
             ORDER BY d.created_at DESC LIMIT 5
         ''', (course_id,)).fetchall()
 
+        # Get participants — all enrolled students + the lecturer (visible to all course members)
+        participants = g.db.execute('''
+            SELECT u.id, u.full_name, u.role, u.profile_pic_url,
+                   e.progress, e.participation_points, e.enrolled_at
+            FROM enrollments e
+            JOIN users u ON e.student_id = u.id
+            WHERE e.course_id = ?
+            ORDER BY e.enrolled_at ASC
+        ''', (course_id,)).fetchall()
+
         return render_template('courses/detail.html',
                              course=course,
                              lessons=lessons,
                              enrollment=enrollment,
                              assessments=assessments,
                              assignments=assignments,
-                             discussions=discussions)
+                             discussions=discussions,
+                             participants=participants)
 
 
     @app.route('/courses/<int:course_id>/enroll', methods=['POST'])

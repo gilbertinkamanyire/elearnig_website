@@ -12,18 +12,18 @@ def create_admin():
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     
-    # We'll create a default admin account
-    # Username: admin_user
+    # Single admin account — matches seed_db() in models.py
+    # Username: admin
     # Email: admin@learnug.edu
-    # Password: AdminPassword123
+    # Password: admin123
     # Role: admin
     
-    username = 'admin_user'
-    email = 'system_admin@learnug.edu'
-    password = 'AdminPassword123'
+    username = 'admin'
+    email = 'admin@learnug.edu'
+    password = 'admin123'
     role = 'admin'
-    full_name = 'LearnUG System Admin'
-    phone = '+256700000000'
+    full_name = 'System Administrator'
+    phone = '+256700000001'
     
     # Check if exists
     cursor.execute('SELECT id FROM users WHERE username = ?', (username,))

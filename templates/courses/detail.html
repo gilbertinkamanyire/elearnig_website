@@ -69,12 +69,14 @@
     <input type="radio" id="tab-assessments-input" name="course-tabs" class="tab-input" hidden>
     <input type="radio" id="tab-assignments-input" name="course-tabs" class="tab-input" hidden>
     <input type="radio" id="tab-discussions-input" name="course-tabs" class="tab-input" hidden>
+    <input type="radio" id="tab-participants-input" name="course-tabs" class="tab-input" hidden>
 
     <div class="tabs">
         <label for="tab-lessons-input" class="tab">📖 Lessons ({{ lessons|length }})</label>
         <label for="tab-assessments-input" class="tab">📝 Assessments ({{ assessments|length }})</label>
         <label for="tab-assignments-input" class="tab">📤 Assignments ({{ assignments|length }})</label>
         <label for="tab-discussions-input" class="tab">💬 Discussions ({{ discussions|length }})</label>
+        <label for="tab-participants-input" class="tab">👥 Participants ({{ participants|length + 1 }})</label>
     </div>
 
     <!-- Lessons Tab Content -->
@@ -255,6 +257,49 @@
                 <div class="empty-state-icon">💬</div>
                 <div class="empty-state-title">No Discussions Yet</div>
                 <div class="empty-state-desc">Start a discussion to engage with your classmates.</div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Participants Tab Content -->
+    <div class="tab-content" id="content-participants">
+        <!-- Lecturer row -->
+        <div class="discussion-item" style="display: flex; align-items: center; gap: 1rem;">
+            <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-hover, #6d28d9)); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; color: white; font-weight: 700;">
+                {{ course.lecturer_name[0]|upper }}
+            </div>
+            <div style="flex: 1;">
+                <div style="font-weight: 600; font-size: 0.95rem;">{{ course.lecturer_name }}</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Instructor</div>
+            </div>
+            <span class="badge badge-info" style="font-size: 0.7rem;">Lecturer</span>
+        </div>
+
+        <!-- Student rows -->
+        {% if participants %}
+            {% for p in participants %}
+            <div class="discussion-item" style="display: flex; align-items: center; gap: 1rem;">
+                <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #059669); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; color: white; font-weight: 700;">
+                    {{ p.full_name[0]|upper }}
+                </div>
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; font-size: 0.95rem;">{{ p.full_name }}</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); display: flex; gap: 1rem; align-items: center; margin-top: 0.2rem;">
+                        <span>Progress: <strong>{{ p.progress|round(0)|int }}%</strong></span>
+                        <span>⭐ {{ p.participation_points }} pts</span>
+                    </div>
+                    <div class="progress-bar" style="margin-top: 0.25rem; height: 4px;">
+                        <div class="progress-fill" style="width: {{ p.progress }}%;"></div>
+                    </div>
+                </div>
+                <span class="badge badge-success" style="font-size: 0.7rem;">Student</span>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-state-icon">👥</div>
+                <div class="empty-state-title">No Students Enrolled Yet</div>
+                <div class="empty-state-desc">Participants will appear here once students enroll.</div>
             </div>
         {% endif %}
     </div>

@@ -1088,14 +1088,16 @@ body.mode-dark .auth-card {
 #tab-lessons-input:checked ~ #content-lessons,
 #tab-assessments-input:checked ~ #content-assessments,
 #tab-assignments-input:checked ~ #content-assignments,
-#tab-discussions-input:checked ~ #content-discussions {
+#tab-discussions-input:checked ~ #content-discussions,
+#tab-participants-input:checked ~ #content-participants {
     display: block;
 }
 
 #tab-lessons-input:checked ~ .tabs label[for="tab-lessons-input"],
 #tab-assessments-input:checked ~ .tabs label[for="tab-assessments-input"],
 #tab-assignments-input:checked ~ .tabs label[for="tab-assignments-input"],
-#tab-discussions-input:checked ~ .tabs label[for="tab-discussions-input"] {
+#tab-discussions-input:checked ~ .tabs label[for="tab-discussions-input"],
+#tab-participants-input:checked ~ .tabs label[for="tab-participants-input"] {
     color: var(--accent);
     border-bottom-color: var(--accent);
 }
@@ -1602,4 +1604,128 @@ body.mode-ultra .badge {
 
 @media (max-width: 900px) {
     .testimonial-section { grid-template-columns: 1fr; }
+}
+
+/* ══════════════════════════════════════════════
+   GLOBAL BUTTON RESPONSIVENESS
+   Ensures all buttons are always fully visible
+   on any screen size
+   ══════════════════════════════════════════════ */
+
+/* Buttons never overflow — always shrink/wrap */
+.btn {
+    max-width: 100%;
+    box-sizing: border-box;
+    white-space: normal;       /* allow wrapping if text is long */
+    text-align: center;
+    word-break: break-word;
+}
+
+/* Button groups always wrap — no horizontal overflow */
+.btn-group {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    max-width: 100%;
+    overflow: visible;
+    box-sizing: border-box;
+}
+
+/* Discussion-item action columns: allow stacking */
+.discussion-item > div:last-child {
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+/* ── Tablet (≤768px): stack btn-group and expand buttons ── */
+@media (max-width: 768px) {
+    .btn-group {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+    .btn-group .btn,
+    .btn-group > form > .btn,
+    .btn-group > a.btn {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+    }
+
+    /* Course card action buttons: full-width */
+    .course-card-body .btn-group { flex-direction: row; }
+    .course-card-body .btn-group .btn { width: auto; flex: 1; }
+
+    /* Make action button rows inside items wrap */
+    .discussion-item {
+        flex-wrap: wrap;
+    }
+    .discussion-item > div:last-child {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    /* Danger zone buttons in admin dashboard */
+    .btn-danger { width: 100%; justify-content: center; }
+
+    /* Quick action bars */
+    .flex-between { flex-wrap: wrap; gap: 0.5rem; }
+}
+
+/* ── Mobile (≤480px): reinforced full-width buttons ── */
+@media (max-width: 480px) {
+    .btn {
+        padding: 0.7rem 1rem;
+        font-size: 0.9rem;
+    }
+    .btn-sm {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+    }
+    /* All btn-groups go vertical on small screens */
+    .btn-group {
+        flex-direction: column;
+        width: 100%;
+    }
+    .btn-group .btn,
+    .btn-group > form,
+    .btn-group > form > .btn,
+    .btn-group > a.btn {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    /* Unwrap action columns */
+    .discussion-item {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+    .discussion-item > *:last-child {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 0.4rem;
+    }
+    /* Inline forms (delete, toggle) expand to full width */
+    form[style*="display:inline"],
+    form[style*="display: inline"] {
+        display: block !important;
+        width: 100%;
+    }
+    form[style*="display:inline"] .btn,
+    form[style*="display: inline"] .btn {
+        width: 100%;
+    }
+    /* Tab labels: scrollable on small screens */
+    .tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        gap: 0;
+        padding-bottom: 2px;
+    }
+    .tab {
+        padding: 0.75rem 1rem;
+        font-size: 0.82rem;
+        white-space: nowrap;
+    }
 }
