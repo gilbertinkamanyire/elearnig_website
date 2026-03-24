@@ -97,7 +97,18 @@ try:
     # Auto-fix admin credentials on remote db
     from werkzeug.security import generate_password_hash
     db_fix = get_db()
-    db_fix.execute("UPDATE users SET email = 'admin@learnug.com', password_hash = ? WHERE username = 'admin'", (generate_password_hash('admin123'),))
+    
+    admin_hash = generate_password_hash('admin123')
+    existing_admin = db_fix.execute("SELECT id FROM users WHERE username = 'admin'").fetchone()
+    
+    if existing_admin:
+        db_fix.execute("UPDATE users SET email = 'admin@learnug.com', password_hash = ? WHERE username = 'admin'", (admin_hash,))
+    else:
+        db_fix.execute(
+            "INSERT INTO users (username, email, password_hash, role, full_name, phone, is_active, is_verified) VALUES (?, ?, ?, ?, ?, ?, 1, 1)",
+            ('admin', 'admin@learnug.com', admin_hash, 'admin', 'System Administrator', '+256700000001')
+        )
+    
     db_fix.commit()
     db_fix.close()
 except Exception as e:
