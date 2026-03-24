@@ -86,6 +86,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a href="{{ url_for('manage_announcements') }}">📢 Announce</a></li>
+                                <li><a href="{{ url_for('create_course') }}">📖 Add Course</a></li>
                                 {% if current_user.role == 'admin' %}
                                     <li><a href="{{ url_for('manage_departments') }}">🏢 Departments</a></li>
                                     <li><a href="{{ url_for('admin_users') }}">⚙️ Users</a></li>

@@ -15,6 +15,12 @@
 
 <div class="card" style="max-width: 700px;">
     <form method="POST" action="{{ url_for('create_course') }}" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="form-label" for="title">Course Title *</label>
+            <input type="text" id="title" name="title" class="form-input" 
+                   placeholder="e.g. Introduction to Applied ICT" required autofocus>
+        </div>
+
         <div class="form-row">
             <div class="form-group">
                 <label class="form-label" for="category">Category / Tag</label>
