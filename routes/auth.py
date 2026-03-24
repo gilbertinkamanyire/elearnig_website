@@ -41,7 +41,7 @@ def register_auth(app):
             username = request.form.get('username', '').strip().lower()
             password = request.form.get('password', '')
 
-            user = g.db.execute('SELECT * FROM users WHERE username = ? OR email = ?',
+            user = g.db.execute('SELECT * FROM users WHERE LOWER(username) = LOWER(?) OR LOWER(email) = LOWER(?)',
                                (username, username)).fetchone()
 
             if user and check_password_hash(user['password_hash'], password):
