@@ -26,6 +26,10 @@ app.config.from_object(Config)
 
 from models import get_db
 
+@app.route('/api/test')
+def api_test():
+    return {"status": "ok", "app": "running"}
+
 @app.route('/toggle-theme', methods=['POST'])
 def toggle_theme():
     current_mode = session.get('theme_mode', 'light')
