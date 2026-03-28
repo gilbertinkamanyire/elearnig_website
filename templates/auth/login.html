@@ -15,8 +15,8 @@
             <div class="form-group">
                 <label class="form-label" for="username">Username or Email</label>
                 <input type="text" id="username" name="username" class="form-input" 
-                       placeholder="Enter username or email" required autofocus
-                       autocomplete="username">
+                       placeholder="Enter username or email" required {% if not saved_username %}autofocus{% endif %}
+                       autocomplete="username" value="{{ saved_username }}">
             </div>
             
             <div class="form-group">
@@ -26,7 +26,7 @@
                 </div>
                 <div style="position: relative;">
                     <input type="password" id="password" name="password" class="form-input" 
-                           placeholder="Enter password" required
+                           placeholder="Enter password" required {% if saved_username %}autofocus{% endif %}
                            autocomplete="current-password" style="padding-right: 40px;">
                     <button type="button" onclick="var x=document.getElementById('password'); x.type=(x.type==='password'?'text':'password');" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 1.2rem;">
                         <i class='bx bx-show'></i>

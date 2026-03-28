@@ -1,6 +1,6 @@
 import os, json, secrets
 from datetime import datetime
-from flask import render_template, request, redirect, url_for, session, flash, g, jsonify, abort
+from flask import render_template, request, redirect, url_for, session, flash, g, jsonify, abort, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 from helpers import login_required, role_required, send_notification_email, send_reset_email
 
@@ -54,16 +54,22 @@ def register_auth(app):
                     flash('Welcome, your lecturer account is currently pending administrative verification. Please wait for an email confirmation or contact admin.', 'warning')
                     return redirect(url_for('login'))
 
+                session.permanent = True
                 session['user_id'] = user['id']
                 session['username'] = user['username']
                 session['role'] = user['role']
                 session['full_name'] = user['full_name']
                 flash(f'Welcome back, {user["full_name"]}!', 'success')
-                return redirect(url_for('dashboard'))
+                
+                # Store the username in a cookie so it's remembered even after logout
+                resp = make_response(redirect(url_for('dashboard')))
+                resp.set_cookie('saved_username', user['username'], max_age=30*24*60*60)
+                return resp
             else:
                 flash('Invalid username/email or password. Please try again.', 'danger')
 
-        return render_template('auth/login.html')
+        saved_username = request.cookies.get('saved_username', '')
+        return render_template('auth/login.html', saved_username=saved_username)
 
 
     @app.route('/register', methods=['GET', 'POST'])
@@ -137,7 +143,18 @@ def register_auth(app):
 
     @app.route('/logout')
     def logout():
+        # Preserve user preferences (theme and bandwidth) but remove auth
+        theme = session.get('theme_mode')
+        bandwidth = session.get('bandwidth_mode')
+        
         session.clear()
+        
+        # Restore preferences so the screen doesn't suddenly flash white/full bandwidth
+        if theme:
+            session['theme_mode'] = theme
+        if bandwidth:
+            session['bandwidth_mode'] = bandwidth
+            
         flash('You have been logged out.', 'info')
         return redirect(url_for('index'))
 
