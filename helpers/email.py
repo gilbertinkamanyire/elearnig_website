@@ -54,7 +54,7 @@ def send_notification_email(subject, text_part, html_part, notify_roles=None, sp
 def send_reset_email(to_email, to_name, reset_link):
     api_key = current_app.config.get('MAILJET_API_KEY')
     api_secret = current_app.config.get('MAILJET_API_SECRET')
-    sender_email = current_app.config.get('MAILJET_SENDER_EMAIL', 'support@learnug.edu')
+    sender_email = current_app.config.get('MAILJET_SENDER_EMAIL', 'wabule.joviamaris@student.utamu.ac.ug')
 
     if not api_key or not api_secret:
         return False

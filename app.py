@@ -28,47 +28,6 @@ from models import get_db
 import secrets
 from werkzeug.security import generate_password_hash
 
-@app.before_request
-def auto_guest_account():
-    # Only track actual page loads, ignore static assets and auth actions
-    if not request.endpoint or request.endpoint.startswith('static') or request.endpoint in ('login', 'register', 'serve_uploads', 'toggle_theme', 'toggle_bandwidth', 'logout'):
-        return
-
-    if 'user_id' not in session:
-        db = get_db()
-        # Generate random unique guest credentials
-        random_id = secrets.token_hex(4)
-        username = f"guest_{random_id}"
-        email = f"{username}@guest.learnug.com"
-        password = generate_password_hash('guest123')
-        full_name = f"Guest Visitor ({random_id})"
-        
-        # Insert user so they reflect on the admin side immediately
-        if USE_POSTGRES:
-            cursor = db._conn.cursor()
-            cursor.execute(
-                "INSERT INTO users (username, email, password_hash, role, full_name, is_active, is_verified) VALUES (%s, %s, %s, %s, %s, TRUE, TRUE) RETURNING id",
-                (username, email, password, 'student', full_name)
-            )
-            user_id = cursor.fetchone()[0]
-            db.commit()
-        else:
-            db.execute(
-                "INSERT INTO users (username, email, password_hash, role, full_name, is_active, is_verified) VALUES (?, ?, ?, ?, ?, 1, 1)",
-                (username, email, password, 'student', full_name)
-            )
-            db.commit()
-            user_id = db.execute("SELECT last_insert_rowid()").fetchone()[0]
-            
-        db.close()
-        
-        # Log them in automatically
-        session.permanent = True
-        session['user_id'] = user_id
-        session['username'] = username
-        session['role'] = 'student'
-        session['full_name'] = full_name
-
 @app.route('/toggle-theme', methods=['POST'])
 def toggle_theme():
     current_mode = session.get('theme_mode', 'light')

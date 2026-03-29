@@ -71,8 +71,8 @@ def register_courses(app):
             abort(404)
 
         # Determine if current user is the lecturer of this course or an admin
-        is_manage_role = session['role'] in ('lecturer', 'admin')
-        is_owner = (session['role'] == 'admin' or course['lecturer_id'] == session['user_id'])
+        is_manage_role = session.get('role') in ('lecturer', 'admin')
+        is_owner = (session.get('role') == 'admin' or course['lecturer_id'] == session.get('user_id'))
         is_instructor = is_manage_role and is_owner
 
         # Get lessons - filter hidden for students
@@ -85,12 +85,11 @@ def register_courses(app):
             lesson_query += ' AND l.is_hidden = 0'
         
         lesson_query += ' ORDER BY l.order_num'
-        lessons = g.db.execute(lesson_query, (session['user_id'], course_id)).fetchall()
+        lessons = g.db.execute(lesson_query, (session.get('user_id'), course_id)).fetchall()
 
-        # Check enrollment
         enrollment = g.db.execute(
             'SELECT * FROM enrollments WHERE student_id = ? AND course_id = ?',
-            (session['user_id'], course_id)
+            (session.get('user_id'), course_id)
         ).fetchone()
 
         # Get assessments - filter hidden for students
@@ -105,7 +104,7 @@ def register_courses(app):
             assess_query += ' AND a.is_hidden = 0'
         
         assess_query += ' ORDER BY a.created_at'
-        assessments = g.db.execute(assess_query, (session['user_id'], session['user_id'], session['user_id'], course_id)).fetchall()
+        assessments = g.db.execute(assess_query, (session.get('user_id'), session.get('user_id'), session.get('user_id'), course_id)).fetchall()
 
         # Add expiration info to assessments
         processed_assessments = []
@@ -132,7 +131,7 @@ def register_courses(app):
         '''
         if not is_instructor:
             assign_query += ' AND a.is_hidden = 0'
-        assignments = g.db.execute(assign_query + ' ORDER BY a.created_at DESC', (session['user_id'], course_id)).fetchall()
+        assignments = g.db.execute(assign_query + ' ORDER BY a.created_at DESC', (session.get('user_id'), course_id)).fetchall()
 
         # Get discussions
         discussions = g.db.execute('''
