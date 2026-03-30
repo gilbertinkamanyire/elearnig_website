@@ -22,11 +22,21 @@ def register_assignments(app):
             description = request.form.get('description', '').strip()
             due_date = request.form.get('due_date', '')
             max_marks = request.form.get('max_marks', 100, type=int)
+            
+            file_url = ''
+            file = request.files.get('file')
+            if file and file.filename != '':
+                from werkzeug.utils import secure_filename
+                filename = secure_filename(file.filename)
+                unique_filename = f"asm_file_{course_id}_{datetime.now().strftime('%Y%m%d%H%M%S')}_{filename}"
+                upload_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
+                file.save(upload_path)
+                file_url = f"/uploads/{unique_filename}"
 
             if title:
                 g.db.execute(
-                    'INSERT INTO assignments (course_id, title, description, due_date, max_marks) VALUES (?, ?, ?, ?, ?)',
-                    (course_id, title, description, due_date, max_marks)
+                    'INSERT INTO assignments (course_id, title, description, due_date, max_marks, file_url) VALUES (?, ?, ?, ?, ?, ?)',
+                    (course_id, title, description, due_date, max_marks, file_url)
                 )
                 g.db.commit()
                 
@@ -88,9 +98,19 @@ def register_assignments(app):
             max_marks = request.form.get('max_marks', 100, type=int)
 
             if title:
+                file_url = assignment['file_url']
+                file = request.files.get('file')
+                if file and file.filename != '':
+                    from werkzeug.utils import secure_filename
+                    filename = secure_filename(file.filename)
+                    unique_filename = f"asm_file_{course_id}_{datetime.now().strftime('%Y%m%d%H%M%S')}_{filename}"
+                    upload_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
+                    file.save(upload_path)
+                    file_url = f"/uploads/{unique_filename}"
+
                 g.db.execute(
-                    'UPDATE assignments SET title=?, description=?, due_date=?, max_marks=? WHERE id=?',
-                    (title, description, due_date, max_marks, assignment_id)
+                    'UPDATE assignments SET title=?, description=?, due_date=?, max_marks=?, file_url=? WHERE id=?',
+                    (title, description, due_date, max_marks, file_url, assignment_id)
                 )
                 g.db.commit()
                 flash('Assignment updated!', 'success')
@@ -194,7 +214,8 @@ def register_assignments(app):
         
         # Get student and assignment info for notification
         info = g.db.execute('''
-            SELECT s.student_id, a.title as assignment_title, c.title as course_title, u.email as student_email
+            SELECT s.student_id, a.title as assignment_title, c.title as course_title, 
+                   u.email as student_email, u.full_name as student_name
             FROM assignment_submissions s 
             JOIN assignments a ON s.assignment_id = a.id 
             JOIN courses c ON a.course_id = c.id
@@ -215,7 +236,7 @@ def register_assignments(app):
             subject=f"Grade Updated: {info['assignment_title']}",
             text_part=f"Your assignment '{info['assignment_title']}' has been graded. New grade: {grade}",
             html_part=f"<h3>Assignment Graded</h3><p>Your assignment <b>{info['assignment_title']}</b> has been graded.</p><p><b>Grade:</b> {grade}</p><p><a href='{url_for('student_grades', _external=True)}'>View details</a></p>",
-            recipient_email=info['student_email']
+            specific_emails=[{"Email": info['student_email'], "Name": info['student_name']}]
         )
         
         flash('Grade and feedback saved and student notified.', 'success')

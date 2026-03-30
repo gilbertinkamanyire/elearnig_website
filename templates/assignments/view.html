@@ -37,6 +37,15 @@
             <div class="mt-1" style="line-height: 1.7;">
                 {{ assignment.description|nl2br }}
             </div>
+            {% if assignment.file_url %}
+            <div class="mt-2 p-1" style="background: var(--bg-input); border-radius: var(--radius-sm); display: flex; align-items: center; gap: 1rem;">
+                <span style="font-size: 1.5rem;">📄</span>
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; font-size: 0.9rem;">Course Materials / Instructions</div>
+                    <a href="{{ assignment.file_url }}" target="_blank" class="text-accent" style="font-size: 0.85rem;">Download Attachment</a>
+                </div>
+            </div>
+            {% endif %}
         </div>
 
         {% if session.role in ('lecturer', 'admin') %}
@@ -105,19 +114,35 @@
                     <div style="font-size: 0.95rem; line-height: 1.5;">{{ submission.feedback }}</div>
                     {% endif %}
                 </div>
-
-                <div class="mt-2 text-center">
-                    <p style="font-size: 0.8rem; color: var(--text-muted);">You can re-submit before the deadline.</p>
-                </div>
             {% endif %}
 
-            <form method="POST" action="{{ url_for('submit_assignment', course_id=course.id, assignment_id=assignment.id) }}" enctype="multipart/form-data" class="mt-2" onsubmit="return this.submitting ? false : (this.submitting = true)">
-                <div class="form-group">
-                    <label class="form-label">{% if submission %}Replace{% else %}Upload{% endif %} Submission (Max 100MB)</label>
-                    <input type="file" name="file" class="form-input" required>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">{% if submission %}Re-submit{% else %}Submit Assignment{% endif %}</button>
-            </form>
+            <div id="submission-area" class="mt-2 text-center" style="margin-bottom: 2rem;">
+                {% if not submission %}
+                    <form method="POST" action="{{ url_for('submit_assignment', course_id=course.id, assignment_id=assignment.id) }}" enctype="multipart/form-data" onsubmit="return this.submitting ? false : (this.submitting = true)">
+                        <div class="form-group">
+                            <label class="form-label">Upload Submission (Max 100MB)</label>
+                            <input type="file" name="file" class="form-input" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Submit Assignment</button>
+                    </form>
+                {% else %}
+                    <button id="edit-btn" onclick="document.getElementById('edit-form').style.display='block'; this.style.display='none';" class="btn btn-secondary btn-block">🔄 Edit Submission</button>
+                    
+                    <div id="edit-form" style="display: none; text-align: left; background: var(--bg-card); padding: 1rem; border-radius: var(--radius); border: 1px dashed var(--border);">
+                        <form method="POST" action="{{ url_for('submit_assignment', course_id=course.id, assignment_id=assignment.id) }}" enctype="multipart/form-data" onsubmit="return this.submitting ? false : (this.submitting = true)">
+                            <div class="form-group">
+                                <label class="form-label"><b>Update Your Submission</b></label>
+                                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">Replacing your current file with a new one.</p>
+                                <input type="file" name="file" class="form-input" required>
+                            </div>
+                            <div class="flex gap-1 mt-1">
+                                <button type="submit" class="btn btn-primary btn-block">Update Submission</button>
+                                <button type="button" onclick="document.getElementById('edit-form').style.display='none'; document.getElementById('edit-btn').style.display='block';" class="btn btn-secondary">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
         </div>
         {% endif %}
         
@@ -132,4 +157,3 @@
 {% endblock %}
 
 {% block scripts %}{% endblock %}
-{% endblock %}

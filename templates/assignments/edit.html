@@ -16,7 +16,7 @@
 </div>
 
 <div class="card" style="max-width: 700px;">
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label class="form-label" for="title">Assignment Title *</label>
             <input type="text" id="title" name="title" class="form-input" value="{{ assignment.title }}" required>
@@ -27,6 +27,14 @@
             <textarea id="description" name="description" class="form-textarea" rows="5">{{ assignment.description }}</textarea>
         </div>
         
+        <div class="form-group">
+            <label class="form-label" for="file">Update Assignment File (Optional)</label>
+            <input type="file" id="file" name="file" class="form-input">
+            {% if assignment.file_url %}
+            <div class="form-hint">Current: <a href="{{ assignment.file_url }}" target="_blank">Download Existing</a></div>
+            {% endif %}
+        </div>
+
         <div class="form-row">
             <div class="form-group">
                 <label class="form-label" for="due_date">Due Date</label>

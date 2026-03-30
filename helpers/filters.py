@@ -23,5 +23,12 @@ def timeago(dt_str):
     except:
         return str(dt_str)
 
+def nl2br(value):
+    if not value:
+        return ''
+    from markupsafe import Markup, escape
+    return Markup(escape(value).replace('\n', '<br>\n'))
+
 def register_filters(app):
     app.template_filter('timeago')(timeago)
+    app.template_filter('nl2br')(nl2br)

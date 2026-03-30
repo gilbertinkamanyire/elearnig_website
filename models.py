@@ -164,6 +164,7 @@ def init_db():
                 due_date TIMESTAMP,
                 max_marks INTEGER DEFAULT 100,
                 is_hidden INTEGER DEFAULT 0,
+                file_url TEXT DEFAULT '',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
  
@@ -393,6 +394,7 @@ def init_db():
                 due_date TIMESTAMP,
                 max_marks INTEGER DEFAULT 100,
                 is_hidden INTEGER DEFAULT 0,
+                file_url TEXT DEFAULT '',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
             );

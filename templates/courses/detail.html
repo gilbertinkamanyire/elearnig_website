@@ -172,13 +172,13 @@
                 <div class="empty-state-title">No Assessments Yet</div>
                 <div class="empty-state-desc">Assessments will appear here when available.</div>
                 {% if session.role in ('lecturer', 'admin') %}
-                    <a href="{{ url_for('create_assessment', course_id=course.id) }}" class="btn btn-primary">+ Create Assessment</a>
+                    <a href="{{ url_for('create_assessment', course_id=course.id) }}" class="btn btn-primary">+ Create Quiz</a>
                 {% endif %}
             </div>
         {% endif %}
         {% if session.role in ('lecturer', 'admin') and assessments %}
             <div class="mt-2">
-                <a href="{{ url_for('create_assessment', course_id=course.id) }}" class="btn btn-sm btn-primary">+ Create Assessment</a>
+                <a href="{{ url_for('create_assessment', course_id=course.id) }}" class="btn btn-sm btn-primary">+ Create Quiz</a>
             </div>
         {% endif %}
     </div>
