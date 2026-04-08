@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ session.get('language', 'en') }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
@@ -19,16 +19,23 @@
     <div class="top-bar">
         <div class="container">
             <div class="top-bar-links">
-                <a href="{{ url_for('how_it_works') }}"><i class='bx bxs-bulb'></i> How It Works</a>
-                <a href="{{ url_for('about') }}"><i class='bx bxs-info-circle'></i> About</a>
-                <a href="{{ url_for('help_page') }}"><i class='bx bxs-help-circle'></i> Support</a>
+                <a href="{{ url_for('how_it_works') }}"><i class='bx bxs-bulb'></i> {{ _('How It Works') }}</a>
+                <a href="{{ url_for('about') }}"><i class='bx bxs-info-circle'></i> {{ _('About') }}</a>
+                <a href="{{ url_for('help_page') }}"><i class='bx bxs-help-circle'></i> {{ _('Support') }}</a>
             </div>
             <div class="top-bar-controls">
-                <form action="{{ url_for('toggle_bandwidth') }}" method="POST" style="margin:0;">
+                <form action="{{ url_for('toggle_bandwidth') }}" method="POST" style="margin:0; display:inline-block;">
                     <select name="mode" onchange="this.form.submit()" class="bandwidth-select" title="Bandwidth Guard">
                         <option value="standard" {% if session.get('bandwidth_mode') == 'standard' %}selected{% endif %}>⚡ 5G / Fiber</option>
                         <option value="low" {% if session.get('bandwidth_mode') == 'low' %}selected{% endif %}>📶 3G Mode</option>
                         <option value="ultra" {% if session.get('bandwidth_mode') == 'ultra' %}selected{% endif %}>📟 2G Mode</option>
+                    </select>
+                </form>
+                <form action="{{ url_for('toggle_language') }}" method="POST" style="margin:0; display:inline-block;">
+                    <select name="language" onchange="this.form.submit()" class="bandwidth-select" title="Language Selector">
+                        <option value="en" {% if session.get('language') == 'en' or session.get('language') is none %}selected{% endif %}>English</option>
+                        <option value="lg" {% if session.get('language') == 'lg' %}selected{% endif %}>Luganda</option>
+                        <option value="sw" {% if session.get('language') == 'sw' %}selected{% endif %}>Swahili</option>
                     </select>
                 </form>
                 <form action="{{ url_for('toggle_theme') }}" method="POST" style="margin:0;">
@@ -150,9 +157,9 @@
                     <small>High-Efficiency Education for Low-Bandwidth Networks</small>
                 </div>
                 <div class="footer-links">
-                    <a href="{{ url_for('about') }}">About LearnUG</a>
-                    <a href="{{ url_for('how_it_works') }}">How it Works</a>
-                    <a href="{{ url_for('help_page') }}" class="btn btn-sm btn-primary text-white" style="margin-top: -5px;">Contact Support / Help</a>
+                    <a href="{{ url_for('about') }}">{{ _('About') }} LearnUG</a>
+                    <a href="{{ url_for('how_it_works') }}">{{ _('How It Works') }}</a>
+                    <a href="{{ url_for('help_page') }}" class="btn btn-sm btn-primary text-white" style="margin-top: -5px;">{{ _('Support') }}</a>
                     <a href="{{ url_for('terms') }}">Terms</a>
                     <a href="{{ url_for('privacy') }}">Privacy</a>
                 </div>
@@ -161,5 +168,30 @@
     </footer>
 
     {% block scripts %}{% endblock %}
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js').then(function(reg) {
+                    console.log('Service worker registered:', reg.scope);
+                }).catch(function(err) {
+                    console.warn('Service worker registration failed:', err);
+                });
+            });
+        }
+
+        function sharePage(title) {
+            const shareData = {
+                title: title,
+                text: title + ' - LearnUG',
+                url: window.location.href
+            };
+            if (navigator.share) {
+                navigator.share(shareData).catch(() => {});
+            } else {
+                const whatsappLink = 'https://wa.me/?text=' + encodeURIComponent(shareData.text + ' ' + shareData.url);
+                window.open(whatsappLink, '_blank');
+            }
+        }
+    </script>
 </body>
 </html>

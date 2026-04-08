@@ -69,6 +69,12 @@ def toggle_bandwidth():
         
     return redirect(request.referrer or url_for('index'))
 
+@app.route('/toggle-language', methods=['POST'])
+def toggle_language():
+    language = request.form.get('language', 'en')
+    session['language'] = language
+    return redirect(request.referrer or url_for('index'))
+
 @app.route('/uploads/<path:filename>')
 def serve_uploads(filename):
     from flask import send_from_directory

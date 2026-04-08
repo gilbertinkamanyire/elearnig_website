@@ -52,6 +52,85 @@
     </div>
 </div>
 
+<section class="competency-section">
+    <div class="section-header" style="margin-bottom: 1.5rem;">
+        <h2 class="section-title">Personal Competency Mirror</h2>
+        <p class="section-subtitle">Track your mastered skills, the competencies you're building, and the areas still waiting to start.</p>
+    </div>
+
+    {% if competencies_mastered or competencies_in_progress or competencies_not_started %}
+    <div class="competency-grid">
+        <div class="competency-card card-mastered">
+            <h3>Skills Mastered</h3>
+            <p class="card-note">Your strongest competencies based on course progress.</p>
+            {% if competencies_mastered %}
+                {% for skill in competencies_mastered %}
+                    <div class="skill-row">
+                        <div>
+                            <strong>{{ skill.title }}</strong>
+                            <div class="skill-meta">{{ skill.category }} · {{ skill.completed_lessons }} / {{ skill.total_lessons }} lessons</div>
+                        </div>
+                        <span class="skill-pill pill-success">Mastered</span>
+                        <div class="progress-bar mini">
+                            <div class="progress-fill" style="width: {{ skill.progress }}%;"></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="empty-text">No mastered competencies yet. Keep learning to unlock this zone.</p>
+            {% endif %}
+        </div>
+
+        <div class="competency-card card-progress">
+            <h3>In Progress</h3>
+            <p class="card-note">Competencies you're actively building with consistent progress.</p>
+            {% if competencies_in_progress %}
+                {% for skill in competencies_in_progress %}
+                    <div class="skill-row">
+                        <div>
+                            <strong>{{ skill.title }}</strong>
+                            <div class="skill-meta">{{ skill.category }} · {{ skill.completed_lessons }} / {{ skill.total_lessons }} lessons</div>
+                        </div>
+                        <span class="skill-pill pill-warning">In Progress</span>
+                        <div class="progress-bar mini">
+                            <div class="progress-fill" style="width: {{ skill.progress }}%;"></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="empty-text">Nothing in progress yet. Start a course and the mirror will reflect your learning momentum.</p>
+            {% endif %}
+        </div>
+
+        <div class="competency-card card-not-started">
+            <h3>Not Yet Started</h3>
+            <p class="card-note">Competencies you've enrolled in but not begun yet.</p>
+            {% if competencies_not_started %}
+                {% for skill in competencies_not_started %}
+                    <div class="skill-row">
+                        <div>
+                            <strong>{{ skill.title }}</strong>
+                            <div class="skill-meta">{{ skill.category }} · {{ skill.total_lessons }} lessons</div>
+                        </div>
+                        <span class="skill-pill pill-muted">Not Started</span>
+                        <div class="progress-bar mini">
+                            <div class="progress-fill" style="width: 5%;"></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="empty-text">No unstarted competencies. Great job staying engaged with your enrolled courses.</p>
+            {% endif %}
+        </div>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class='bx bx-book-open' style="font-size: 3rem; opacity: 0.3;"></i>
+        <p>Enroll in a course and complete lessons to see your personal competencies reflected here.</p>
+    </div>
+    {% endif %}
+</section>
+
 <div class="mirror-history">
     <h2>AI Learning Insights</h2>
     {% if stored_insights %}
@@ -115,6 +194,120 @@
         margin: 1rem 0;
     }
     
+    .section-subtitle {
+        margin-top: 0.5rem;
+        color: #555;
+        max-width: 680px;
+        line-height: 1.6;
+    }
+
+    .competency-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .competency-card {
+        background: white;
+        padding: 1.75rem;
+        border-radius: 22px;
+        border: 1px solid #e8e8f0;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.04);
+        min-height: 280px;
+    }
+
+    .competency-card h3 {
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-note {
+        margin-bottom: 1.25rem;
+        color: #666;
+        font-size: 0.94rem;
+    }
+
+    .skill-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 0.75rem;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #f1f1f6;
+    }
+
+    .skill-row:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .skill-meta {
+        font-size: 0.82rem;
+        color: #777;
+        margin-top: 0.35rem;
+    }
+
+    .skill-pill {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: 999px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .pill-success {
+        color: #1a6b3d;
+        background: #daf4e5;
+    }
+
+    .pill-warning {
+        color: #7b5607;
+        background: #fff4d2;
+    }
+
+    .pill-muted {
+        color: #495057;
+        background: #eceef3;
+    }
+
+    .progress-bar.mini {
+        height: 8px;
+        background: #edf2f8;
+        border-radius: 999px;
+        overflow: hidden;
+        margin-top: 0.85rem;
+    }
+
+    .progress-bar.mini .progress-fill {
+        height: 100%;
+        width: 0;
+        background: linear-gradient(90deg, #6200ea, #00bfa5);
+        border-radius: 999px;
+        transition: width 0.3s ease;
+    }
+
+    .empty-text {
+        color: #555;
+        line-height: 1.6;
+    }
+
+    .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        padding: 2rem;
+        background: #fbfbff;
+        border: 1px dashed #d8d8e8;
+        border-radius: 20px;
+        text-align: center;
+        color: #555;
+    }
+
     .strength-tags {
         display: flex;
         flex-wrap: wrap;

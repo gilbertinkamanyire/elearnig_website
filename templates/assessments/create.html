@@ -43,6 +43,19 @@
             </div>
         </div>
 
+        <div class="form-row" style="margin-top: 1rem;">
+            <div class="form-group">
+                <label class="form-label" for="lesson_id">Attach to Lesson (optional)</label>
+                <select id="lesson_id" name="lesson_id" class="form-input">
+                    <option value="">No lesson (course-level)</option>
+                    {% for l in lessons %}
+                    <option value="{{ l.id }}">{{ l.title }}</option>
+                    {% endfor %}
+                </select>
+                <div class="form-hint">Choose a lesson to make this assessment the questionnaire shown after that lesson.</div>
+            </div>
+        </div>
+
         <div class="form-group" style="margin-top: 1rem;">
             <label class="form-label" style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
                 <input type="checkbox" name="privacy_mode" value="1" style="width: 18px; height: 18px;">

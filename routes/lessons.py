@@ -52,13 +52,29 @@ def register_lessons(app):
             (session['user_id'], lesson_id)
         ).fetchone()
 
+        # Find linked assessment (questionnaire) for this lesson, if any
+        lesson_assessment = g.db.execute(
+            'SELECT * FROM assessments WHERE course_id = ? AND lesson_id = ?',
+            (course_id, lesson_id)
+        ).fetchone()
+
+        assessment_submitted = False
+        if lesson_assessment and session.get('role') == 'student':
+            sub = g.db.execute(
+                'SELECT * FROM submissions WHERE assessment_id = ? AND student_id = ?',
+                (lesson_assessment['id'], session['user_id'])
+            ).fetchone()
+            assessment_submitted = bool(sub)
+
         return render_template('courses/lesson.html',
                              lesson=lesson,
                              course=course,
                              all_lessons=all_lessons,
                              prev_lesson=prev_lesson,
                              next_lesson=next_lesson,
-                             is_completed=progress and progress['completed'])
+                             is_completed=progress and progress['completed'],
+                             lesson_assessment=lesson_assessment,
+                             assessment_submitted=assessment_submitted)
 
 
     @app.route('/courses/<int:course_id>/lessons/<int:lesson_id>/complete', methods=['POST'])

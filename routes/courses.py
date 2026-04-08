@@ -78,7 +78,8 @@ def register_courses(app):
         # Get lessons - filter hidden for students
         lesson_query = '''
             SELECT l.*,
-                   (SELECT completed FROM lesson_progress WHERE student_id = ? AND lesson_id = l.id) as is_completed
+                   (SELECT completed FROM lesson_progress WHERE student_id = ? AND lesson_id = l.id) as is_completed,
+                   (SELECT COUNT(*) FROM assessments WHERE lesson_id = l.id AND course_id = l.course_id) as has_questionnaire
             FROM lessons l WHERE l.course_id = ?
         '''
         if not is_instructor:
@@ -145,12 +146,14 @@ def register_courses(app):
         # Get participants — all enrolled students + the lecturer (visible to all course members)
         participants = g.db.execute('''
             SELECT u.id, u.full_name, u.role, u.profile_pic_url,
-                   e.progress, e.participation_points, e.enrolled_at
+                   e.progress, e.participation_points, e.enrolled_at,
+                   (SELECT COUNT(*) FROM lesson_progress lp JOIN lessons l ON lp.lesson_id = l.id WHERE lp.student_id = u.id AND l.course_id = ? AND lp.completed = 1) as lessons_completed,
+                   (SELECT COUNT(*) FROM submissions sub JOIN assessments a ON sub.assessment_id = a.id WHERE sub.student_id = u.id AND a.course_id = ? AND a.lesson_id IS NOT NULL) as quizzes_completed
             FROM enrollments e
             JOIN users u ON e.student_id = u.id
             WHERE e.course_id = ?
             ORDER BY e.enrolled_at ASC
-        ''', (course_id,)).fetchall()
+        ''', (course_id, course_id, course_id)).fetchall()
 
         return render_template('courses/detail.html',
                              course=course,

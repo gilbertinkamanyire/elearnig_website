@@ -157,6 +157,11 @@ def register_assessments(app):
             description = request.form.get('description', '').strip()
             time_limit = request.form.get('time_limit', 0, type=int)
             privacy_mode = 1 if request.form.get('privacy_mode') else 0
+            lesson_id_raw = request.form.get('lesson_id')
+            try:
+                lesson_id = int(lesson_id_raw) if lesson_id_raw not in (None, '', 'None') else None
+            except:
+                lesson_id = None
 
             # Parse questions from form (Up to 100 slots, Zero-JS)
             questions = []
@@ -184,8 +189,8 @@ def register_assessments(app):
                 is_hidden = 1 if request.form.get('is_hidden') else 0
 
                 g.db.execute(
-                    'INSERT INTO assessments (course_id, title, description, questions_json, time_limit, privacy_mode, is_hidden, available_until) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                    (course_id, title, description, json.dumps(questions), time_limit, privacy_mode, is_hidden, avail_until)
+                    'INSERT INTO assessments (course_id, lesson_id, title, description, questions_json, time_limit, privacy_mode, is_hidden, available_until) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                    (course_id, lesson_id, title, description, json.dumps(questions), time_limit, privacy_mode, is_hidden, avail_until)
                 )
                 g.db.commit()
                 send_notification_email(
@@ -199,7 +204,8 @@ def register_assessments(app):
             else:
                 flash('Title and at least one question are required.', 'danger')
 
-        return render_template('assessments/create.html', course=course)
+        lessons = g.db.execute('SELECT id, title FROM lessons WHERE course_id = ? ORDER BY order_num', (course_id,)).fetchall()
+        return render_template('assessments/create.html', course=course, lessons=lessons)
 
     @app.route('/courses/<int:course_id>/assessments/<int:assessment_id>/edit', methods=['GET', 'POST'])
     @role_required('lecturer', 'admin')
@@ -223,6 +229,12 @@ def register_assessments(app):
             description = request.form.get('description', '').strip()
             time_limit = request.form.get('time_limit', 0, type=int)
             privacy_mode = 1 if request.form.get('privacy_mode') else 0
+
+            lesson_id_raw = request.form.get('lesson_id')
+            try:
+                lesson_id = int(lesson_id_raw) if lesson_id_raw not in (None, '', 'None') else None
+            except:
+                lesson_id = None
 
             # Parse questions from form (Up to 100 slots, Zero-JS)
             questions = []
@@ -249,15 +261,16 @@ def register_assessments(app):
                 is_hidden = 1 if request.form.get('is_hidden') else 0
 
                 g.db.execute(
-                    'UPDATE assessments SET title=?, description=?, questions_json=?, time_limit=?, privacy_mode=?, is_hidden=?, available_until=? WHERE id=?',
-                    (title, description, json.dumps(questions), time_limit, privacy_mode, is_hidden, avail_until, assessment_id)
+                    'UPDATE assessments SET lesson_id=?, title=?, description=?, questions_json=?, time_limit=?, privacy_mode=?, is_hidden=?, available_until=? WHERE id=?',
+                    (lesson_id, title, description, json.dumps(questions), time_limit, privacy_mode, is_hidden, avail_until, assessment_id)
                 )
                 g.db.commit()
                 flash('Assessment updated!', 'success')
                 return redirect(url_for('course_detail', course_id=course_id))
 
         questions = json.loads(assessment['questions_json'])
-        return render_template('assessments/edit.html', assessment=assessment, course=course, questions=questions)
+        lessons = g.db.execute('SELECT id, title FROM lessons WHERE course_id = ? ORDER BY order_num', (course_id,)).fetchall()
+        return render_template('assessments/edit.html', assessment=assessment, course=course, questions=questions, lessons=lessons)
 
 
     @app.route('/courses/<int:course_id>/assessments/<int:assessment_id>/delete', methods=['POST'])

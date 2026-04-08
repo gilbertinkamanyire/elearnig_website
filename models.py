@@ -92,6 +92,7 @@ def init_db():
             CREATE TABLE IF NOT EXISTS assessments (
                 id SERIAL PRIMARY KEY,
                 course_id INTEGER NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
+                lesson_id INTEGER REFERENCES lessons(id),
                 title TEXT NOT NULL,
                 description TEXT DEFAULT '',
                 questions_json TEXT NOT NULL DEFAULT '[]',
@@ -307,6 +308,7 @@ def init_db():
             CREATE TABLE IF NOT EXISTS assessments (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 course_id INTEGER NOT NULL,
+                lesson_id INTEGER,
                 title TEXT NOT NULL,
                 description TEXT DEFAULT '',
                 questions_json TEXT NOT NULL DEFAULT '[]',
@@ -314,7 +316,8 @@ def init_db():
                 privacy_mode INTEGER DEFAULT 0,
                 is_hidden INTEGER DEFAULT 0,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
+                FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
+                FOREIGN KEY (lesson_id) REFERENCES lessons(id)
             );
  
             CREATE TABLE IF NOT EXISTS attendance (

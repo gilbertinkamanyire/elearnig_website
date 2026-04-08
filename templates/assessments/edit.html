@@ -43,6 +43,18 @@
                 <div class="form-hint" style="margin-top: 0.5rem;">The assessment will disappear/expire for students after this time.</div>
             </div>
         </div>
+        <div class="form-row" style="margin-top: 1rem;">
+            <div class="form-group">
+                <label class="form-label" for="lesson_id">Attach to Lesson (optional)</label>
+                <select id="lesson_id" name="lesson_id" class="form-input">
+                    <option value="">No lesson (course-level)</option>
+                    {% for l in lessons %}
+                    <option value="{{ l.id }}" {% if assessment.lesson_id and assessment.lesson_id == l.id %}selected{% endif %}>{{ l.title }}</option>
+                    {% endfor %}
+                </select>
+                <div class="form-hint">Choose a lesson to make this assessment the questionnaire shown after that lesson.</div>
+            </div>
+        </div>
 
         <div class="form-group" style="margin-top: 1rem;">
             <label class="form-label" style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">

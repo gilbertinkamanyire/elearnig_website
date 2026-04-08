@@ -56,6 +56,43 @@ def register_unique(app):
             LIMIT 3
         ''', (user_id,)).fetchall()
 
+        # 5. Competency mirror data
+        competencies = db.execute('''
+            SELECT c.id as course_id,
+                   c.title as skill_name,
+                   c.category,
+                   e.progress,
+                   COUNT(l.id) as total_lessons,
+                   SUM(CASE WHEN lp.completed = 1 THEN 1 ELSE 0 END) as completed_lessons
+            FROM enrollments e
+            JOIN courses c ON e.course_id = c.id
+            LEFT JOIN lessons l ON l.course_id = c.id
+            LEFT JOIN lesson_progress lp ON lp.lesson_id = l.id AND lp.student_id = ?
+            WHERE e.student_id = ?
+            GROUP BY c.id, c.title, c.category, e.progress
+            ORDER BY e.progress DESC, c.title
+        ''', (user_id, user_id)).fetchall()
+
+        competencies_mastered = []
+        competencies_in_progress = []
+        competencies_not_started = []
+        for row in competencies:
+            progress = float(row['progress'] or 0.0)
+            skill = {
+                'course_id': row['course_id'],
+                'title': row['skill_name'],
+                'category': row['category'] or 'General',
+                'progress': round(progress, 0),
+                'completed_lessons': int(row['completed_lessons'] or 0),
+                'total_lessons': int(row['total_lessons'] or 0)
+            }
+            if progress >= 80:
+                competencies_mastered.append(skill)
+            elif progress > 0:
+                competencies_in_progress.append(skill)
+            else:
+                competencies_not_started.append(skill)
+
         # Get existing insights from DB
         stored_insights = db.execute('SELECT * FROM learning_insights WHERE user_id = ? ORDER BY created_at DESC', (user_id,)).fetchall()
 
@@ -63,7 +100,10 @@ def register_unique(app):
                                focus_window=focus_window, 
                                struggles=struggles, 
                                strengths=strengths,
-                               stored_insights=stored_insights)
+                               stored_insights=stored_insights,
+                               competencies_mastered=competencies_mastered,
+                               competencies_in_progress=competencies_in_progress,
+                               competencies_not_started=competencies_not_started)
 
     @app.route('/synergy-connect')
     @login_required

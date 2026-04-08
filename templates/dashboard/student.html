@@ -6,9 +6,9 @@
 <div class="page-header" style="position: relative; overflow: hidden; border-radius: var(--radius-xl); padding: 4rem 2rem; color: white; background: url('/static/images/backgrounds/hero_student.png') center/cover; margin-bottom: 2.5rem; border: 1px solid var(--border); box-shadow: var(--shadow-lg);">
     <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.4) 100%); z-index: 1;"></div>
     <div style="position: relative; z-index: 2; max-width: 600px;">
-        <div class="badge badge-info mb-1" style="background: rgba(255,255,255,0.2); backdrop-filter: blur(4px); color: white; border: 1px solid rgba(255,255,255,0.3);">Student Dashboard</div>
-        <h1 style="color: white; font-size: 2.8rem; font-weight: 900; text-shadow: 0 4px 12px rgba(0,0,0,0.4); margin-bottom: 0.5rem; line-height: 1.1;">👋 Welcome back,<br><span style="color: var(--accent-light);">{{ session.full_name }}</span>!</h1>
-        <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; text-shadow: 0 2px 8px rgba(0,0,0,0.5); font-weight: 500;">Ready to continue your learning journey today?</p>
+        <div class="badge badge-info mb-1" style="background: rgba(255,255,255,0.2); backdrop-filter: blur(4px); color: white; border: 1px solid rgba(255,255,255,0.3);">{{ _('Student Dashboard') }}</div>
+        <h1 style="color: white; font-size: 2.8rem; font-weight: 900; text-shadow: 0 4px 12px rgba(0,0,0,0.4); margin-bottom: 0.5rem; line-height: 1.1;">👋 {{ _('Welcome back') }},<br><span style="color: var(--accent-light);">{{ session.full_name }}</span>!</h1>
+        <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; text-shadow: 0 2px 8px rgba(0,0,0,0.5); font-weight: 500;">{{ _('Ready to continue your learning journey today?') }}</p>
     </div>
 </div>
 
@@ -16,13 +16,13 @@
 {% if announcements %}
 <section class="mb-3">
     <div class="section-header">
-        <h2 class="section-title">📢 Announcements</h2>
+        <h2 class="section-title">📢 {{ _('Announcements') }}</h2>
     </div>
     {% for ann in announcements[:3] %}
     <div class="announcement-item">
         <div class="announcement-title">{{ ann.title }}</div>
         <div class="announcement-body">{{ ann.content[:200] }}{% if ann.content|length > 200 %}...{% endif %}</div>
-        <div class="announcement-meta">By {{ ann.author_name }} · {{ ann.created_at|timeago }}</div>
+        <div class="announcement-meta">{{ _('By') }} {{ ann.author_name }} · {{ ann.created_at|timeago }}</div>
     </div>
     {% endfor %}
 </section>
@@ -31,8 +31,8 @@
 <!-- My Courses -->
 <section class="mb-3">
     <div class="section-header">
-        <h2 class="section-title">📖 My Courses</h2>
-        <a href="{{ url_for('courses_list') }}" class="btn btn-sm btn-outline">Browse More →</a>
+        <h2 class="section-title">📖 {{ _('My Courses') }}</h2>
+        <a href="{{ url_for('courses_list') }}" class="btn btn-sm btn-outline">{{ _('Browse More') }} →</a>
     </div>
     
     {% if enrollments %}
@@ -55,7 +55,7 @@
                 <div class="course-card-desc">{{ e.description[:100] }}{% if e.description|length > 100 %}...{% endif %}</div>
                 <div style="margin-top: auto;">
                     <div class="flex-between mb-1">
-                        <span style="font-size: 0.75rem; color: var(--text-muted);">Progress</span>
+                        <span style="font-size: 0.75rem; color: var(--text-muted);">{{ _('Progress') }}</span>
                         <span style="font-size: 0.75rem; font-weight: 700; color: var(--accent);">{{ e.progress|round(0)|int }}%</span>
                     </div>
                     <div class="progress-bar">
@@ -73,9 +73,9 @@
     {% else %}
     <div class="empty-state">
         <div class="empty-state-icon">📚</div>
-        <div class="empty-state-title">No Courses Yet</div>
-        <div class="empty-state-desc">Browse our course catalog and enroll in courses that interest you.</div>
-        <a href="{{ url_for('courses_list') }}" class="btn btn-primary">Browse Courses</a>
+        <div class="empty-state-title">{{ _('No Courses Yet') }}</div>
+        <div class="empty-state-desc">{{ _('Browse our course catalog and enroll in courses that interest you.') }}</div>
+        <a href="{{ url_for('courses_list') }}" class="btn btn-primary">{{ _('Browse Courses') }}</a>
     </div>
     {% endif %}
 </section>
@@ -84,16 +84,16 @@
 {% if assessments %}
 <section>
     <div class="section-header">
-        <h2 class="section-title">📝 Pending Assessments</h2>
+        <h2 class="section-title">📝 {{ _('Pending Assessments') }}</h2>
     </div>
     <div class="card">
         {% for a in assessments %}
         <div class="flex-between" style="padding: 0.75rem 0; {% if not loop.last %}border-bottom: 1px solid var(--border);{% endif %}">
             <div>
                 <div style="font-weight: 600; font-size: 0.9rem;">{{ a.title }}</div>
-                <div style="font-size: 0.75rem; color: var(--text-muted);">{{ a.course_title }} · {% if a.time_limit %}{{ a.time_limit }} min{% else %}No time limit{% endif %}</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">{{ a.course_title }} · {% if a.time_limit %}{{ a.time_limit }} min{% else %}{{ _('No time limit') }}{% endif %}</div>
             </div>
-            <a href="{{ url_for('take_assessment', course_id=a.course_id, assessment_id=a.id) }}" class="btn btn-sm btn-primary">Take Quiz</a>
+            <a href="{{ url_for('take_assessment', course_id=a.course_id, assessment_id=a.id) }}" class="btn btn-sm btn-primary">{{ _('Take Quiz') }}</a>
         </div>
         {% endfor %}
     </div>
