@@ -1,7 +1,5 @@
-from flask import render_template, request, redirect, url_for, flash, session, g
-from models import get_db
+from flask import render_template, redirect, url_for, flash, session, g
 from helpers import login_required
-import json
 
 def register_unique(app):
     @app.route('/cognitive-mirror')

@@ -76,12 +76,11 @@ def setup_helpers(app):
         if db is not None:
             try:
                 db.close()
-            except:
+            except Exception:
                 pass
 
     def translate(text):
-        lang = session.get('language', 'en')
-        return TRANSLATIONS.get(lang, TRANSLATIONS['en']).get(text, text)
+        return text
 
     @app.context_processor
     def inject_user():
@@ -89,6 +88,6 @@ def setup_helpers(app):
             if 'user_id' in session:
                 user = g.db.execute('SELECT * FROM users WHERE id = ?', (session['user_id'],)).fetchone()
                 return {'current_user': user, '_': translate}
-        except:
+        except Exception:
             pass
         return {'current_user': None, '_': translate}

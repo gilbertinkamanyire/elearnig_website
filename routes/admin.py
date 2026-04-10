@@ -1,8 +1,9 @@
-import os, json, secrets
+import os
+import secrets
 from datetime import datetime
-from flask import render_template, request, redirect, url_for, session, flash, g, jsonify, abort
-from werkzeug.security import generate_password_hash, check_password_hash
-from helpers import login_required, role_required, send_notification_email, send_reset_email
+from flask import render_template, request, redirect, url_for, session, flash, g, abort
+from werkzeug.security import generate_password_hash
+from helpers import role_required, send_notification_email, send_reset_email
 
 def register_admin(app):
 

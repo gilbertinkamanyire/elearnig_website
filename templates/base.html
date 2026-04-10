@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ session.get('language', 'en') }}">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
@@ -12,6 +12,12 @@
     <link rel="manifest" href="{{ url_for('manifest') }}">
     <!-- Modern Icons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        /* Hide Google Translate top banner and widget */
+        .skiptranslate iframe { display: none !important; }
+        body { top: 0px !important; }
+        #google_translate_element { display: none; }
+    </style>
 </head>
 <body class="{% block body_class %}{% endblock %} mode-{{ session.get('bandwidth_mode', 'standard') }} mode-{{ session.get('theme_mode', 'light') }}">
     
@@ -166,6 +172,19 @@
             </div>
         </div>
     </footer>
+
+    <!-- Google Translate Script (Hidden) -->
+    <div id="google_translate_element"></div>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en', 
+                includedLanguages: 'en,sw,lg', 
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     {% block scripts %}{% endblock %}
     <script>

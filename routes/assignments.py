@@ -1,6 +1,6 @@
-import os, json
+import os
 from datetime import datetime
-from flask import render_template, request, redirect, url_for, session, flash, g, jsonify, abort
+from flask import render_template, request, redirect, url_for, session, flash, g, abort
 from config import Config
 from helpers import login_required, role_required, send_notification_email, create_notification
 

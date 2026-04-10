@@ -1,7 +1,8 @@
 import os
 from flask import Flask, redirect, request, session, url_for
+from werkzeug.security import generate_password_hash
 from config import Config
-from models import init_db, seed_db
+from models import init_db, seed_db, get_db
 from helpers import setup_helpers, register_filters
 from db_compat import USE_POSTGRES
 
@@ -24,56 +25,79 @@ from routes.unique import register_unique
 app = Flask(__name__)
 app.config.from_object(Config)
 
-from models import get_db
-import secrets
-from werkzeug.security import generate_password_hash
+
+# ---------------------------------------------------------------------------
+# Simple toggle routes (theme, bandwidth, language)
+# ---------------------------------------------------------------------------
 
 @app.route('/toggle-theme', methods=['POST'])
 def toggle_theme():
     current_mode = session.get('theme_mode', 'light')
     new_mode = 'dark' if current_mode == 'light' else 'light'
     session['theme_mode'] = new_mode
-    
+
     if 'user_id' in session:
         db = get_db()
-        if USE_POSTGRES:
-            db.execute(
-                'INSERT INTO user_preferences (user_id, theme) VALUES (%s, %s) ON CONFLICT (user_id) DO UPDATE SET theme = EXCLUDED.theme',
-                (session['user_id'], new_mode)
-            )
-        else:
-            db.execute('INSERT OR REPLACE INTO user_preferences (user_id, theme) VALUES (?, ?)', 
-                       (session['user_id'], new_mode))
-        db.commit()
-        db.close()
-        
+        try:
+            if USE_POSTGRES:
+                db.execute(
+                    'INSERT INTO user_preferences (user_id, theme) VALUES (%s, %s) '
+                    'ON CONFLICT (user_id) DO UPDATE SET theme = EXCLUDED.theme',
+                    (session['user_id'], new_mode)
+                )
+            else:
+                db.execute(
+                    'INSERT OR REPLACE INTO user_preferences (user_id, theme) VALUES (?, ?)',
+                    (session['user_id'], new_mode)
+                )
+            db.commit()
+        finally:
+            db.close()
+
     return redirect(request.referrer or url_for('index'))
+
 
 @app.route('/toggle-bandwidth', methods=['POST'])
 def toggle_bandwidth():
     mode = request.form.get('mode', 'standard')
     session['bandwidth_mode'] = mode
-    
+
     if 'user_id' in session:
         db = get_db()
-        if USE_POSTGRES:
-            db.execute(
-                'INSERT INTO user_preferences (user_id, bandwidth_mode) VALUES (%s, %s) ON CONFLICT (user_id) DO UPDATE SET bandwidth_mode = EXCLUDED.bandwidth_mode',
-                (session['user_id'], mode)
-            )
-        else:
-            db.execute('INSERT OR REPLACE INTO user_preferences (user_id, bandwidth_mode) VALUES (?, ?)', 
-                       (session['user_id'], mode))
-        db.commit()
-        db.close()
-        
+        try:
+            if USE_POSTGRES:
+                db.execute(
+                    'INSERT INTO user_preferences (user_id, bandwidth_mode) VALUES (%s, %s) '
+                    'ON CONFLICT (user_id) DO UPDATE SET bandwidth_mode = EXCLUDED.bandwidth_mode',
+                    (session['user_id'], mode)
+                )
+            else:
+                db.execute(
+                    'INSERT OR REPLACE INTO user_preferences (user_id, bandwidth_mode) VALUES (?, ?)',
+                    (session['user_id'], mode)
+                )
+            db.commit()
+        finally:
+            db.close()
+
     return redirect(request.referrer or url_for('index'))
+
 
 @app.route('/toggle-language', methods=['POST'])
 def toggle_language():
+    import urllib.parse
+    from flask import make_response
     language = request.form.get('language', 'en')
     session['language'] = language
-    return redirect(request.referrer or url_for('index'))
+    
+    resp = make_response(redirect(request.referrer or url_for('index')))
+    
+    if language == 'en':
+        resp.delete_cookie('googtrans', path='/')
+    else:
+        resp.set_cookie('googtrans', f'/en/{language}', path='/')
+        
+    return resp
 
 @app.route('/uploads/<path:filename>')
 def serve_uploads(filename):
@@ -81,10 +105,11 @@ def serve_uploads(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
+# ---------------------------------------------------------------------------
+# Database initialization
+# ---------------------------------------------------------------------------
 
-# Initialize database
 if USE_POSTGRES:
-    # Always try to init on Postgres (CREATE IF NOT EXISTS is safe)
     try:
         init_db()
         seed_db()
@@ -95,15 +120,9 @@ else:
         init_db()
         seed_db()
 
-# Automatically run data fixes for older accounts/courses
+# Auto-fix: ensure admin account exists with known credentials on every start
 try:
-    from update_course_images import update_courses
-    update_courses()
-    
-    # Auto-fix admin credentials on remote db
-    from werkzeug.security import generate_password_hash
     db_fix = get_db()
-    
     admin_hash = generate_password_hash('admin123')
     admin_email = 'admin@learnug.com'
     admin_username = 'admin'
@@ -111,9 +130,9 @@ try:
     admin_phone = '+256700000001'
 
     if USE_POSTGRES:
-        # Check if admin exists
-        existing_admin = db_fix.execute("SELECT id FROM users WHERE username = %s", (admin_username,)).fetchone()
-        
+        existing_admin = db_fix.execute(
+            "SELECT id FROM users WHERE username = %s", (admin_username,)
+        ).fetchone()
         if existing_admin:
             db_fix.execute(
                 "UPDATE users SET email = %s, password_hash = %s WHERE username = %s",
@@ -121,12 +140,14 @@ try:
             )
         else:
             db_fix.execute(
-                "INSERT INTO users (username, email, password_hash, role, full_name, phone, is_active, is_verified) VALUES (%s, %s, %s, %s, %s, %s, TRUE, TRUE)",
+                "INSERT INTO users (username, email, password_hash, role, full_name, phone, is_active, is_verified) "
+                "VALUES (%s, %s, %s, %s, %s, %s, TRUE, TRUE)",
                 (admin_username, admin_email, admin_hash, 'admin', admin_full_name, admin_phone)
             )
-    else: # SQLite
-        existing_admin = db_fix.execute("SELECT id FROM users WHERE username = ?", (admin_username,)).fetchone()
-        
+    else:
+        existing_admin = db_fix.execute(
+            "SELECT id FROM users WHERE username = ?", (admin_username,)
+        ).fetchone()
         if existing_admin:
             db_fix.execute(
                 "UPDATE users SET email = ?, password_hash = ? WHERE username = ?",
@@ -134,25 +155,44 @@ try:
             )
         else:
             db_fix.execute(
-                "INSERT INTO users (username, email, password_hash, role, full_name, phone, is_active, is_verified) VALUES (?, ?, ?, ?, ?, ?, 1, 1)",
+                "INSERT INTO users (username, email, password_hash, role, full_name, phone, is_active, is_verified) "
+                "VALUES (?, ?, ?, ?, ?, ?, 1, 1)",
                 (admin_username, admin_email, admin_hash, 'admin', admin_full_name, admin_phone)
             )
-    
+
+    # Also run the available_until migration for existing databases
+    try:
+        if USE_POSTGRES:
+            db_fix.execute("ALTER TABLE assessments ADD COLUMN IF NOT EXISTS available_until TEXT")
+        else:
+            db_fix.execute("ALTER TABLE assessments ADD COLUMN available_until TEXT")
+    except Exception:
+        pass  # Column already exists
+
     db_fix.commit()
     db_fix.close()
 except Exception as e:
     print(f"Data fix skipped: {e}")
 
+
+# ---------------------------------------------------------------------------
+# Context processor — inject nav departments + current user
+# ---------------------------------------------------------------------------
+
 @app.context_processor
 def inject_nav_data():
-    from models import get_db
     try:
         db = get_db()
         depts = db.execute('SELECT id, name FROM departments ORDER BY name').fetchall()
         db.close()
         return dict(nav_departments=depts)
-    except:
+    except Exception:
         return dict(nav_departments=[])
+
+
+# ---------------------------------------------------------------------------
+# Ensure upload directory exists & register helpers / blueprints
+# ---------------------------------------------------------------------------
 
 os.makedirs(Config.UPLOAD_FOLDER, exist_ok=True)
 

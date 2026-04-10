@@ -99,6 +99,7 @@ def init_db():
                 time_limit INTEGER DEFAULT 0,
                 privacy_mode INTEGER DEFAULT 0,
                 is_hidden INTEGER DEFAULT 0,
+                available_until TEXT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
  
@@ -315,6 +316,7 @@ def init_db():
                 time_limit INTEGER DEFAULT 0,
                 privacy_mode INTEGER DEFAULT 0,
                 is_hidden INTEGER DEFAULT 0,
+                available_until TEXT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
                 FOREIGN KEY (lesson_id) REFERENCES lessons(id)
@@ -462,7 +464,6 @@ def init_db():
 def seed_db():
     """Seed database with sample data for demonstration."""
     from werkzeug.security import generate_password_hash
-    import json
     
     db = get_db()
     
@@ -472,34 +473,20 @@ def seed_db():
         db.close()
         return
     
-    # Create users
-    users = [
-        ('admin', 'admin@learnug.com', generate_password_hash('admin123'), 'admin', 'System Administrator', '+256700000001'),
-    ]
-    # NOTE: Only one admin account. Credentials: admin / admin123
+    # Create admin user  (Credentials: admin / admin123)
+    db.execute(
+        'INSERT INTO users (username, email, password_hash, role, full_name, phone) VALUES (?, ?, ?, ?, ?, ?)',
+        ('admin', 'admin@learnug.com', generate_password_hash('admin123'), 'admin', 'System Administrator', '+256700000001')
+    )
     
-    for u in users:
-        db.execute('INSERT INTO users (username, email, password_hash, role, full_name, phone) VALUES (?, ?, ?, ?, ?, ?)', u)
-    
-    # Create departments
-    departments = [
+    # Create default departments
+    for name, desc in [
         ('Computing', 'Department of Computing and Information Technology'),
         ('Engineering', 'Department of Engineering and Applied Sciences'),
         ('Business', 'Department of Business and Management'),
-    ]
-    for d in departments:
-        db.execute('INSERT INTO departments (name, description) VALUES (?, ?)', d)
+    ]:
+        db.execute('INSERT INTO departments (name, description) VALUES (?, ?)', (name, desc))
     
-    # Learning insights
-    insights = [
-        (4, None, 'focus_window', 'Peak performance between 8 AM and 10 AM.'),
-        (4, 1, 'struggle_point', 'Viewed "Number Systems and Binary" 5 times.'),
-        (4, None, 'strength', 'Python Basics progress was 40% faster than average.')
-    ]
-    for i in insights:
-        try: db.execute('INSERT INTO learning_insights (user_id, course_id, insight_type, content) VALUES (?, ?, ?, ?)', i)
-        except: pass
-
     db.commit()
     db.close()
     print("Database seeded with admin only!")

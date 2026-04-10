@@ -1,9 +1,8 @@
-import os, json
+import os
 from datetime import datetime
-from flask import render_template, request, redirect, url_for, session, flash, g, jsonify, abort
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import render_template, request, redirect, url_for, session, flash, g, abort
 from config import Config
-from helpers import login_required, role_required, send_notification_email, send_reset_email
+from helpers import login_required, role_required, send_notification_email
 
 def register_courses(app):
 

@@ -20,7 +20,7 @@ def timeago(dt_str):
             return f"{diff.seconds // 60}m ago"
         else:
             return "just now"
-    except:
+    except Exception:
         return str(dt_str)
 
 def nl2br(value):

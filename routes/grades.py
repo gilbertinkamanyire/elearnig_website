@@ -1,6 +1,5 @@
-import os, json
-from flask import render_template, request, redirect, url_for, session, flash, g, abort
-from helpers import login_required, role_required
+from flask import render_template, redirect, url_for, session, flash, g
+from helpers import login_required
 
 def register_grades(app):
 
