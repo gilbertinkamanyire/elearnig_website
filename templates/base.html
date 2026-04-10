@@ -161,6 +161,20 @@
                 <div class="footer-text">
                     &copy; 2026 LearnUG Online Learning Platform (Commit: edd0bed)<br>
                     <small>High-Efficiency Education for Low-Bandwidth Networks</small>
+                    <div style="margin-top: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <form action="{{ url_for('toggle_language') }}" method="POST">
+                            <input type="hidden" name="language" value="en">
+                            <button type="submit" class="btn btn-sm {% if current_lang == 'en' %}btn-primary text-white{% else %}btn-outline{% endif %}">🇬🇧 EN</button>
+                        </form>
+                        <form action="{{ url_for('toggle_language') }}" method="POST">
+                            <input type="hidden" name="language" value="sw">
+                            <button type="submit" class="btn btn-sm {% if current_lang == 'sw' %}btn-primary text-white{% else %}btn-outline{% endif %}">🇹🇿 Kiswahili</button>
+                        </form>
+                        <form action="{{ url_for('toggle_language') }}" method="POST">
+                            <input type="hidden" name="language" value="lg">
+                            <button type="submit" class="btn btn-sm {% if current_lang == 'lg' %}btn-primary text-white{% else %}btn-outline{% endif %}">🇺🇬 Luganda</button>
+                        </form>
+                    </div>
                 </div>
                 <div class="footer-links">
                     <a href="{{ url_for('about') }}">{{ _('About') }} LearnUG</a>

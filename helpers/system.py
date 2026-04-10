@@ -61,7 +61,14 @@ TRANSLATIONS = {
         'Mark as Complete': 'Wezesha Kukamilisha',
         'Take Questionnaire': 'Chukua Dodoso',
         'Progress': 'Maendeleo',
-        'Participants': 'Washiriki'
+        'Participants': 'Washiriki',
+        'Synergy Connect': 'Muunganisho wa Harambee',
+        'Cognitive Mirror': 'Kioo cha Utambuzi',
+        'Back to Course': 'Rudi kwenye Kozi',
+        'Search': 'Tafuta',
+        'Profile': 'Wasifu',
+        'Settings': 'Mipangilio',
+        'Logout': 'Ondoka'
     }
 }
 
@@ -94,14 +101,21 @@ def setup_helpers(app):
                 pass
 
     def translate(text):
+        lang = session.get('language', 'en')
+        if lang in TRANSLATIONS and text in TRANSLATIONS[lang]:
+            return TRANSLATIONS[lang][text]
         return text
 
     @app.context_processor
     def inject_user():
+        user = None
         try:
             if 'user_id' in session:
                 user = g.db.execute('SELECT * FROM users WHERE id = ?', (session['user_id'],)).fetchone()
-                return {'current_user': user, '_': translate}
         except Exception:
             pass
-        return {'current_user': None, '_': translate}
+        return {
+            'current_user': user,
+            '_': translate,
+            'current_lang': session.get('language', 'en')
+        }
