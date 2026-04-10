@@ -91,6 +91,12 @@ def register_unique(app):
             else:
                 competencies_not_started.append(skill)
 
+        # 6. Collaboration stats for mirror
+        collab_stats = db.execute('''
+            SELECT COUNT(*) FROM synergy_matches 
+            WHERE (user_a_id = ? OR user_b_id = ?)
+        ''', (user_id, user_id)).fetchone()[0]
+
         # Get existing insights from DB
         stored_insights = db.execute('SELECT * FROM learning_insights WHERE user_id = ? ORDER BY created_at DESC', (user_id,)).fetchall()
 
@@ -101,13 +107,28 @@ def register_unique(app):
                                stored_insights=stored_insights,
                                competencies_mastered=competencies_mastered,
                                competencies_in_progress=competencies_in_progress,
-                               competencies_not_started=competencies_not_started)
+                               competencies_not_started=competencies_not_started,
+                               collab_count=collab_stats)
 
     @app.route('/synergy-connect')
     @login_required
     def synergy_connect():
         user_id = session['user_id']
         db = g.db
+        
+        # Collaborative data for Chart.js
+        chart_data = db.execute('''
+            SELECT c.title, COUNT(sm.id) as match_count
+            FROM courses c
+            JOIN synergy_matches sm ON c.id = sm.course_id
+            GROUP BY c.id, c.title
+            ORDER BY match_count DESC
+            LIMIT 5
+        ''').fetchall()
+        
+        labels = [row['title'] for row in chart_data]
+        values = [row['match_count'] for row in chart_data]
+
         # Get my progress for comparison
         my_enrollments = db.execute('SELECT course_id, progress FROM enrollments WHERE student_id = ?', (user_id,)).fetchall()
         my_progress_map = {e['course_id']: e['progress'] for e in my_enrollments}
@@ -116,10 +137,9 @@ def register_unique(app):
         
         peers = []
         if course_ids:
-            # Find peers who have completed different lessons than me
             placeholders = ', '.join(['?'] * len(course_ids))
             peers = db.execute(f'''
-                SELECT DISTINCT u.id, u.full_name, c.title as course_title, e.progress, e.course_id
+                SELECT DISTINCT u.id, u.full_name, u.profile_pic_url, c.title as course_title, e.progress, e.course_id
                 FROM users u
                 JOIN enrollments e ON u.id = e.student_id
                 JOIN courses c ON e.course_id = c.id
@@ -129,16 +149,55 @@ def register_unique(app):
                 LIMIT 5
             ''', (*course_ids, user_id)).fetchall()
 
-        return render_template('unique/synergy_connect.html', peers=peers, my_progress=my_progress_map)
+        # Get current active matches
+        active_matches = db.execute('''
+            SELECT sm.*, u.full_name as peer_name, c.title as course_title
+            FROM synergy_matches sm
+            JOIN users u ON (CASE WHEN sm.user_a_id = ? THEN sm.user_b_id ELSE sm.user_a_id END) = u.id
+            JOIN courses c ON sm.course_id = c.id
+            WHERE (sm.user_a_id = ? OR sm.user_b_id = ?) AND sm.is_active = 1
+        ''', (user_id, user_id, user_id)).fetchall()
 
-    @app.route('/synergy/sync/<int:peer_id>')
+        return render_template('unique/synergy_connect.html', 
+                             peers=peers, 
+                             my_progress=my_progress_map,
+                             active_matches=active_matches,
+                             chart_labels=labels,
+                             chart_values=values)
+
+    @app.route('/synergy/sync/<int:peer_id>/<int:course_id>')
     @login_required
-    def synergy_sync(peer_id):
+    def synergy_sync(peer_id, course_id):
+        user_id = session['user_id']
         db = g.db
-        peer = db.execute('SELECT full_name FROM users WHERE id = ?', (peer_id,)).fetchone()
-        if peer:
-            flash(f"Sync request sent to {peer['full_name']}! They will be notified to join a 15-minute session.", "success")
+        
+        # Check if match already exists
+        existing = db.execute('''
+            SELECT id FROM synergy_matches 
+            WHERE course_id = ? AND 
+            ((user_a_id = ? AND user_b_id = ?) OR (user_a_id = ? AND user_b_id = ?))
+        ''', (course_id, user_id, peer_id, peer_id, user_id)).fetchone()
+
+        if not existing:
+            db.execute('''
+                INSERT INTO synergy_matches (user_a_id, user_b_id, course_id, match_reason)
+                VALUES (?, ?, ?, ?)
+            ''', (user_id, peer_id, course_id, "Manual Peer Request"))
+            db.commit()
+            flash("🤝 Synergy request created! You can now collaborate.", "success")
         else:
-            flash("User not found.", "danger")
+            flash("You already have an active sync with this peer.", "info")
+            
+        return redirect(url_for('synergy_connect'))
+
+    @app.route('/synergy/update-meeting', methods=['POST'])
+    @login_required
+    def synergy_update_meeting():
+        from flask import request
+        match_id = request.form.get('match_id')
+        link = request.form.get('meeting_link')
+        g.db.execute('UPDATE synergy_matches SET meeting_link = ? WHERE id = ?', (link, match_id))
+        g.db.commit()
+        flash("Meeting link updated!", "success")
         return redirect(url_for('synergy_connect'))
 
