@@ -58,8 +58,13 @@ def register_auth(app):
                 session['full_name'] = user['full_name']
                 flash(f'Welcome back, {user["full_name"]}!', 'success')
                 
-                # Store the username in a cookie so it's remembered even after logout
-                resp = make_response(redirect(url_for('dashboard')))
+                # Check for redirections (standard next param)
+                next_url = request.args.get('next')
+                if not next_url or not next_url.startswith('/'):
+                    # Ensure it's a relative URL or starts with our domain to prevent open redirect vulnerabilities
+                    next_url = url_for('dashboard')
+                
+                resp = make_response(redirect(next_url))
                 resp.set_cookie('saved_username', user['username'], max_age=30*24*60*60)
                 return resp
             else:
