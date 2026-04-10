@@ -84,31 +84,45 @@
         
         <!-- Completion & Navigation -->
         <div style="margin-top: 1.5rem;">
-            {% if lesson_assessment %}
-                {% if not assessment_submitted and session.role == 'student' %}
-                <div style="text-align: center; margin-bottom: 1rem;">
-                    <a href="{{ url_for('take_assessment', course_id=course.id, assessment_id=lesson_assessment.id) }}" class="btn btn-primary btn-lg">📝 {{ _('Take Questionnaire') }}</a>
-                </div>
-                {% else %}
-                    {% if not is_completed and session.role == 'student' %}
-                    <form method="POST" action="{{ url_for('complete_lesson', course_id=course.id, lesson_id=lesson.id) }}" style="text-align: center; margin-bottom: 1rem;">
-                        <button type="submit" class="btn btn-primary btn-lg">✅ {{ _('Mark as Complete') }}</button>
-                    </form>
-                    {% elif is_completed %}
-                    <div style="text-align: center; margin-bottom: 1rem;">
-                        <span class="badge badge-success" style="font-size: 0.85rem; padding: 0.5rem 1.5rem;">✓ {{ _('Lesson Completed') }}</span>
-                    </div>
+            {% if session.role == 'student' %}
+                {% if lesson_assessment %}
+                    {% if not assessment_submitted %}
+                        <div class="alert alert-info" style="text-align: center; margin-bottom: 1.5rem;">
+                            <i class='bx bx-info-circle'></i> {{ _('You must complete the questionnaire before you can mark this lesson as finished.') }}
+                            <div style="margin-top: 1rem;">
+                                <a href="{{ url_for('take_assessment', course_id=course.id, assessment_id=lesson_assessment.id) }}" class="btn btn-primary btn-lg">📝 {{ _('Take Questionnaire') }}</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        {% if not is_completed %}
+                            <form method="POST" action="{{ url_for('complete_lesson', course_id=course.id, lesson_id=lesson.id) }}" style="text-align: center; margin-bottom: 1rem;">
+                                <button type="submit" class="btn btn-primary btn-lg">✅ {{ _('Mark as Complete') }}</button>
+                            </form>
+                        {% else %}
+                            <div style="text-align: center; margin-bottom: 1rem;">
+                                <span class="badge badge-success" style="font-size: 0.85rem; padding: 0.5rem 1.5rem;">✓ {{ _('Lesson Completed') }}</span>
+                            </div>
+                        {% endif %}
                     {% endif %}
+                {% else %}
+                    <div class="alert alert-warning" style="text-align: center; margin-bottom: 1rem; border-style: dashed;">
+                        <i class='bx bx-time'></i> {{ _('Waiting for lecturer to add an assessment for this lesson.') }}
+                    </div>
                 {% endif %}
-            {% else %}
-                {% if not is_completed and session.role == 'student' %}
-                <form method="POST" action="{{ url_for('complete_lesson', course_id=course.id, lesson_id=lesson.id) }}" style="text-align: center; margin-bottom: 1rem;">
-                    <button type="submit" class="btn btn-primary btn-lg">✅ Mark as Complete</button>
-                </form>
-                {% elif is_completed %}
-                <div style="text-align: center; margin-bottom: 1rem;">
-                    <span class="badge badge-success" style="font-size: 0.85rem; padding: 0.5rem 1.5rem;">✓ {{ _('Lesson Completed') }}</span>
-                </div>
+            {% elif session.role in ('lecturer', 'admin') %}
+                {% if not lesson_assessment %}
+                    <div style="text-align: center; margin-bottom: 1rem; padding: 1.5rem; border: 2px dashed var(--border); border-radius: var(--radius-lg);">
+                        <p style="color: var(--text-muted); margin-bottom: 1rem;">{{ _('This lesson is missing a required assessment.') }}</p>
+                        <a href="{{ url_for('create_assessment', course_id=course.id) }}?lesson_id={{ lesson.id }}" class="btn btn-primary">
+                            <i class='bx bx-plus'></i> {{ _('Add Quiz') }}
+                        </a>
+                    </div>
+                {% else %}
+                    <div style="text-align: center; margin-bottom: 1rem;">
+                        <a href="{{ url_for('edit_assessment', course_id=course.id, assessment_id=lesson_assessment.id) }}" class="btn btn-sm btn-outline">
+                            <i class='bx bx-edit'></i> {{ _('Manage Quiz') }}
+                        </a>
+                    </div>
                 {% endif %}
             {% endif %}
             
