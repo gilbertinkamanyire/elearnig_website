@@ -69,6 +69,20 @@ def setup_helpers(app):
     @app.before_request
     def before_request():
         g.db = get_db()
+        
+        from flask import request, redirect, url_for, flash
+        # Completely lock down the system, only allowing login, register, and the landing page for unauthenticated users.
+        allowed_endpoints = [
+            'login', 'register', 'forgot_password', 'index',
+            'static', 'serve_uploads', 'manifest', 'sw',
+            'toggle_theme', 'toggle_bandwidth', 'toggle_language'
+        ]
+        
+        # If the endpoint requires authorization and the user is not signed in
+        if request.endpoint and request.endpoint not in allowed_endpoints and not request.endpoint.startswith('static'):
+            if 'user_id' not in session:
+                flash("🔒 Please sign in to access the system.", "danger")
+                return redirect(url_for('login', next=request.url))
 
     @app.teardown_appcontext
     def close_db(exception):

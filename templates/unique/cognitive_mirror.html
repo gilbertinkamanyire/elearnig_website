@@ -55,7 +55,7 @@
 <section class="competency-section">
     <div class="section-header" style="margin-bottom: 1.5rem;">
         <h2 class="section-title">Personal Competency Mirror</h2>
-        <p class="section-subtitle">Track your mastered skills, the competencies you're building, and the areas still waiting to start.</p>
+        <p class="section-subtitle">Helps you track your <strong style="color: var(--accent);">real competencies</strong>, not just marks. See which skills you've mastered, what's in progress, and what you haven't started yet.</p>
     </div>
 
     {% if competencies_mastered or competencies_in_progress or competencies_not_started %}
@@ -70,7 +70,7 @@
                             <strong>{{ skill.title }}</strong>
                             <div class="skill-meta">{{ skill.category }} · {{ skill.completed_lessons }} / {{ skill.total_lessons }} lessons</div>
                         </div>
-                        <span class="skill-pill pill-success">Mastered</span>
+                        <span class="skill-pill pill-success">Level: Master</span>
                         <div class="progress-bar mini">
                             <div class="progress-fill" style="width: {{ skill.progress }}%;"></div>
                         </div>
@@ -91,7 +91,7 @@
                             <strong>{{ skill.title }}</strong>
                             <div class="skill-meta">{{ skill.category }} · {{ skill.completed_lessons }} / {{ skill.total_lessons }} lessons</div>
                         </div>
-                        <span class="skill-pill pill-warning">In Progress</span>
+                        <span class="skill-pill pill-warning">Level: Learner</span>
                         <div class="progress-bar mini">
                             <div class="progress-fill" style="width: {{ skill.progress }}%;"></div>
                         </div>
@@ -112,7 +112,7 @@
                             <strong>{{ skill.title }}</strong>
                             <div class="skill-meta">{{ skill.category }} · {{ skill.total_lessons }} lessons</div>
                         </div>
-                        <span class="skill-pill pill-muted">Not Started</span>
+                        <span class="skill-pill pill-muted">Level: Novice</span>
                         <div class="progress-bar mini">
                             <div class="progress-fill" style="width: 5%;"></div>
                         </div>
@@ -274,11 +274,12 @@
     }
 
     .progress-bar.mini {
+        grid-column: 1 / -1;
         height: 8px;
         background: #edf2f8;
         border-radius: 999px;
         overflow: hidden;
-        margin-top: 0.85rem;
+        margin-top: 0.25rem;
     }
 
     .progress-bar.mini .progress-fill {

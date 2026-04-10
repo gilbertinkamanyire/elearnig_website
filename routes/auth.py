@@ -9,9 +9,6 @@ def register_auth(app):
 
     @app.route('/')
     def index():
-        if 'user_id' in session:
-            return redirect(url_for('dashboard'))
-
         # Get stats for landing page
         stats = {
             'courses': g.db.execute('SELECT COUNT(*) FROM courses WHERE is_published = 1').fetchone()[0],
