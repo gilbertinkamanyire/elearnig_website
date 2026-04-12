@@ -4,6 +4,8 @@ instance/
 .pytest_cache/
 .DS_Store
 database.db
+database.db-shm
+database.db-wal
 migrations/
 .env
 static/uploads/*

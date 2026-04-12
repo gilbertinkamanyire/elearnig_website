@@ -13,14 +13,9 @@
 <div class="page-header">
     <h1>📝 Add New Lesson</h1>
     <p>Add a lesson to "{{ course.title }}"</p>
-    <div class="alert alert-info" style="margin-top: 1rem; border-left: 4px solid var(--accent);">
-        <i class='bx bx-bulb'></i> <strong>Tip:</strong> Students can only "Mark as Complete" after passing a questionnaire linked to this lesson. Be sure to add one after saving!
-    </div>
-</div>
-
 <div class="card" style="max-width: 800px;">
     <form method="POST" action="{{ url_for('add_lesson', course_id=course.id) }}" enctype="multipart/form-data">
-        <div class="form-row">
+        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
             <div class="form-group">
                 <label class="form-label" for="title">Lesson Title *</label>
                 <input type="text" id="title" name="title" class="form-input" 
@@ -30,45 +25,61 @@
                 <label class="form-label" for="order_num">Order Number</label>
                 <input type="number" id="order_num" name="order_num" class="form-input" 
                        value="{{ max_order }}" min="0">
-                <div class="form-hint">Controls the display order of lessons</div>
             </div>
         </div>
         
         <div class="form-group">
             <label class="form-label" for="content">Lesson Content * (HTML supported)</label>
-            <textarea id="content" name="content" class="form-textarea" rows="15"
-                      placeholder="Write your lesson content here. HTML tags are supported for formatting.
-
-Example:
-<h3>Topic Title</h3>
-<p>Your content here...</p>
-
-<h4>Subtopic</h4>
-<ul>
-<li>Point 1</li>
-<li>Point 2</li>
-</ul>
-
-<pre>
-Code example here
-</pre>" required></textarea>
-            <div class="form-hint">Use HTML tags for formatting: &lt;h3&gt;, &lt;h4&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;ol&gt;, &lt;pre&gt;, &lt;strong&gt;, &lt;code&gt;</div>
+            <textarea id="content" name="content" class="form-textarea" rows="12" required></textarea>
         </div>
         
         <div class="form-group" style="margin-top: 1rem; padding: 1rem; border: 1px dashed var(--border); border-radius: var(--radius); background: var(--bg-input);">
             <label class="form-label" for="attachment">Upload Resource (Optional)</label>
-            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">You can upload a PDF notes file, a zipped archive, or a video file (MP4, WebM).</p>
-            <input type="file" id="attachment" name="attachment" class="form-input" accept=".pdf,.zip,.mp4,.webm,.doc,.docx" style="padding-top: 0.5rem;">
-            <div class="form-hint" style="margin-top: 0.5rem;">Maximum file size: 100MB.</div>
+            <input type="file" id="attachment" name="attachment" class="form-input" accept=".pdf,.zip,.mp4,.webm,.doc,.docx">
         </div>
-        
+
         <div class="form-group" style="margin-top: 1rem; padding: 1rem; border: 1px dashed var(--border); border-radius: var(--radius); background: var(--bg-card);">
             <label class="form-label" for="is_hidden">Visibility</label>
             <div style="display: flex; align-items: center; gap: 0.75rem;">
                 <input type="checkbox" id="is_hidden" name="is_hidden" value="1">
                 <label for="is_hidden" style="font-weight: 700; cursor: pointer;">Hide from student view</label>
             </div>
-            <div class="form-hint" style="margin-top: 0.5rem;">If checked, students will not see this lesson in the course list.</div>
+        </div>
+
+        <hr style="border: none; border-top: 2px solid var(--accent); margin: 2rem 0; opacity: 0.3;">
+        
+        <div class="section-header">
+            <h3 class="section-title">📊 Required Lesson Assessment</h3>
+            <p class="form-hint" style="margin-bottom: 1rem;">Students must complete this before they can mark the lesson as done.</p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="assessment_title">Assessment Title *</label>
+            <input type="text" id="assessment_title" name="assessment_title" class="form-input" 
+                   placeholder="e.g., Progress Check: Introduction" required>
+        </div>
+
+        <div id="questionsContainer" style="margin-top: 1.5rem;">
+            {% for i in range(5) %}
+            <div class="quiz-question" style="border-left: 4px solid var(--accent-surface); padding-left: 1.5rem; margin-bottom: 2rem; background: rgba(0,0,0,0.02); padding: 1rem; border-radius: 0 var(--radius) var(--radius) 0;">
+                <div class="quiz-question-num" style="color: var(--accent); font-weight: bold; margin-bottom: 0.5rem;">Question {{ i + 1 }} {% if i == 0 %}(Required){% else %}(Optional){% endif %}</div>
+                <div class="form-group">
+                    <input type="text" name="question_{{ i }}" class="form-input" placeholder="Enter question text" {% if i == 0 %}required{% endif %}>
+                </div>
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    {% for o in range(4) %}
+                    <div class="form-group">
+                        <label class="form-label" style="font-size: 0.8rem;">Option {{ 'ABCD'[o] }}</label>
+                        <input type="text" name="option_{{ i }}_{{ o }}" class="form-input" placeholder="Option {{ 'ABCD'[o] }}" {% if i == 0 %}required{% endif %}>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.3rem; font-size: 0.75rem; cursor: pointer;">
+                            <input type="radio" name="correct_{{ i }}" value="{{ o }}" {% if o == 0 %}checked{% endif %}> 
+                            <span>Correct</span>
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
         </div>
         
 

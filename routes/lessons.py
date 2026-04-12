@@ -1,4 +1,5 @@
 import os
+import json
 from datetime import datetime
 from flask import render_template, request, redirect, url_for, session, flash, g, abort, send_from_directory
 from helpers import login_required, role_required, send_notification_email, log_attendance
@@ -149,11 +150,45 @@ def register_lessons(app):
 
             is_hidden = 1 if request.form.get('is_hidden') else 0
 
-            if title and content:
-                g.db.execute(
+            # Assessment Data
+            assessment_title = request.form.get('assessment_title', '').strip()
+            
+            # Parse questions from form
+            questions = []
+            for q_index in range(10): # Limit to 10 in lesson add for simplicity, or more if needed
+                q_text = request.form.get(f'question_{q_index}', '').strip()
+                if not q_text:
+                    continue
+
+                options = []
+                for o in range(4):
+                    opt = request.form.get(f'option_{q_index}_{o}', '').strip()
+                    options.append(opt)
+
+                correct = request.form.get(f'correct_{q_index}', 0, type=int)
+
+                questions.append({
+                    'question': q_text,
+                    'options': options,
+                    'correct': correct
+                })
+
+            if not assessment_title or not questions:
+                flash('An assessment title and at least one question are required.', 'danger')
+            elif title and content:
+                # Insert Lesson
+                cursor = g.db.execute(
                     'INSERT INTO lessons (course_id, title, content, attachment_url, attachment_type, order_num, is_hidden) VALUES (?, ?, ?, ?, ?, ?, ?)',
                     (course_id, title, content, attachment_url, attachment_type, order_num, is_hidden)
                 )
+                lesson_id = cursor.lastrowid
+
+                # Insert Assessment
+                g.db.execute(
+                    'INSERT INTO assessments (course_id, lesson_id, title, questions_json) VALUES (?, ?, ?, ?)',
+                    (course_id, lesson_id, assessment_title, json.dumps(questions))
+                )
+
                 g.db.commit()
                 send_notification_email(
                     subject=f"New Lesson Added in {course['title']}",
@@ -161,10 +196,10 @@ def register_lessons(app):
                     html_part=f"<h3>New Lesson Added</h3><p>A new lesson <b>{title}</b> has been added to <b>{course['title']}</b>.</p>",
                     notify_roles=['student']
                 )
-                flash('Lesson added successfully!', 'success')
+                flash('Lesson and required assessment added successfully!', 'success')
                 return redirect(url_for('course_detail', course_id=course_id))
             else:
-                flash('Title and content are required.', 'danger')
+                flash('Lesson title and content are required.', 'danger')
 
         # Get max order for default
         max_order = g.db.execute(
