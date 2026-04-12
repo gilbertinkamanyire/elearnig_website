@@ -38,5 +38,5 @@ class Config:
     # Mailjet Config
     MAILJET_API_KEY = os.environ.get('MAILJET_API_KEY', 'd44fbbd7724c453cb6eb707c803beae6')
     MAILJET_API_SECRET = os.environ.get('MAILJET_API_SECRET', 'e0a275bf5d41b9aab19970466be8f148')
-    MAILJET_SENDER_EMAIL = os.environ.get('MAILJET_SENDER_EMAIL', 'wabule.joviamaris@student.utamu.ac.ug')
+    MAILJET_SENDER_EMAIL = os.environ.get('MAILJET_SENDER_EMAIL', 'okiria.vincent@student.utamu.ac.ug')
 
